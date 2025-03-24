@@ -1,6 +1,9 @@
 
 
-/** @type { import('@storybook/react-vite').StorybookConfig } */
+/** @type { import('@storybook/react-vite').StorybookConfig }
+ * 
+ */
+
 const config = {
   "stories": [
     "../src/**/*.mdx",
@@ -16,5 +19,6 @@ const config = {
     "name": "@storybook/react-vite",
     "options": {}
   }
+  
 };
 export default config;

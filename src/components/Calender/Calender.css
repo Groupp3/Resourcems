@@ -1,0 +1,29 @@
+/* src/components/Calendar.css */
+.calendar-container {
+    max-width: 400px;
+    margin: 20px auto;
+    text-align: center;
+  }
+  
+  .my-calendar {
+    border: 2px solid #2196f3;
+    border-radius: 10px;
+  }
+  
+  .my-calendar button {
+    background-color: #fff;
+    color: #2196f3;
+    border: none;
+    border-radius: 5px;
+  }
+  
+  .my-calendar button:hover {
+    background-color: #2196f3;
+    color: white;
+  }
+  
+  .my-calendar .react-calendar__tile--active {
+    background-color: #2196f3;
+    color: white;
+  }
+  

@@ -12,13 +12,19 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "bootstrap-icons": "^1.11.3",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-router-dom": "6.22.0",
+    "styled-components": "^6.1.16"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^3",
     "@eslint/js": "^9.21.0",
+    "@mdx-js/react": "^3.1.0",
+    "@mdx-js/rollup": "^3.1.0",
     "@storybook/addon-essentials": "^8.6.7",
+    "@storybook/addon-interactions": "^8.6.7",
     "@storybook/addon-onboarding": "^8.6.7",
     "@storybook/blocks": "^8.6.7",
     "@storybook/experimental-addon-test": "^8.6.7",

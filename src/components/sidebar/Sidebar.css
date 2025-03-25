@@ -7,7 +7,7 @@
     transition: width 0.3s ease;
 }
 
-/* Sidebar Header with Separator */
+
 .sidebar-header {
     display: flex;
     align-items: center;
@@ -17,7 +17,7 @@
     position: relative;
 }
 
-/* Logo Adjustments */
+
 .logo {
     font-size: 1.2rem;
     font-weight: bold;
@@ -29,7 +29,7 @@
     height: 30px;
 }
 
-/* Toggle Icon Position */
+
 .toggle-icon {
     position: absolute;
     right: 15px;

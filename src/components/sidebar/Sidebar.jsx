@@ -2,13 +2,38 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import './Sidebar.css';
-import Logo from "../../assets/logo.svg";
+import Logo from "../../assets/logo.svg?url";
+
+// Define menu items for different roles
+const MENU_ITEMS = {
+  ADMIN: [
+    { icon: <i className="bi bi-house-door"></i>, text: 'Home', path: '/', active: true },
+    { icon: <i className="bi bi-person"></i>, text: 'Profile', path: '/profile' },
+    { icon: <i className="bi bi-people"></i>, text: 'Users', path: '/users' },
+    { icon: <i className="bi bi-box-seam"></i>, text: 'Resource', path: '/resource' },
+    { icon: <i className="bi bi-clipboard-check"></i>, text: 'Request', path: '/request' },
+  ],
+  MENTOR: [
+    { icon: <i className="bi bi-house-door"></i>, text: 'Home', path: '/', active: true },
+    { icon: <i className="bi bi-person"></i>, text: 'Profile', path: '/profile' },
+    { icon: <i className="bi bi-people"></i>, text: 'Students',path:'/users'},
+    { icon: <i className="bi bi-box-seam"></i>, text: 'Resource', path: '/resource' },
+    
+  ],
+  STUDENT: [
+    { icon: <i className="bi bi-house-door"></i>, text: 'Home', path: '/', active: true },
+    { icon: <i className="bi bi-person"></i>, text: 'Profile', path: '/profile' },
+    { icon: <i className="bi bi-people"></i>, text: 'Mentors',path:'/users' },
+    { icon: <i className="bi bi-box-seam"></i>, text: 'Resource', path: '/resource' },
+  
+  ]
+};
 
 const Sidebar = ({
+  userRole = 'STUDENT', // Default to student role
   defaultOpen,
   logoText,
   toggleIcons,
-  menuItems,
   backgroundColor,
   textColor,
   borderColor,
@@ -20,6 +45,9 @@ const Sidebar = ({
   const [isOpen, setIsOpen] = useState(defaultOpen);
   const location = useLocation();
 
+  // Get menu items based on user role
+  const menuItems = MENU_ITEMS[userRole] || [];
+
   const handleToggle = () => {
     const newState = !isOpen;
     setIsOpen(newState);
@@ -27,7 +55,6 @@ const Sidebar = ({
       onToggle(newState);
     }
   };
-
 
   const cssVariables = {
     '--backgroundColor': backgroundColor,
@@ -70,19 +97,13 @@ const Sidebar = ({
 };
 
 Sidebar.propTypes = {
+  userRole: PropTypes.oneOf(['ADMIN', 'MENTOR', 'STUDENT']),
   defaultOpen: PropTypes.bool,
   logoText: PropTypes.string,
   toggleIcons: PropTypes.shape({
     open: PropTypes.node,
     closed: PropTypes.node
   }),
-  menuItems: PropTypes.arrayOf(
-    PropTypes.shape({
-      icon: PropTypes.node.isRequired,
-      text: PropTypes.string.isRequired,
-      path: PropTypes.string.isRequired
-    })
-  ),
   backgroundColor: PropTypes.string,
   textColor: PropTypes.string,
   borderColor: PropTypes.string,
@@ -93,6 +114,7 @@ Sidebar.propTypes = {
 };
 
 Sidebar.defaultProps = {
+  userRole: 'STUDENT',
   defaultOpen: true,
   logoText: 'EduV',
   backgroundColor: '#132D46',
@@ -101,7 +123,6 @@ Sidebar.defaultProps = {
   hoverColor: '#2d3748',
   activeColor: '#01C38D',
   linkHoverColor: '#3182ce',
-  menuItems: []
 };
 
 export default Sidebar;

@@ -32,7 +32,6 @@ function App() {
           { icon: <Icon name="users" />, text: 'Users', path: '/users' },
           { icon: <Icon name="profile" />, text: 'Profile', path: '/profile' },
           { icon: <Icon name="resource" />, text: 'Resource', path: '/resource' },
-          { icon: <Icon name="request" />, text: 'Request', path: '/request' }
           
     ]
   } : {
@@ -52,8 +51,7 @@ function App() {
           { icon: <Icon name="profile" />, text: 'Profile', path: '/profile' },
           { icon: <Icon name="users" />, text: 'Users', path: '/users' },
           { icon: <Icon name="profile" />, text: 'Profile', path: '/profile' },
-          { icon: <Icon name="resource" />, text: 'Resource', path: '/resource' },
-          { icon: <Icon name="request" />, text: 'Request', path: '/request' }
+          { icon: <Icon name="resource" />, text: 'Resource', path: '/resource' }
     ]
   };
   
@@ -71,9 +69,9 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/users" element={<Users />} />
-          <Route path="/resource" element={<Resource />} />
-          <Route path="/request" element={<Request />} />
+          <Route path="/users" element={<Settings />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/help" element={<Help />} />
         </Routes>
       </MainLayout>
     </Router>

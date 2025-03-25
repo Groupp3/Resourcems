@@ -19,21 +19,30 @@ const config = {
     "name": "@storybook/react-vite",
     "options": {}
   },
-  // Add static directories if needed
   "staticDirs": ["../public"],
-  // Add Vite configuration for handling Bootstrap Icons
   "viteFinal": async (config) => {
-    // Add any custom Vite configuration
+    const { default: svgr } = await import('vite-plugin-svgr');
+    
     return {
       ...config,
+      plugins: [
+        ...config.plugins,
+        svgr({
+          svgrOptions: {
+            exportType: 'named',
+            ref: true,
+            svgo: true,
+            titleProp: true,
+          },
+          include: '**/*.svg',
+        })
+      ],
       resolve: {
         ...config.resolve,
         alias: {
           ...config.resolve?.alias,
-          // Add path aliases if needed
         }
       },
-      // Make sure CSS is properly handled
       css: {
         preprocessorOptions: {
           ...config.css?.preprocessorOptions,

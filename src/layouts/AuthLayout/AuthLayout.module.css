@@ -1,0 +1,98 @@
+/* General Styling */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Arial', sans-serif;
+  background-color: #1E2132;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.authLayout {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.authContainer {
+  display: flex;
+  width: 100%;/* Increased from 80% to 90% for a wider layout */
+  max-width: 1500px; /* Increased max width */
+  height: 850px; /* Slightly increased height for better proportions */
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Left Section - Image Side */
+.authLeft {
+  width: 50%;
+  background-color: #1E2132;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+}
+
+/* Ensure Image Container Matches Signup Form */
+.geometricImage {
+  width: 80%;
+  height: 280px;  /* Increased height for better visibility */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.geometricImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Right Section - Signup Form */
+.authRight {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  padding: 2.5rem; /* Slightly increased padding */
+}
+
+/* Header with Login Button */
+.authHeader {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.loginButton {
+  background-color: black;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem; /* Slightly increased padding */
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem; /* Slightly larger text */
+}
+
+.loginButton:hover {
+  background-color: #333;
+}
+
+/* Content Centering */
+.authContent {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+}

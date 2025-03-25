@@ -13,109 +13,72 @@ export default {
       </div>
     </BrowserRouter>
   )],
-  parameters: {
-    layout: 'fullscreen',
-    docs: {
-      description: {
-        component: 'A responsive sidebar navigation component with customizable themes and toggle functionality.'
-      },
+  argTypes: {
+    userRole: {
+      control: { type: 'select', options: ['ADMIN', 'MENTOR', 'STUDENT'] },
+    },
+    defaultOpen: {
+      control: { type: 'boolean' },
+    },
+    theme: {
+      control: { type: 'select', options: ['light', 'dark'] },
     },
   },
-  argTypes: {
-    backgroundColor: { control: 'color' },
-    textColor: { control: 'color' },
-    borderColor: { control: 'color' },
-    hoverColor: { control: 'color' },
-    activeColor: { control: 'color' },
-    linkHoverColor: { control: 'color' },
-    defaultOpen: { control: 'boolean' },
-    logoText: { control: 'text' },
-    onToggle: { action: 'toggled' }
-  }
 };
 
-// Base menu items used in all stories
-const baseMenuItems = [
-  { icon: <i className="bi bi-house-door"></i>, text: 'Home', path: '/', active: true },
-  { icon: <i className="bi bi-person"></i>, text: 'Profile', path: '/profile' },
-  { icon: <i className="bi bi-people"></i>, text: 'Users', path: '/users' },
-  { icon: <i className="bi bi-box-seam"></i>, text: 'Resource', path: '/resource' },
-  { icon: <i className="bi bi-clipboard-check"></i>, text: 'Request', path: '/request' },
-];
+const Template = ({ theme, ...args }) => {
+  const [isOpen, setIsOpen] = useState(args.defaultOpen);
 
-// Template function for creating stories
-const Template = (args) => <Sidebar {...args} />;
+  const handleToggle = (newState) => {
+    setIsOpen(newState);
+  };
 
-// Default/Expanded state
-export const Default = Template.bind({});
-Default.args = {
-  defaultOpen: true,
-  logoText: 'EduV',
-  toggleIcons: {
-    open: <i className="bi bi-chevron-left"></i>,
-    closed: <i className="bi bi-chevron-right"></i>
-  },
-  menuItems: baseMenuItems,
-};
-
-// Collapsed state
-export const Collapsed = Template.bind({});
-Collapsed.args = {
-  ...Default.args,
-  defaultOpen: false,
-};
-
-// Dark theme (your preferred theme)
-export const DarkTheme = Template.bind({});
-DarkTheme.args = {
-  ...Default.args,
-  backgroundColor: '#132D46',
-  textColor: '#ffffff',
-  borderColor: 'rgba(255, 255, 255, 0.2)',
-  hoverColor: '#ADBFD1',
-  activeColor: '#01C38D',
-};
-
-// Light theme
-export const LightTheme = Template.bind({});
-LightTheme.args = {
-  ...Default.args,
-  backgroundColor: '#ffffff',
-  textColor: '#333333',
-  borderColor: '#e2e8f0',
-  hoverColor: '#f7fafc',
-  activeColor: '#3182ce',
-};
-
-// Interactive Demo with State
-export const InteractiveDemo = () => {
-  const [isOpen, setIsOpen] = useState(true);
-  const [activeIndex, setActiveIndex] = useState(0);
-  
-  // Create menu items with click handlers
-  const interactiveMenuItems = baseMenuItems.map((item, index) => ({
-    ...item,
-    active: index === activeIndex,
-    onClick: () => setActiveIndex(index)
-  }));
-  
   return (
-    <div className="story-container">
-      <Sidebar 
-        defaultOpen={isOpen}
-        logoText="EduV"
-        menuItems={interactiveMenuItems}
-        onToggle={(state) => setIsOpen(state)}
-        toggleIcons={{
-          open: <i className="bi bi-chevron-left"></i>,
-          closed: <i className="bi bi-chevron-right"></i>
-        }}
-      />
-      <div style={{ marginLeft: '20px' }}>
-        <h3>Current State:</h3>
-        <p>Sidebar is: {isOpen ? 'Open' : 'Closed'}</p>
-        <p>Active menu item: {baseMenuItems[activeIndex].text}</p>
-      </div>
-    </div>
+    <Sidebar
+      {...args}
+      defaultOpen={isOpen}
+      onToggle={handleToggle}
+      backgroundColor={theme === 'light' ? '#f8f9fa' : '#132D46'}
+      textColor={theme === 'light' ? '#212529' : '#ffffff'}
+      borderColor={theme === 'light' ? '#dee2e6' : '#2d3748'}
+      hoverColor={theme === 'light' ? '#e9ecef' : '#ADBFD1'}
+      activeColor={theme === 'light' ? '#0d6efd' : '#01C38D'}
+      linkHoverColor={theme === 'light' ? '#0d6efd' : '#3182ce'}
+    />
   );
+};
+
+export const AdminSidebar = Template.bind({});
+AdminSidebar.args = {
+  userRole: 'ADMIN',
+  defaultOpen: true,
+  theme: 'dark',
+};
+
+export const MentorSidebar = Template.bind({});
+MentorSidebar.args = {
+  userRole: 'MENTOR',
+  defaultOpen: true,
+  theme: 'dark',
+};
+
+export const StudentSidebar = Template.bind({});
+StudentSidebar.args = {
+  userRole: 'STUDENT',
+  defaultOpen: true,
+  theme: 'dark',
+};
+
+export const CollapsedSidebar = Template.bind({});
+CollapsedSidebar.args = {
+  userRole: 'STUDENT',
+  defaultOpen: false,
+  theme: 'dark',
+};
+
+export const LightThemeSidebar = Template.bind({});
+LightThemeSidebar.args = {
+  userRole: 'ADMIN',
+  defaultOpen: true,
+  theme: 'light',
 };

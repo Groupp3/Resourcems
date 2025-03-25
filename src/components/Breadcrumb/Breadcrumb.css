@@ -1,0 +1,97 @@
+/* Breadcrumb.css */
+
+/* Base breadcrumb container */
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  list-style: none;
+  background-color: #e9ecef;
+  border-radius: 0.25rem;
+}
+
+/* Individual breadcrumb items */
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+}
+
+/* Spacing and separator for items */
+.breadcrumb-item + .breadcrumb-item {
+  padding-left: 0.5rem;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  display: inline-block;
+  padding-right: 0.5rem;
+  color: #6c757d;
+  content: var(--breadcrumb-divider, "/");
+}
+
+/* Link styling */
+.breadcrumb-item a {
+  color: #007bff;
+  text-decoration: none;
+  transition: color 0.15s ease-in-out;
+}
+
+.breadcrumb-item a:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+/* Active/current item styling */
+.breadcrumb-item.active {
+  color: #6c757d;
+  font-weight: 500;
+}
+
+/* Light variant */
+.breadcrumb-light {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+}
+
+/* Dark variant */
+.breadcrumb-dark {
+  background-color: #343a40;
+}
+
+.breadcrumb-dark .breadcrumb-item,
+.breadcrumb-dark .breadcrumb-item + .breadcrumb-item::before,
+.breadcrumb-dark .breadcrumb-item.active {
+  color: #f8f9fa;
+}
+
+.breadcrumb-dark .breadcrumb-item a {
+  color: #17a2b8;
+}
+
+.breadcrumb-dark .breadcrumb-item a:hover {
+  color: #20c997;
+}
+
+/* Transparent variant (no background) */
+.breadcrumb-transparent {
+  background-color: transparent;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Pill variant */
+.breadcrumb-pill {
+  border-radius: 50rem;
+}
+
+/* Compact sizing */
+.breadcrumb-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+/* Large sizing */
+.breadcrumb-lg {
+  padding: 1rem 1.5rem;
+  font-size: 1.25rem;
+}

@@ -5,8 +5,16 @@
     color: var(--textColor, #ffffff); 
     padding: 20px;
     transition: width 0.3s ease;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1000;
 }
 
+.main-content {
+    margin-left: 250px; /* Adjust based on sidebar width */
+    transition: margin-left 0.3s ease;
+}
 
 .sidebar-header {
     display: flex;
@@ -39,6 +47,11 @@
 .sidebar.closed {
     width: 80px;
 }
+
+.main-content.sidebar-closed {
+    margin-left: 80px; /* Adjust main content when sidebar is collapsed */
+}
+
 
 /* Menu List */
 .menu {

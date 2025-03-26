@@ -1,41 +1,24 @@
 import React from "react";
-import PropTypes from "prop-types";
-import "./Card.css"; // Import the CSS file for styling
+import "./Card.css"; // Make sure this file exists
 
-const Card = ({ title, description, image, size, onClick, disabled }) => {
+const Card = ({ title, description, size, onClick, disabled, icon, showImage, color }) => {
   return (
-    <div className={`card card-${size} ${disabled ? "disabled" : ""}`} onClick={disabled ? null : onClick}>
-      <div className="card-image">
-        <img
-          src={image || "https://via.placeholder.com/300"}  // Default placeholder image
-          alt={title || "Card Image"}
-        />
-      </div>
+    <div 
+      className={`card card-${size} ${disabled ? "disabled" : ""}`} 
+      onClick={disabled ? null : onClick}
+      style={{ backgroundColor: color || "#ffffff", color: "#000", fontFamily: "Poppins, sans-serif" }}
+    >
       <div className="card-body">
-        <h5 className="card-title">{title || "Placeholder Title"}</h5>  {/* Default placeholder title */}
-        <p className="card-description">
-          {description || "This is a placeholder description for the card."} {/* Default placeholder description */}
-        </p>
+        <div className="card-title-container">
+          {icon && <span className="card-icon">{icon}</span>}
+          <h5 className="card-title">{title}</h5>
+        </div>
+        <div className="card-description">
+          <h3>{description}</h3>
+        </div>
       </div>
     </div>
   );
-};
-
-Card.propTypes = {
-  title: PropTypes.string,
-  description: PropTypes.string,
-  image: PropTypes.string,
-  size: PropTypes.oneOf(["small", "medium", "large"]),
-  onClick: PropTypes.func,
-  disabled: PropTypes.bool,
-};
-
-Card.defaultProps = {
-  size: "medium",
-  disabled: false,
-  title: "Placeholder Title",
-  description: "This is a placeholder description for the card.",
-  image: "https://via.placeholder.com/300",  // Default placeholder image
 };
 
 export default Card;

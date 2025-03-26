@@ -1,23 +1,16 @@
-// src/components/Calendar.jsx
 import React, { useState } from "react";
 import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";  // Import default styles
-import "./Calender.css";  // Custom styles
+import "react-calendar/dist/Calendar.css";
+import "./Calender.css"; // Import custom styles
 
-const MyCalendar = ({ onChange, value }) => {
-  const [date, setDate] = useState(value || new Date());
-
-  const handleDateChange = (newDate) => {
-    setDate(newDate);
-    if (onChange) onChange(newDate);
-  };
+const MyCalendar = ({ value }) => {
+  const [date] = useState(value || new Date()); // Default to current date
 
   return (
     <div className="calendar-container">
-      <h2>Pick a Date</h2>
       <Calendar
-        onChange={handleDateChange}
         value={date}
+        tileDisabled={() => true} // Disable all date selection
         className="my-calendar"
       />
     </div>
@@ -25,3 +18,4 @@ const MyCalendar = ({ onChange, value }) => {
 };
 
 export default MyCalendar;
+

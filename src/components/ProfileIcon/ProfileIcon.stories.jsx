@@ -6,10 +6,11 @@ export default {
   title: 'Components/ProfileIcon',
   component: ProfileIcon,
   parameters: {
-    componentSubtitle: 'A customizable profile icon with different sizes',
+    componentSubtitle: 'A customizable profile icon with name and different sizes',
   },
   argTypes: {
     src: { control: 'text' },
+    name: { control: 'text' },
     alt: { control: 'text' },
     size: { 
       control: { 
@@ -25,6 +26,7 @@ export default {
 export const Default = {
   args: {
     src: 'https://via.placeholder.com/100',
+    name: 'John Doe',
     size: 'md'
   }
 };
@@ -42,5 +44,13 @@ export const Large = {
   args: {
     ...Default.args,
     size: 'lg'
+  }
+};
+
+// Without name
+export const NoName = {
+  args: {
+    src: 'https://via.placeholder.com/100',
+    size: 'md'
   }
 };

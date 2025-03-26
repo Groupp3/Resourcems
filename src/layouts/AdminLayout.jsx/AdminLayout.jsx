@@ -12,7 +12,7 @@ const AdminLayout = ({ children }) => {
       <div className="main-content">
         {/* Profile Icon on the top right */}
         <div className="profile-container">
-          <ProfileIcon src="https://via.placeholder.com/100" size="md" />
+          <ProfileIcon src="https://via.placeholder.com/100" name="Admin" size="sm" />
         </div>
 
         {/* Main content area */}

@@ -22,6 +22,7 @@ const AdminPanelBodyLayout = ({ calendarStyle, cardSize }) => {
             icon={<FaUserShield />}
             showImage={false}
             color="#d9f99d"  // Light Red (More Saturated)
+            
           />
         </div>
         <div className="col-12 col-md-3 calendar-wrapper">

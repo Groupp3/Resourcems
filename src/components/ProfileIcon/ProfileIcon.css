@@ -11,21 +11,8 @@
     padding: 5px;
     border-radius: 5px;
     transition: background-color 0.3s;
+    color: white; /* Changed profile name color to white */
 }
-
-/* .profile-wrapper:hover {
-    background-color: #f5f5f5;
-} */
-
-.dropdown-icon {
-    font-size: 14px;
-    color: #555;
-    transition: transform 0.3s ease-in-out;
-}
-
-/* .profile-wrapper:hover .dropdown-icon {
-    transform: rotate(180deg);
-} */
 
 /* Profile Icon - Circular Image */
 .profile-icon {
@@ -45,46 +32,37 @@
     border-radius: 50%;
 }
 
-/* Different Sizes */
-.profile-icon.sm {
-    width: 40px;
-    height: 40px;
-}
-
-.profile-icon.md {
-    width: 60px;
-    height: 60px;
-}
-
-.profile-icon.lg {
-    width: 100px;
-    height: 100px;
+/* Profile Name */
+.profile-name {
+    font-size: 16px;
+    font-weight: bold;
+    color: white; /* Profile name is now white */
 }
 
 /* Dropdown Styles */
 .profile-dropdown {
     position: absolute;
     top: 100%;
-    right: 0;
+    left: 10px;
     background: white;
     border: 1px solid #ddd;
     border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    width: 120px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    width: 200px;
     margin-top: 5px;
     z-index: 10;
-    padding: 5px;
+    padding: 20px;
 }
 
 .dropdown-item {
     display: block;
     width: 100%;
-    padding: 8px 12px;
+    padding: 7px 25px;
     text-align: left;
     background: none;
     border: none;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 16px;
     color: #333;
 }
 
@@ -97,9 +75,8 @@
     font-weight: bold;
 }
 
-/* Logout Icon */
 .logout-icon {
-    margin-right: 8px;  /* Space between icon and text */
+    margin-right: 8px;
     font-size: 16px;
     color: red;
 }

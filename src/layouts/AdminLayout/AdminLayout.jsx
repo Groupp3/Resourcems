@@ -1,21 +1,31 @@
 import React from "react";
+import { useNavigate } from "react-router-dom"; 
 import Sidebar from "../../components/sidebar/Sidebar";
 import ProfileIcon from "../../components/ProfileIcon/ProfileIcon";
-import "./AdminLayout.css"; // Create this CSS file for layout styling
+import "./AdminLayout.css"; 
 
 const AdminLayout = ({ children }) => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("authToken"); 
+    navigate("/"); 
+  };
+
   return (
     <div className="admin-layout">
-      {/* Sidebar on the left */}
-      <Sidebar userRole="ADMIN" defaultOpen={true} logoText="Edu Vault" />
+      <Sidebar userRole="ADMIN" defaultOpen={true} logoText="EduVault" />
 
       <div className="main-content">
-        {/* Profile Icon on the top right */}
         <div className="profile-container">
-          <ProfileIcon src="https://via.placeholder.com/100" name="Admin" size="sm" />
+          <ProfileIcon 
+            src="https://via.placeholder.com/100" 
+            name="Admin" 
+            size="sm"
+            onLogout={handleLogout} // Ensure this is passed
+          />
         </div>
 
-        {/* Main content area */}
         <div className="content">{children}</div>
       </div>
     </div>

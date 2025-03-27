@@ -114,11 +114,11 @@ Sidebar.propTypes = {
 };
 
 Sidebar.defaultProps = {
-  userRole: 'STUDENT',
+  userRole: 'ADMIN',
   defaultOpen: true,
   logoText: 'EduV',
-  backgroundColor: '#132D46',
-  textColor: '#ffffff',
+  backgroundColor: 'white',
+  textColor: 'black',
   borderColor: '#2d3748',
   hoverColor: '#2d3748',
   activeColor: '#01C38D',

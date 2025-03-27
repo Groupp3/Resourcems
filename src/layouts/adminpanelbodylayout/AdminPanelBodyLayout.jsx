@@ -21,7 +21,7 @@ const AdminPanelBodyLayout = ({ calendarStyle, cardSize }) => {
             size="large"
             icon={<FaUserShield />}
             showImage={false}
-            color="#FDDFDF"  // Light red
+            color="#d9f99d"  // Light Red (More Saturated)
           />
         </div>
         <div className="col-12 col-md-3 calendar-wrapper">
@@ -38,7 +38,7 @@ const AdminPanelBodyLayout = ({ calendarStyle, cardSize }) => {
             size={cardSize}
             icon={<FaChalkboardTeacher />}
             showImage={false}
-            color="#FCF7DE"  // Light yellow
+            color="#fef08a"  // Light Yellow (More Saturated)
           />
         </div>
         <div className="col-12 col-sm-6 col-md-3">
@@ -48,18 +48,19 @@ const AdminPanelBodyLayout = ({ calendarStyle, cardSize }) => {
             size={cardSize}
             icon={<FaUsers />}
             showImage={false}
-            color="#DEFDE0"  // Light green
+            color="#a7f3d0"  // Light Green (More Saturated)
           />
         </div>
         <div className="col-12 col-sm-6 col-md-3">
-          <Card 
+        <Card 
             title="Admins"
             description={adminCount}  
             size={cardSize}
             icon={<FaUserShield />}
             showImage={false}
-            color="#DEF3FD"  // Light blue
-          />
+            color="rgba(233, 213, 255, 0.5)"
+            className="glass-card"  // Add the glass effect class
+            />
         </div>
       </div>
     </div>

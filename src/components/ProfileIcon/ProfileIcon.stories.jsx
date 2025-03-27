@@ -1,56 +1,47 @@
 import React from 'react';
 import ProfileIcon from './ProfileIcon';
-import './ProfileIcon.css';
+import { action } from '@storybook/addon-actions';
 
 export default {
   title: 'Components/ProfileIcon',
   component: ProfileIcon,
-  parameters: {
-    componentSubtitle: 'A customizable profile icon with name and different sizes',
-  },
   argTypes: {
-    src: { control: 'text' },
-    name: { control: 'text' },
-    alt: { control: 'text' },
-    size: { 
-      control: { 
-        type: 'select', 
-        options: ['sm', 'md', 'lg'] 
-      } 
+    size: {
+      control: { type: 'radio' },
+      options: ['sm', 'md', 'lg'],
     },
-    onClick: { action: 'clicked' }
-  }
+  },
 };
 
-// Default profile icon
-export const Default = {
-  args: {
-    src: 'https://via.placeholder.com/100',
-    name: 'John Doe',
-    size: 'md'
-  }
+const Template = (args) => <ProfileIcon {...args} />;
+
+export const Small = Template.bind({});
+Small.args = {
+  src: 'https://via.placeholder.com/40',
+  name: 'John Doe',
+  size: 'sm',
+  onLogout: action('Logged out'),
 };
 
-// Small profile icon
-export const Small = {
-  args: {
-    ...Default.args,
-    size: 'sm'
-  }
+export const Medium = Template.bind({});
+Medium.args = {
+  src: 'https://via.placeholder.com/60',
+  name: 'Jane Smith',
+  size: 'md',
+  onLogout: action('Logged out'),
 };
 
-// Large profile icon
-export const Large = {
-  args: {
-    ...Default.args,
-    size: 'lg'
-  }
+export const Large = Template.bind({});
+Large.args = {
+  src: 'https://via.placeholder.com/100',
+  name: 'Alice Brown',
+  size: 'lg',
+  onLogout: action('Logged out'),
 };
 
-// Without name
-export const NoName = {
-  args: {
-    src: 'https://via.placeholder.com/100',
-    size: 'md'
-  }
+export const WithoutName = Template.bind({});
+WithoutName.args = {
+  src: 'https://via.placeholder.com/60',
+  size: 'md',
+  onLogout: action('Logged out'),
 };

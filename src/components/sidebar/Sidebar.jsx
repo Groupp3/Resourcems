@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import './Sidebar.css';
 import Logo from "../../assets/logo.svg?url";
@@ -7,30 +7,28 @@ import Logo from "../../assets/logo.svg?url";
 // Define menu items for different roles
 const MENU_ITEMS = {
   ADMIN: [
-    { icon: <i className="bi bi-house-door"></i>, text: 'Home', path: '/', active: true },
-    { icon: <i className="bi bi-person"></i>, text: 'Profile', path: '/profile' },
-    { icon: <i className="bi bi-people"></i>, text: 'Users', path: '/users' },
-    { icon: <i className="bi bi-box-seam"></i>, text: 'Resource', path: '/resource' },
-    { icon: <i className="bi bi-clipboard-check"></i>, text: 'Request', path: '/request' },
+    { icon: <i className="bi bi-house-door"></i>, text: 'Home', path: '/admin' },
+    { icon: <i className="bi bi-person"></i>, text: 'Profile', path: '/admin/profile' },
+    { icon: <i className="bi bi-people"></i>, text: 'Users', path: '/admin/users' },
+    { icon: <i className="bi bi-box-seam"></i>, text: 'Resource', path: '/admin/resource' },
+    { icon: <i className="bi bi-clipboard-check"></i>, text: 'Request', path: '/admin/request' },
   ],
   MENTOR: [
-    { icon: <i className="bi bi-house-door"></i>, text: 'Home', path: '/', active: true },
+    { icon: <i className="bi bi-house-door"></i>, text: 'Home', path: '/' },
     { icon: <i className="bi bi-person"></i>, text: 'Profile', path: '/profile' },
-    { icon: <i className="bi bi-people"></i>, text: 'Students',path:'/users'},
+    { icon: <i className="bi bi-people"></i>, text: 'Students', path: '/users' },
     { icon: <i className="bi bi-box-seam"></i>, text: 'Resource', path: '/resource' },
-    
   ],
   STUDENT: [
-    { icon: <i className="bi bi-house-door"></i>, text: 'Home', path: '/', active: true },
+    { icon: <i className="bi bi-house-door"></i>, text: 'Home', path: '/' },
     { icon: <i className="bi bi-person"></i>, text: 'Profile', path: '/profile' },
-    { icon: <i className="bi bi-people"></i>, text: 'Mentors',path:'/users' },
+    { icon: <i className="bi bi-people"></i>, text: 'Mentors', path: '/users' },
     { icon: <i className="bi bi-box-seam"></i>, text: 'Resource', path: '/resource' },
-  
   ]
 };
 
 const Sidebar = ({
-  userRole = 'STUDENT', // Default to student role
+  userRole = 'STUDENT',
   defaultOpen,
   logoText,
   toggleIcons,
@@ -49,28 +47,23 @@ const Sidebar = ({
   const menuItems = MENU_ITEMS[userRole] || [];
 
   const handleToggle = () => {
-    const newState = !isOpen;
-    setIsOpen(newState);
-    if (onToggle) {
-      onToggle(newState);
-    }
+    setIsOpen(!isOpen);
+    if (onToggle) onToggle(!isOpen);
   };
 
-  const cssVariables = {
-    '--backgroundColor': backgroundColor,
-    '--textColor': textColor,
-    '--borderColor': borderColor,
-    '--hoverColor': hoverColor,
-    '--activeColor': activeColor,
-    '--linkHoverColor': linkHoverColor,
-  };
+  // Apply CSS variables dynamically
+  useEffect(() => {
+    document.documentElement.style.setProperty('--backgroundColor', backgroundColor);
+    document.documentElement.style.setProperty('--textColor', textColor);
+    document.documentElement.style.setProperty('--borderColor', borderColor);
+    document.documentElement.style.setProperty('--hoverColor', hoverColor);
+    document.documentElement.style.setProperty('--activeColor', activeColor);
+    document.documentElement.style.setProperty('--linkHoverColor', linkHoverColor);
+  }, [backgroundColor, textColor, borderColor, hoverColor, activeColor, linkHoverColor]);
 
   return (
-    <div 
-      className={`sidebar ${isOpen ? 'open' : 'closed'}`} 
-      style={cssVariables}
-    >
-      <div className="sidebar-header" onClick={handleToggle}> 
+    <div className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
+      <div className="sidebar-header" onClick={handleToggle}>
         <img src={Logo} alt="Brand Logo" className="brand-logo" />
         {isOpen && <span className="logo">{logoText}</span>}
         {toggleIcons && (
@@ -82,13 +75,15 @@ const Sidebar = ({
       <ul className="menu">
         {menuItems.map((item, index) => (
           <li key={index} className="menu-item">
-            <Link 
-              to={item.path} 
-              className={`menu-link ${location.pathname === item.path ? 'active' : ''}`}
-            >
+           <NavLink 
+                to={item.path} 
+                className={({ isActive }) => isActive ? 'menu-link active' : 'menu-link'}
+                end
+              >
+
               <span className="icon">{item.icon}</span>
               {isOpen && <span className="text">{item.text}</span>}
-            </Link>
+            </NavLink>
           </li>
         ))}
       </ul>

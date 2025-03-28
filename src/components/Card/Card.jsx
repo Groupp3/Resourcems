@@ -6,7 +6,8 @@ const Card = ({ title, description, size, onClick, disabled, icon, showImage, co
     <div 
       className={`card card-${size} ${disabled ? "disabled" : ""}`} 
       onClick={disabled ? null : onClick}
-      style={{ backgroundColor: color || "#ffffff", color: "#000", fontFamily: "Poppins, sans-serif" }}
+      style={{ background: color || "linear-gradient(to bottom right, #ddd6fe, #f5f3ff)", color: "#000" }}
+
     >
       <div className="card-body">
         <div className="card-title-container">

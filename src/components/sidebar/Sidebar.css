@@ -92,16 +92,19 @@
 
 /* Hover and Active Effects */
 .menu-link:hover {
-    background-color: rgba(255, 255, 255, 0.2) !important; /* Transparent white */
-    border-right: 5px solid #ddd6fe; /* Keep border style */
-    transition: background 0.3s ease, color 0.3s ease;
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    border-right: 5px solid #ddd6fe !important;
 }
-
 .menu-link.active {
-    background-color: rgba(255, 255, 255, 0.2) !important; /* Transparent white */
-    border-right: 5px solid #ddd6fe; /* Keep border style */
+    background-color: rgba(255, 255, 255, 0.3) !important; /* Lighter highlight */
+    border-right: 5px solid #a78bfa !important; /* Purple accent */
+    color: white!important; /* Text color change */
+    font-weight: bold;
 }
-
+/* Ensure icons also change when active */
+.menu-link.active .icon i {
+    color: white!important;
+}
 .menu-link .text {
     margin-left: 10px;
 }
@@ -118,4 +121,14 @@
 
 .sidebar.closed .sidebar-header {
     justify-content: center;
+}
+
+/* When sidebar is collapsed, highlight active icon */
+.sidebar.closed .menu-link.active {
+    background-color: transparent !important;
+    border-right: none;
+}
+
+.sidebar.closed .menu-link.active .icon i {
+    color: white !important;
 }

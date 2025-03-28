@@ -19,7 +19,7 @@
 
 /* Highlight the selected date */
 .react-calendar__tile--active {
-  background: #007bff !important; /* Blue highlight */
+  background:#ddd6fe!important; /* Blue highlight */
   color: white !important;
   border-radius: 50%;
 }

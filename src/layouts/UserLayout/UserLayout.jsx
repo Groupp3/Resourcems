@@ -2,9 +2,10 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Header from "../../components/header/Header";
-import "./AdminLayout.css";
+import SearchBar from "../../components/SearchBar/SearchBar"; // Added SearchBar import
+import "./UserLayout.css";
 
-const AdminLayout = ({ children }) => {
+const UserLayout = ({ children }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -13,7 +14,7 @@ const AdminLayout = ({ children }) => {
   };
 
   return (
-    <div className="admin-layout">
+    <div className="user-layout">
       <Header 
          backgroundColor="#FFFFFF" 
          textColor="#000000" 
@@ -22,7 +23,11 @@ const AdminLayout = ({ children }) => {
          profileName="Admin"
          onLogout={handleLogout}
       />
-      
+
+      <div className="searchbar-container"> 
+        <SearchBar suggestions={["Dashboard", "Users", "Settings", "Reports"]} />
+      </div>
+
       <Sidebar userRole="ADMIN" defaultOpen={true} logoText="EduVault" />
 
       <div className="main-content">
@@ -32,4 +37,4 @@ const AdminLayout = ({ children }) => {
   );
 };
 
-export default AdminLayout;
+export default UserLayout;

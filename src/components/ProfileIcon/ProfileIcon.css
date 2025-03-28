@@ -19,10 +19,11 @@
     display: inline-block;
     border-radius: 50%;
     overflow: hidden;
-    border: 2px solid #ddd;
+    border: 3px solid #ddd6fe;
     width: 60px;
     height: 60px;
     transition: border-color 0.3s ease-in-out;
+    box-shadow: 0 0 5px 2px #ddd6fe; /* Blurring effect */
 }
 
 .profile-icon img {
@@ -36,8 +37,15 @@
 .profile-name {
     font-size: 16px;
     font-weight: bold;
-    color: white; /* Profile name is now white */
+    color: black; /* Profile name is now white */
 }
+
+.dropdown-icon {
+    font-size: 16px; /* Adjust size */
+    color: black; /* Ensure it is visible */
+    transition: transform 0.3s ease;
+}
+
 
 /* Dropdown Styles */
 .profile-dropdown {

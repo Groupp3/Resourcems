@@ -1,5 +1,5 @@
 /* AdminLayout.css */
-.admin-layout {
+.user-layout {
     display: flex;
     height: 100vh;
     background-color: #ffffff; 
@@ -22,4 +22,13 @@
 
 .content {
     padding-top: 60px; /* Space for the profile icon */
+}
+
+.searchbar-container {
+    position: absolute;
+    top: 5px;
+    right:  57%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    width: 300px;
 }

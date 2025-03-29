@@ -1,0 +1,123 @@
+.list-container {
+    width: 100%;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+  }
+  
+  .list-header {
+    display: flex;
+    background-color: #f7fafc;
+    border-bottom: 1px solid #e2e8f0;
+    font-weight: 600;
+    color: #4a5568;
+    padding: 12px 0;
+  }
+  
+  .list-header-cell,
+  .list-cell {
+    padding: 12px 16px;
+    text-align: left;
+    flex-grow: 1;
+  }
+  
+  .list-header-cell:first-child, .list-cell:first-child {
+    width: 40px;
+    text-align: center;
+  }
+
+  .list-header-cell:last-child, .list-cell:last-child {
+    width: 120px;
+    text-align: right;
+  }
+
+  .list-body {
+    background-color: white;
+  }
+  
+  .list-row {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #e2e8f0;
+    transition: background-color 0.2s ease;
+  }
+  
+  .list-row:hover {
+    background-color: #f8f9fa;
+  }
+  
+  .list-empty {
+    text-align: center;
+    padding: 20px;
+    color: #718096;
+  }
+  
+  .list-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+  
+  .action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+  }
+  
+  .action-btn:hover {
+    background-color: #f1f5f9;
+  }
+  
+  .action-btn-danger {
+    color: #e53e3e;
+  }
+  
+  .action-btn-primary {
+    color: #3182ce;
+  }
+  
+  /* Multi-Select Checkbox */
+  .list-checkbox {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+  }
+
+  .list-header-cell.select-all, .list-cell.select-item {
+    width: 50px;
+    text-align: center;
+  }
+  
+  /* Bulk Delete Button */
+  .bulk-delete-btn {
+    background-color: #e53e3e;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 10px 0;
+  }
+  
+  .bulk-delete-btn:hover {
+    background-color: #c53030;
+  }
+  
+  /* Access Control Icons */
+  .access-icon {
+    font-size: 18px;
+    margin-left: 8px;
+    color: #4a5568;
+  }
+  
+  .public-access {
+    color: #38a169; /* Green for public */
+  }
+  
+  .private-access {
+    color: #e53e3e; /* Red for private */
+  }

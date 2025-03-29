@@ -8,7 +8,8 @@ const AuthLayout = ({ children }) => {
       <div className={styles.authContainer}>
         
         <div className={styles.authLeft}>
-          <h1>Learn with us</h1>
+          <h1>EduVault</h1>
+          <h2>Learn with us</h2>
           <div className={styles.geometricImage}>
             <img src={geometricShape} alt="Geometric Shape" />
           </div>

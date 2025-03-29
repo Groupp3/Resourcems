@@ -1,28 +1,34 @@
-/* General Styling */
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  font-family: 'Arial', sans-serif;
-  background-color: #1E2132;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
+/* Fullscreen Centering */
 .authLayout {
   width: 100vw;
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 1rem; /* Added padding for smaller screens */
 }
 
+/* Headings */
+h1 {
+  font-size: 48px;
+  color: #01C38D;
+  margin-bottom: 10px;
+  text-align: center; /* Ensures proper alignment */
+}
+
+h2 {
+  font-size: 24px;
+  margin-top: 0;
+  text-align: center;
+}
+
+/* Authentication Container */
 .authContainer {
   display: flex;
-  width: 100%;/* Increased from 80% to 90% for a wider layout */
-  max-width: 1500px; /* Increased max width */
-  height: 850px; /* Slightly increased height for better proportions */
+  flex-wrap: wrap; /* Allows elements to wrap */
+  width: 90%;
+  max-width: 1200px; /* Slightly reduced max width for better scaling */
+  min-height: 750px; /* Min height to prevent content squeezing */
   background: white;
   border-radius: 12px;
   overflow: hidden;
@@ -42,10 +48,9 @@ html, body {
   padding: 2rem;
 }
 
-/* Ensure Image Container Matches Signup Form */
 .geometricImage {
   width: 80%;
-  height: 280px;  /* Increased height for better visibility */
+  max-height: 280px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -64,7 +69,7 @@ html, body {
   display: flex;
   flex-direction: column;
   background-color: white;
-  padding: 2.5rem; /* Slightly increased padding */
+  padding: 2rem;
 }
 
 /* Header with Login Button */
@@ -77,10 +82,10 @@ html, body {
   background-color: black;
   color: white;
   border: none;
-  padding: 0.6rem 1.2rem; /* Slightly increased padding */
+  padding: 0.6rem 1.2rem;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 1rem; /* Slightly larger text */
+  font-size: 1rem;
 }
 
 .loginButton:hover {
@@ -95,4 +100,103 @@ html, body {
   justify-content: center;
   flex-direction: column;
   width: 100%;
+}
+
+/* ----- RESPONSIVE STYLES ----- */
+
+/* Tablets & Smaller Screens */
+@media (max-width: 1024px) {
+  .authContainer {
+    height: auto;
+    flex-direction: column;
+    width: 95%;
+  }
+
+  .authLeft, 
+  .authRight {
+    width: 100%;
+    padding: 1.5rem;
+  }
+
+  .geometricImage {
+    height: 200px;
+  }
+
+  h1 {
+    font-size: 36px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+}
+
+/* Mobile Screens */
+@media (max-width: 768px) {
+  .authLayout {
+    padding: 0.5rem;
+  }
+
+  .authContainer {
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+  .authLeft {
+    padding: 1rem;
+  }
+
+  .authRight {
+    padding: 1.5rem;
+  }
+
+  .geometricImage {
+    width: 100%;
+    height: 180px;
+  }
+
+  .loginButton {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+  }
+
+  h1 {
+    font-size: 28px;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
+}
+
+/* Extra Small Devices */
+@media (max-width: 480px) {
+  .authContainer {
+    flex-direction: column;
+    width: 100%;
+    min-height: auto;
+    padding: 1rem;
+  }
+
+  .authLeft {
+    display: none; /* Hide image section for very small screens */
+  }
+
+  .authRight {
+    width: 100%;
+    padding: 1rem;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  h2 {
+    font-size: 16px;
+  }
+
+  .loginButton {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
+  }
 }

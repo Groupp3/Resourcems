@@ -1,17 +1,38 @@
-/* Additional custom styles if needed */
-.profile-section {
+/* Reduce padding to move everything higher */
+.container-fluid {
+    padding-top: 10px !important;
+    padding-bottom: 0 !important;
+}
+
+/* Add margin-bottom to create space */
+.welcome-calendar-container {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
-  }
-  
-  .welcome-card {
-    background-color: #f8f9fa;
-    border-radius: 8px;
-  }
-  /* src/components/AdminPanelBodyLayout.css */
-.card-content h3 {
-  font-size: 2rem;
-  font-weight: 600;
-  color: #4a90e2; /* Set color of the number */
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 50px; /* Increased space between sections */
 }
+
+
+/* Welcome Card Styling */
+.welcome-card {
+    border-radius: 8px;
+    flex: 2;  /* Increase its relative size */
+    padding: 15px;
+    margin-right: 10px;
+    width: 90%;  /* Adjust as needed */
+    max-width: 1000px;  /* Prevents it from getting too large */
+}
+
+/* Calendar Wrapper */
+.calendar-wrapper {
+    flex-shrink: 0; 
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    min-width: 250px; 
+    width: 30%; /* Adjusts based on the welcome card */
+}
+
+
+

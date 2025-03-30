@@ -1,276 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
 .card {
-  display: flex;
-  flex-direction: column;
-  background: #132d46; /* Updated background color */
-  color: white; /* Updated text color */
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 16px;
+  background: linear-gradient(to bottom right, #ddd6fe,#f5f3ff);
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+  font-family: "Poppins", sans-serif;
   text-align: center;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  cursor: pointer;
 }
 
 .card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
-
-.card.disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.card-image {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-}
-
-.card-content {
-  padding: 12px;
+  transform: scale(1.02);
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
 }
 
 .card-title {
-  font-size: 18px;
+  font-size: 25px;
   font-weight: 600;
-  margin-bottom: 8px;
+  margin-bottom: 5px;
 }
 
-.card-description {
-  font-size: 14px;
-  color: white; /* Ensuring text remains readable */
+.card-description h3 {
+  font-size: 30px; /* Increase the number size */
+  font-weight: 700; /* Make it bold */
+  margin-top: 10px;
 }
 
-/* Size Variations */
-.card.small {
-  width: 200px;
+.card-icon {
+  font-size: 60px; /* Increased size */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px; /* Adds spacing */
 }
-
-.card.medium {
-  width: 300px;
-}
-
-.card.large {
-  width: 400px;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

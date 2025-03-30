@@ -1,66 +1,66 @@
-// src/components/AdminPanelBodyLayout.jsx
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Card from "../../components/Card/Card";
-import { FaUsers, FaChalkboardTeacher, FaUserShield } from "react-icons/fa"; // Icons for cards
-import MyCalendar from "../../components/Calender/Calender";  // Import Calendar component
+import { FaUsers, FaChalkboardTeacher, FaUserShield } from "react-icons/fa"; 
+import MyCalendar from "../../components/Calender/Calender";  
 import './AdminPanelBodyLayout.css';
 
-const AdminPanelBodyLayout = ({
-  cardStyle,
-  calendarStyle,
-  cardSize,
-  iconSize,
-}) => {
-  // Fixed numbers for Mentor, Student, and Admin counts
-  const mentorCount = 50;  // Fixed number for mentors
-  const studentCount = 200;  // Fixed number for students
-  const adminCount = 5;  // Fixed number for admins
+const AdminPanelBodyLayout = ({ calendarStyle, cardSize }) => {
+  const mentorCount = 50;  
+  const studentCount = 200;  
+  const adminCount = 5;  
 
   return (
-    <div className="container-fluid p-4 bg-white">
-      <div className="row mb-3">
-        <div className="col-12 col-md-6 mb-3 mb-md-0">
+    <div className="container-fluid p-3 bg-white">
+      {/* Welcome Card & Calendar in the same row */}
+      <div className="row welcome-calendar-container">
+        <div className="col-12 col-md-9 welcome-card ms-5">
           <Card 
             title="Welcome, Admin"
             description="Here's an overview of your admin dashboard"
-            style={cardStyle}
             size="large"
-            icon={<FaUserShield />}  // Default icon for welcome card
+            icon={<FaUserShield />}
+            showImage={false}
+          
           />
         </div>
-        <div className="col-12 col-md-6">
-          <MyCalendar style={calendarStyle} />  {/* Add Calendar next to the welcome card */}
+        <div className="col-12 col-md-3 calendar-wrapper">
+          <MyCalendar style={calendarStyle} />
         </div>
       </div>
 
-      <div className="row mt-4">
-        <div className="col-12 col-sm-6 col-md-4 mb-3">
+      {/* Row for Admin, Mentor, and Student Cards */}
+      <div className="row card-container mt-2"> 
+        <div className="col-12 col-sm-6 col-md-3">
           <Card 
-            title={<><FaChalkboardTeacher /> Mentors</>}
-            description={mentorCount}  // Display fixed number for mentors
-            style={cardStyle}
+            title="Mentors"
+            description={mentorCount}  
             size={cardSize}
             icon={<FaChalkboardTeacher />}
+            showImage={false}
+            
           />
         </div>
-        <div className="col-12 col-sm-6 col-md-4 mb-3">
+        <div className="col-12 col-sm-6 col-md-3">
           <Card 
-            title={<><FaUsers /> Students</>}
-            description={studentCount}  // Display fixed number for students
-            style={cardStyle}
+            title="Students"
+            description={studentCount}  
             size={cardSize}
             icon={<FaUsers />}
+            showImage={false}
+          
           />
         </div>
-        <div className="col-12 col-sm-6 col-md-4 mb-3">
-          <Card 
-            title={<><FaUserShield /> Admins</>}
-            description={adminCount}  // Display fixed number for admins
-            style={cardStyle}
+        <div className="col-12 col-sm-6 col-md-3">
+        <Card 
+            title="Admins"
+            description={adminCount}  
             size={cardSize}
             icon={<FaUserShield />}
-          />
+            showImage={false}
+         
+        
+            />
         </div>
       </div>
     </div>
@@ -68,72 +68,3 @@ const AdminPanelBodyLayout = ({
 };
 
 export default AdminPanelBodyLayout;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

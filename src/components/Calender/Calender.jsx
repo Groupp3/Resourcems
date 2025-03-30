@@ -1,23 +1,16 @@
-// src/components/Calendar.jsx
 import React, { useState } from "react";
 import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";  // Import default styles
-import "./Calender.css";  // Custom styles
+import "react-calendar/dist/Calendar.css";
+import "./Calender.css"; // Import custom styles
 
-const MyCalendar = ({ onChange, value }) => {
-  const [date, setDate] = useState(value || new Date());
-
-  const handleDateChange = (newDate) => {
-    setDate(newDate);
-    if (onChange) onChange(newDate);
-  };
+const MyCalendar = ({ value }) => {
+  const [date] = useState(value || new Date()); // Default to current date
 
   return (
     <div className="calendar-container">
       <Calendar
-        onChange={handleDateChange}
-        value={date}  // Ensures a single date is passed
-        view="month"  // Ensures the calendar only shows one month
+        value={date}
+        tileDisabled={() => true} // Disable all date selection
         className="my-calendar"
         style={{ width: '100%', height: '250px', margin: '0 auto' }}  // Adjusted size
       />
@@ -26,6 +19,4 @@ const MyCalendar = ({ onChange, value }) => {
 };
 
 export default MyCalendar;
-
-
 

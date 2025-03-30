@@ -1,0 +1,17 @@
+/* Additional custom styles if needed */
+.profile-section {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  
+  .welcome-card {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+  }
+  /* src/components/AdminPanelBodyLayout.css */
+.card-content h3 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #4a90e2; /* Set color of the number */
+}

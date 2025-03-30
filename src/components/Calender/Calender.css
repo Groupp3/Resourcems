@@ -1,29 +1,103 @@
 /* src/components/Calendar.css */
 .calendar-container {
-    max-width: 400px;
-    margin: 20px auto;
-    text-align: center;
-  }
-  
-  .my-calendar {
-    border: 2px solid #2196f3;
-    border-radius: 10px;
-  }
-  
-  .my-calendar button {
-    background-color: #fff;
-    color: #2196f3;
-    border: none;
-    border-radius: 5px;
-  }
-  
-  .my-calendar button:hover {
-    background-color: #2196f3;
-    color: white;
-  }
-  
-  .my-calendar .react-calendar__tile--active {
-    background-color: #2196f3;
-    color: white;
-  }
-  
+  max-width: 300px;  /* Set a smaller max width to match the card size */
+  margin: 20px auto;
+  text-align: center;
+}
+
+.my-calendar {
+  border: 2px solid #2196f3;
+  border-radius: 10px;
+  width: 100%; /* Adjust to fit the container */
+  height: 250px; /* Match the height of the card */
+}
+
+.my-calendar button {
+  background-color: #fff;
+  color: #2196f3;
+  border: none;
+  border-radius: 5px;
+}
+
+.my-calendar button:hover {
+  background-color: #2196f3;
+  color: white;
+}
+
+.my-calendar .react-calendar__tile--active {
+  background-color: #2196f3;
+  color: white;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

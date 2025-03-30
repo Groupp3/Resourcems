@@ -14,14 +14,18 @@ const MyCalendar = ({ onChange, value }) => {
 
   return (
     <div className="calendar-container">
-      <h2>Pick a Date</h2>
       <Calendar
         onChange={handleDateChange}
-        value={date}
+        value={date}  // Ensures a single date is passed
+        view="month"  // Ensures the calendar only shows one month
         className="my-calendar"
+        style={{ width: '100%', height: '250px', margin: '0 auto' }}  // Adjusted size
       />
     </div>
   );
 };
 
 export default MyCalendar;
+
+
+

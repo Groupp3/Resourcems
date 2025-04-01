@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, BrowserRouter } from 'react-router-dom';
-
+import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import AppRoutes from './routes/AppRoutes';
+import './App.css';
 
 function App() {
-  
-
   return (
     <BrowserRouter>
-      
+      <AppRoutes />
     </BrowserRouter>
   );
 }

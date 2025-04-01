@@ -15,9 +15,15 @@
 .sidebar {
     width: 250px;
     height: 100vh;
-    background-color: var(--backgroundColor, #132D46); 
-    color: var(--textColor, #ffffff); 
+    background-color: black !important; /* Sidebar background to black */
+    color: white !important; /* Sidebar text color to white */
     padding: 20px;
+    transition: width 0.3s ease;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 10px 5px 10px rgba(0, 0, 0, 0.5);
     transition: width 0.3s ease, left 0.3s ease;
     position: fixed;
     left: 0;
@@ -25,6 +31,10 @@
     z-index: 1000;
 }
 
+.main-content {
+    margin-left: 250px; /* Adjust based on sidebar width */
+    transition: margin-left 0.3s ease;
+}
 .main-content {
     margin-left: 250px; /* Adjust based on sidebar width */
     transition: margin-left 0.3s ease;
@@ -43,6 +53,7 @@
     font-size: 1.2rem;
     font-weight: bold;
     margin-left: 8px;
+    color: white; /* Ensuring logo text is white */
 }
 
 .brand-logo {
@@ -58,6 +69,10 @@
 /* Sidebar Collapsed State */
 .sidebar.closed {
     width: 80px;
+}
+
+.main-content.sidebar-closed {
+    margin-left: 80px; /* Adjust main content when sidebar is collapsed */
 }
 
 .main-content.sidebar-closed {
@@ -82,29 +97,41 @@
     align-items: center;
     padding: 12px;
     font-size: 16px;
-    color: var(--textColor, #ffffff);
+    color: white !important; /* Menu text in white */
     text-decoration: none;
     border-radius: 4px;
     transition: background 0.3s ease, border-right 0.3s ease;
 }
 
-.menu-link:hover {
-    background-color: var(--hoverColor, #ADBFD1);
-    border-right: 5px solid var(--activeColor, #01C38D);
-}
-
-.menu-link.active {
-    background-color: var(--hoverColor, #ADBFD1);
-    border-right: 5px solid var(--activeColor, #01C38D);
-}
-
+/* Change icon color to white */
 .menu-link .icon {
     font-size: 1.2rem;
     min-width: 24px;
     display: flex;
     justify-content: center;
+    color: white !important; /* Set icon color to white */
 }
 
+/* Another way to make sure icons are white */
+.menu-link i {
+    color: white !important;
+}
+
+/* Hover and Active Effects */
+.menu-link:hover {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    border-right: 5px solid #ddd6fe !important;
+}
+.menu-link.active {
+    background-color: rgba(255, 255, 255, 0.3) !important; /* Lighter highlight */
+    border-right: 5px solid #a78bfa !important; /* Purple accent */
+    color: white!important; /* Text color change */
+    font-weight: bold;
+}
+/* Ensure icons also change when active */
+.menu-link.active .icon i {
+    color: white!important;
+}
 .menu-link .text {
     margin-left: 10px;
 }

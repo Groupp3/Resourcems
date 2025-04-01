@@ -1,0 +1,32 @@
+/* Reduce padding to move everything higher */
+.container-fluid {
+    padding-top: 10px !important;
+    padding-bottom: 0 !important;
+}
+
+/* Add margin-bottom to create space */
+.welcome-calendar-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 1%; 
+}
+
+/* Welcome Card Styling */
+.welcome-card {
+    border-radius: 8px;
+    padding: 20px;
+    width: 75%;  /* Ensures it's larger than calendar */
+    max-width: 1100px;  /* Prevents it from being too large */
+    background-color: #E3F5EE;
+    margin-right: 20px; /* Increase spacing between Welcome Card and Calendar */
+}
+
+/* Calendar Wrapper */
+.calendar-wrapper {
+    display: flex;
+    align-items: center;
+    width: 25%; /* Ensures it takes less space than the welcome card */
+    min-width: 280px; /* Prevents it from shrinking too much */
+}

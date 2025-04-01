@@ -1,0 +1,20 @@
+/* AdminLayout.css */
+.adminLayout {
+    display: flex;
+    height: 100vh;
+    width: 100vw; /* Ensure it takes full width */
+    background-color: #ffffff;
+    overflow: hidden; /* Prevent unwanted scrolling */
+}
+
+.mainContent {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Align content properly */
+    align-items: stretch;
+    margin-left: 250px; /* Match sidebar width */
+    padding: 20px;
+    height: 100vh;
+    overflow-y: auto; /* Enable scrolling if needed */
+}

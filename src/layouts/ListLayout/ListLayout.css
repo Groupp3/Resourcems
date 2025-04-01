@@ -1,0 +1,75 @@
+.data-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  border-radius: 12px;
+  background-color: rgb(255, 255, 255);
+  height: auto;  
+  width: 100%;   
+  overflow: hidden; 
+  margin: 0 auto;
+}
+
+.layout-theme-purple {
+  --layout-primary: #E2D9FD;
+  --layout-secondary: #d0c4ff;
+  --layout-accent: #5a3fbd;
+  --layout-text: #4a5568;
+  --layout-border: #e2e8f0;
+}
+
+.layout-theme-green {
+  --layout-primary: #E3F5EE;
+  --layout-secondary: #c7e8dc;
+  --layout-accent: #2d8a6a;
+  --layout-text: #4a5568;
+  --layout-border: #e2e8f0;
+}
+
+.layout-theme-blue {
+  --layout-primary: #e1f5fe;
+  --layout-secondary: #b3e5fc;
+  --layout-accent: #0277bd;
+  --layout-text: #4a5568;
+  --layout-border: #e2e8f0;
+}
+
+.layout-theme-orange {
+  --layout-primary: #fff3e0;
+  --layout-secondary: #ffe0b2;
+  --layout-accent: #ef6c00;
+  --layout-text: #4a5568;
+  --layout-border: #e2e8f0;
+}
+
+
+.data-layout-header {
+  margin-bottom: 8px;
+  
+}
+
+.data-layout-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--layout-text, #2d3748);
+  text-align: center;
+}
+
+.data-layout-description {
+  font-size: 14px;
+  color: #718096;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 768px) {
+  .data-layout {
+      padding: 12px;
+      gap: 12px;
+  }
+  
+  .data-layout-title {
+      font-size: 20px;
+  }
+}

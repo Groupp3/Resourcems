@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { 
   FileText, 
   Eye, 
@@ -6,21 +6,16 @@ import {
   Trash2, 
   Edit, 
   UserPlus, 
-  Trash, 
-  Lock, 
-  Globe 
+  Globe,
+  Lock
 } from 'lucide-react';
-import List from './List';
+import ListLayout from './ListLayout';
 
 export default {
-  title: 'Components/List',
-  component: List,
+  title: "Layouts/ListLayout",  
+  component: ListLayout,       
 };
-
-// Document List Example
-export const DocumentList = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  
+export const DocumentLayoutExample = () => {
   const documentData = [
     { 
       id: 1, 
@@ -61,6 +56,23 @@ export const DocumentList = () => {
       size: '8.3 MB', 
       uploadedBy: 'David Lee',
       access: 'public'
+    },
+    
+    { 
+      id: 6, 
+      name: 'User Research.pdf', 
+      type: 'PDF', 
+      size: '4.7 MB', 
+      uploadedBy: 'Emily Chen',
+      access: 'public'
+    },
+    { 
+      id: 7, 
+      name: 'Budget Forecast.xlsx', 
+      type: 'Excel', 
+      size: '2.1 MB', 
+      uploadedBy: 'Tom Wilson',
+      access: 'private'
     }
   ];
 
@@ -120,7 +132,7 @@ export const DocumentList = () => {
   };
 
   return (
-    <List
+    <ListLayout
       type="document"
       data={documentData}
       columns={documentColumns}
@@ -128,14 +140,14 @@ export const DocumentList = () => {
       onActionClick={handleActionClick}
       itemsPerPage={3}
       theme="purple"
+      title="Document Library"
+      description="Browse and manage your uploaded documents"
     />
   );
 };
 
 // Request List Example
-export const RequestList = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  
+export const RequestLayoutExample = () => {
   const requestData = [
     { 
       id: 1, 
@@ -217,7 +229,7 @@ export const RequestList = () => {
     },
     { 
       type: 'delete', 
-      icon: <Trash size={18} />,
+      icon: <Trash2 size={18} />,
       variant: 'danger'
     }
   ];
@@ -231,7 +243,7 @@ export const RequestList = () => {
   };
 
   return (
-    <List
+    <ListLayout
       type="request"
       data={requestData}
       columns={requestColumns}
@@ -239,6 +251,8 @@ export const RequestList = () => {
       onActionClick={handleActionClick}
       itemsPerPage={4}
       theme="green"
+      title="Access Requests"
+      description="Review and manage user access requests"
     />
   );
 };

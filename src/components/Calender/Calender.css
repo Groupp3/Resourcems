@@ -1,29 +1,38 @@
-/* src/components/Calendar.css */
-.calendar-container {
-    max-width: 400px;
-    margin: 20px auto;
-    text-align: center;
-  }
-  
-  .my-calendar {
-    border: 2px solid #2196f3;
-    border-radius: 10px;
-  }
-  
-  .my-calendar button {
-    background-color: #fff;
-    color: #2196f3;
-    border: none;
-    border-radius: 5px;
-  }
-  
-  .my-calendar button:hover {
-    background-color: #2196f3;
-    color: white;
-  }
-  
-  .my-calendar .react-calendar__tile--active {
-    background-color: #2196f3;
-    color: white;
-  }
+/* Remove calendar border and background */
+.react-calendar {
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none;
+}
+
+/* Remove background from individual tiles (dates) */
+.react-calendar__tile {
+  background: transparent !important;
+  color: black; /* Ensure text is visible */
+}
+
+/* Disable clicking effect */
+.react-calendar button {
+  pointer-events: none; /* Disable clicks */
+  color: gray; /* Make dates appear inactive */
+}
+
+/* Highlight the selected date */
+.react-calendar__tile--active {
+  background:#ddd6fe!important; /* Blue highlight */
+  color: white !important;
+  border-radius: 50%;
+}
+
+/* Hide the month/year navigation */
+.react-calendar__navigation {
+  background: transparent !important;
+}
+
+/* Optional: Remove hover effect */
+.react-calendar__tile:enabled:hover {
+  background: transparent !important;
+}
+
+
   

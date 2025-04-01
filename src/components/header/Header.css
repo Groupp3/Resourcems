@@ -11,7 +11,6 @@
     padding: 0 20px;
     background: white;
     transition: background 0.3s ease;
-
 }
 
 .header-content {
@@ -24,7 +23,16 @@
 .header-title {
     font-size: 18px;
     color: inherit; /* Allows color to be controlled by props */
+    flex-grow: 1; /* Pushes search bar and profile icon to the right */
 }
+
+.search-bar input {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 20px; /* Space between the search bar and the profile icon */
+}
+
 .profile-container {
     display: flex;
     align-items: center;

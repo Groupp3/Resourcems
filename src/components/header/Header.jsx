@@ -7,7 +7,7 @@ const Header = ({ backgroundColor, textColor, borderColor, profileSrc, profileNa
   return (
     <header className="header" style={{ backgroundColor, color: textColor, borderBottom: `2px solid ${borderColor}` }}>
       <div className="header-content">
-      <h1 className="header-title" style={{ color: textColor }}>Admin Panel</h1>
+      <h1 className="header-title" style={{ color: textColor }}></h1>
 
         <ProfileIcon 
           src={profileSrc} 

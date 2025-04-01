@@ -1,34 +1,38 @@
-/* AdminLayout.css */
 .user-layout {
-    display: flex;
-    height: 100vh;
-    background-color: #ffffff; 
+  display: flex;
+  height: 100vh;
 }
 
-.main-content {
-    flex-grow: 1;
-    margin-left: 250px; /* Adjust to match sidebar width */
-    padding: 20px;
-    position: relative;
-    padding-top: 80px; /* Adjusted for fixed header */
+.sidebar {
+  flex-shrink: 0;
 }
 
-.profile-container {
-    position: absolute;
-    top: 10px;
-    right: 100px;
-    z-index: 1000;
+.main-container {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  transition: margin-left 0.3s ease-in-out;
 }
 
-.content {
-    padding-top: 60px; /* Space for the profile icon */
+.main-container.expanded {
+  margin-left: 250px; /* Adjust based on sidebar width */
+}
+
+.main-container.collapsed {
+  margin-left: 80px; /* Adjust based on minimized sidebar width */
+}
+
+.header {
+  width: 100%;
+  transition: width 0.3s ease-in-out;
 }
 
 .searchbar-container {
-    position: absolute;
-    top: 5px;
-    right:  57%;
-    transform: translateX(-50%);
-    z-index: 1000;
-    width: 300px;
+  padding: 10px;
+  background: #f8f8f8;
+}
+
+.main-content {
+  flex-grow: 1;
+  padding: 20px;
 }

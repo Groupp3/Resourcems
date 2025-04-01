@@ -1,3 +1,4 @@
+// src/components/Card/Card.jsx
 import React from "react";
 import "./Card.css"; // Make sure this file exists
 
@@ -23,3 +24,4 @@ const Card = ({ title, description, size, onClick, disabled, icon, showImage, co
 };
 
 export default Card;
+

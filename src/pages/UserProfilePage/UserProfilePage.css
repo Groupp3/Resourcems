@@ -1,133 +1,83 @@
-/* Profile Layout Container */
-.profile-layout {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100vw;
-    height: 100vh;
-    background-color: #f4f4f4;
-    font-family: Arial, sans-serif;
-  }
-  
-  /* User Profile Page Layout */
-  .user-profile-page {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    width: 100%;
-    padding: 20px;
-    overflow-y: auto;
-    height: calc(100vh - 80px); /* Adjusted for header and sidebar space */
-  }
-  
-  /* Profile Content */
-  .profile-content {
-    display: flex;
-    flex-grow: 1;
-    width: 100%;
-    background: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    overflow: hidden;
-  }
-  
-  /* Left Section - Profile Image */
-  .profile-section {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #e0e0e0;
-    position: relative;
-  }
-  
-  .profile-icon-wrapper {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .edit-btn {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    background: #007bff;
-    color: white;
-    border: none;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    font-size: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-  }
-  
-  /* Right Section - Profile Details */
-  .profile-details {
-    flex: 2;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 20px;
-    overflow-y: auto;
-  }
-  
-  .profile-info-card {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .profile-name {
-    font-size: 24px;
-    margin-bottom: 10px;
-  }
-  
-  .profile-role {
-    font-size: 18px;
-    color: gray;
-    margin-bottom: 15px;
-  }
-  
-  .profile-detail {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-  }
-  
-  .detail-label {
-    font-weight: bold;
-  }
-  
-  .status-active {
-    color: green;
-  }
-  
-  /* Action Buttons */
-  .profile-actions {
-    margin-top: 20px;
-    display: flex;
-    gap: 10px;
-  }
-  
-  .action-btn {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .settings-btn {
-    background: #007bff;
-    color: white;
-  }
-  
-  .logout-btn {
-    background: #dc3545;
-    color: white;
-  }
-  
+.user-profile-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.profile-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.profile-icon-container {
+  position: relative;
+  display: inline-block;
+}
+
+.edit-btn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background-color: #4c51bf;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.edit-btn:hover {
+  background-color: #3b41a5;
+}
+
+.profile-details {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 300px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.form-group input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.change-password-btn, .save-btn {
+  margin-top: 10px;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.change-password-btn {
+  background-color: #f56565;
+  color: white;
+}
+
+.change-password-btn:hover {
+  background-color: #c53030;
+}
+
+.save-btn {
+  background-color: #48bb78;
+  color: white;
+}
+
+.save-btn:hover {
+  background-color: #2f855a;
+}

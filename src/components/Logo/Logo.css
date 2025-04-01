@@ -1,0 +1,32 @@
+.logo-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+  }
+  
+  .brand-logo {
+    transition: transform 0.2s ease;
+  }
+  
+  .logo-container:hover .brand-logo {
+    transform: scale(1.1);
+  }
+  
+  .logo-text {
+    margin-left: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--textColor, #ffffff);
+  }
+  
+  /* Mobile Responsive */
+  @media (max-width: 768px) {
+    .logo-container {
+      justify-content: flex-start;
+    }
+  
+    .logo-text {
+      display: none;
+    }
+  }

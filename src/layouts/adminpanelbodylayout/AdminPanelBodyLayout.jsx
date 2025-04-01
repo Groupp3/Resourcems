@@ -12,55 +12,53 @@ const AdminPanelBodyLayout = ({ calendarStyle, cardSize }) => {
 
   return (
     <div className="container-fluid p-3 bg-white">
-      {/* Welcome Card & Calendar in the same row */}
-      <div className="row welcome-calendar-container">
-        <div className="col-12 col-md-9 welcome-card ms-5">
-          <Card 
-            title="Welcome, Admin"
-            description="Here's an overview of your admin dashboard"
-            size="large"
-            icon={<FaUserShield />}
-            showImage={false}
-          
-          />
+      
+      <div className="row">
+        <div className="col-12 col-md-9 ">  
+        <Card 
+          title="Welcome, Admin"
+          description="Here's an overview of your admin dashboard"
+          size="large"
+          icon={<FaUserShield />}
+          showImage={false}
+          backgroundColor="#E3F5EE"
+         
+        />
+
         </div>
-        <div className="col-12 col-md-3 calendar-wrapper">
+        <div className="col-12 col-md-3 ">  
           <MyCalendar style={calendarStyle} />
         </div>
       </div>
 
-      {/* Row for Admin, Mentor, and Student Cards */}
-      <div className="row card-container mt-2"> 
-        <div className="col-12 col-sm-6 col-md-3">
+      
+      <div className="row mt-2"> 
+        <div className="col-12 col-md-3">
           <Card 
             title="Mentors"
             description={mentorCount}  
             size={cardSize}
             icon={<FaChalkboardTeacher />}
             showImage={false}
-            
           />
         </div>
-        <div className="col-12 col-sm-6 col-md-3">
+        <div className="col-12 col-md-3">
           <Card 
             title="Students"
             description={studentCount}  
             size={cardSize}
             icon={<FaUsers />}
             showImage={false}
-          
           />
         </div>
-        <div className="col-12 col-sm-6 col-md-3">
-        <Card 
+        <div className="col-12 col-md-3">
+          <Card 
             title="Admins"
             description={adminCount}  
             size={cardSize}
             icon={<FaUserShield />}
             showImage={false}
-         
-        
-            />
+          />
         </div>
       </div>
     </div>

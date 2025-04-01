@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './LoginForm.module.css';
 
-const LoginForm = () => {
+const LoginForm = ({ onToggleForm }) => {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -28,33 +28,37 @@ const LoginForm = () => {
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.inputGroup}>
           <label className={styles.inputLabel}>Email</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className={styles.fullInput}
-            required
-          />
-        </div>
-        <div className={styles.inputGroup}>
-          <label className={styles.inputLabel}>Password</label>
-          <div className={styles.passwordContainer}>
+          <div className={styles.inputWrapper}>
             <input
-              type={showPassword ? "text" : "password"}
-              name="password"
-              value={formData.password}
+              type="email"
+              name="email"
+              value={formData.email}
               onChange={handleChange}
               className={styles.fullInput}
               required
             />
-            <button 
-              type="button" 
-              className={styles.passwordToggle}
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? "Hide" : "Show"}
-            </button>
+          </div>
+        </div>
+        <div className={styles.inputGroup}>
+          <label className={styles.inputLabel}>Password</label>
+          <div className={styles.inputWrapper}>
+            <div className={styles.passwordContainer}>
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                className={styles.fullInput}
+                required
+              />
+              <button 
+                type="button" 
+                className={styles.passwordToggle}
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? "Hide" : "Show"}
+              </button>
+            </div>
           </div>
         </div>
         <p className={styles.passwordHint}>
@@ -64,7 +68,7 @@ const LoginForm = () => {
           Login
         </button>
         <p className={styles.loginLink}>
-          New User? <a href="/signup">Signup</a>
+          New User? <span onClick={onToggleForm}>Signup</span>
         </p>
       </form>
     </div>

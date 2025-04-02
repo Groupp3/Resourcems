@@ -1,17 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AdminLayout from "../../layouts/AdminLayout/AdminLayout";
 import ListLayout from "../../layouts/ListLayout/ListLayout";
 import { Edit, Trash2 } from "lucide-react";
-import styles from  "./RequestPage.module.css";
-
-const requestList = [
-  { id: 1, number: "#001", username: "John Doe", email: "john@example.com", role: "Student" },
-  { id: 2, number: "#002", username: "Jane Smith", email: "jane@example.com", role: "Mentor" },
-  { id: 3, number: "#003", username: "Anjana Sivakumar", email: "anjana@example.com", role: "Student" },
-  { id: 4, number: "#004", username: "Robert Chen", email: "robert@example.com", role: "Mentor" },
-  { id: 5, number: "#005", username: "Maria Garcia", email: "maria@example.com", role: "Admin" },
-  { id: 6, number: "#006", username: "David Kumar", email: "david@example.com", role: "Student" },
-];
+import styles from "./RequestPage.module.css";
+import { getPendingUsers } from "../../services/AdminService";
 
 const columns = [
   { key: "number", title: "Request #", width: "15%" },
@@ -26,7 +18,22 @@ const actions = [
 ];
 
 const RequestPage = () => {
-  const [data, setData] = useState(requestList);
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const fetchRequests = async () => {
+      const pendingUsers = await getPendingUsers();
+      const formattedData = pendingUsers.map((user, index) => ({
+        id: user.id,
+        number: `#${index + 1}`,
+        username: user.name,
+        email: user.email,
+        role: user.role,
+      }));
+      setData(formattedData);
+    };
+    fetchRequests();
+  }, []);
 
   const handleActionClick = (actionType, item) => {
     if (actionType === "delete") {

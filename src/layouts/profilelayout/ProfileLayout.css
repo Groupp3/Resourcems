@@ -2,15 +2,38 @@
 .profile-layout {
   font-family: Arial, sans-serif;
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 0 auto;  /* Centering horizontally */
   padding: 20px;
+  display: flex;
+  justify-content: center;  /* Center horizontally */
+  align-items: center;      /* Center vertically */
+  height: 100vh;            /* Ensure the full height is available for centering */
 }
 
 .profile-container {
   display: flex;
   margin-top: 30px;
   gap: 40px;
+  
 }
+
+.profile-card {
+  min-height: 417px; /* Adjust height as needed */
+}
+
+.card {
+  transition: none !important; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important; 
+}
+
+.card:hover {
+  transform: none !important; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important; 
+  background-color: inherit !important;
+}
+
+
+
 
 /* Left side styling */
 .profile-left {
@@ -61,6 +84,7 @@
   background-color: #f8f9fa;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  
 }
 
 .profile-right h2 {

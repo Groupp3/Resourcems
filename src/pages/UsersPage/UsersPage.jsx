@@ -1,30 +1,41 @@
-import React, { useState } from "react";
-import UserLayout from "../../layouts/UserLayout/UserLayout"; // Changed from AdminLayout to UserLayout
+import React, { useState, useEffect } from "react";
+import UserLayout from "../../layouts/UserLayout/UserLayout"; 
 import UserCard from "../../components/UserCard/UserCard";
+import { getUsersByRole } from "../../services/AdminService"; 
 import "./UsersPage.css";
-
-const usersData = {
-  Admins: [
-    { id: 1, name: "John Doe", email: "john.doe@gmail.com", avatar: "https://reqres.in/img/faces/1-image.jpg", role: "Admin" },
-    { id: 2, name: "Jane Smith", email: "jane.smith@gmail.com", avatar: "https://reqres.in/img/faces/2-image.jpg", role: "Admin" },
-  ],
-  Mentors: [
-    { id: 3, name: "Alice Brown", email: "alice.brown@gmail.com", avatar: "https://reqres.in/img/faces/3-image.jpg", role: "Mentor" },
-    { id: 4, name: "Bob Johnson", email: "bob.johnson@gmail.com", avatar: "https://reqres.in/img/faces/4-image.jpg", role: "Mentor" },
-  ],
-  Students: [
-    { id: 5, name: "Charlie Davis", email: "charlie.davis@gmail.com", avatar: "https://reqres.in/img/faces/5-image.jpg", role: "Student" },
-    { id: 6, name: "Daisy Lewis", email: "daisy.lewis@gmail.com", avatar: "https://reqres.in/img/faces/6-image.jpg", role: "Student" },
-  ],
-};
 
 const UsersPage = () => {
   const [activeTab, setActiveTab] = useState("Admins");
+  const [usersData, setUsersData] = useState({
+    Admins: [],
+    Mentors: [],
+    Students: [],
+  });
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const allUsers = await getUsersByRole(); // Fetch users from API
+
+        // Categorize users based on role
+        const categorizedUsers = {
+          Admins: allUsers.filter(user => user.role === "ADMIN"),
+          Mentors: allUsers.filter(user => user.role === "MENTOR"),
+          Students: allUsers.filter(user => user.role === "STUDENT"),
+        };
+
+        setUsersData(categorizedUsers);
+      } catch (error) {
+        console.error("Error fetching users: ", error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
 
   return (
-    <UserLayout> {/* Using UserLayout instead of AdminLayout */}
+    <UserLayout> 
       <div className="users-page">
-        <h2>Manage Users</h2>
         <div className="tabs">
           {Object.keys(usersData).map((tab) => (
             <button
@@ -32,13 +43,20 @@ const UsersPage = () => {
               className={`tab-button ${activeTab === tab ? "active" : ""}`}
               onClick={() => setActiveTab(tab)}
             >
-              {tab}
+              {tab} ({usersData[tab].length}) {/* Display count */}
             </button>
           ))}
         </div>
         <div className="users-list">
           {usersData[activeTab].map((user) => (
-            <UserCard key={user.id} {...user} accentColor="#ddd6fe" />
+            <UserCard 
+              key={user.id} 
+              name={user.firstName} 
+              email={user.email} 
+              avatar={user.profileImageUrl || "https://reqres.in/img/faces/1-image.jpg"} 
+              role={user.role.replace("ROLE_", "")} // Removing "ROLE_" prefix
+              accentColor="#ddd6fe"
+            />
           ))}
         </div>
       </div>

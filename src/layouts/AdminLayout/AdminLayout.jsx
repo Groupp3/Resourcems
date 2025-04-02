@@ -25,7 +25,7 @@ const AdminLayout = ({ children }) => {
       
       <Sidebar userRole="ADMIN" defaultOpen={true} logoText="EduVault" />
 
-      <div className="main-content">
+      <div className="admin-main-content">
         <div className="content">{children}</div>
       </div>
     </div>

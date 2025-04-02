@@ -1,38 +1,111 @@
-/* Remove calendar border and background */
+/* Base calendar styling */
 .react-calendar {
   border: none !important;
   background: transparent !important;
-  box-shadow: none;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+  font-family: 'Inter', system-ui, sans-serif;
+  max-width: 350px;
+  padding: 16px;
+  border-radius: 12px;
 }
 
-/* Remove background from individual tiles (dates) */
+/* Calendar navigation area */
+.react-calendar__navigation {
+  background: transparent !important;
+  margin-bottom: 16px;
+}
+
+.react-calendar__navigation button {
+  color: #000000;
+  font-weight: 600;
+  font-size: 16px;
+  background: transparent;
+  border-radius: 8px;
+  min-width: 36px;
+  height: 36px;
+}
+
+.react-calendar__navigation button:enabled:hover {
+  background-color: #e2d9fd !important;
+  color: #5b46c7;
+}
+
+/* Month view styling */
+.react-calendar__month-view__weekdays {
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 12px;
+  color: #6c6684;
+  margin-bottom: 8px;
+}
+
+.react-calendar__month-view__weekdays__weekday {
+  padding: 8px 0;
+}
+
+.react-calendar__month-view__weekdays__weekday abbr {
+  text-decoration: none;
+}
+
+/* Date tiles */
 .react-calendar__tile {
   background: transparent !important;
-  color: black; /* Ensure text is visible */
+  color: #6c6684;
+  border-radius: 50%;
+  height: 40px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
 }
 
-/* Disable clicking effect */
+/* Disabled tiles styling */
 .react-calendar button {
-  pointer-events: none; /* Disable clicks */
-  color: gray; /* Make dates appear inactive */
+  pointer-events: none;
+  color: #8d8a97;
 }
 
-/* Highlight the selected date */
+/* Today's date */
+.react-calendar__tile--now {
+  background: #e3f5ee !important;
+  color: #4a8576 !important;
+  font-weight: 600;
+}
+
+/* Selected date */
 .react-calendar__tile--active {
-  background:#ddd6fe!important; /* Blue highlight */
-  color: white !important;
+  background: #e2d9fd !important;
+  color: #5b46c7 !important;
+  font-weight: 600;
   border-radius: 50%;
 }
 
-/* Hide the month/year navigation */
-.react-calendar__navigation {
-  background: transparent !important;
+/* Weekend dates */
+.react-calendar__month-view__days__day--weekend {
+  color: #a594e2;
 }
 
-/* Optional: Remove hover effect */
-.react-calendar__tile:enabled:hover {
-  background: transparent !important;
+/* Neighboring month dates */
+.react-calendar__month-view__days__day--neighboringMonth {
+  color: #c8c6d1;
 }
 
+/* Calendar container custom class */
+.my-calendar {
+  background: linear-gradient(to bottom right, #ffffff, #f9f8ff);
+  border-radius: 16px;
+  box-shadow: 0 12px 24px rgba(226, 217, 253, 0.15);
+  padding: 8px;
+  border: 1px solid rgba(226, 217, 253, 0.5);
+}
 
-  
+/* Add subtle hover effect even for disabled buttons */
+.react-calendar__tile:hover {
+  background: rgba(226, 217, 253, 0.2) !important;
+}
+
+/* Ensure container styling */
+.react-calendar {
+  width: 100%;
+}

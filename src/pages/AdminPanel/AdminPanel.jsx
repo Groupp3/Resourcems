@@ -1,12 +1,13 @@
 import React from "react";
 import AdminLayout from "../../layouts/AdminLayout/AdminLayout";
+
 import AdminPanelBodyLayout from "../../layouts/adminpanelbodylayout/AdminPanelBodyLayout";
-import "./AdminPanel.css";
+import styles from "./AdminPanel.module.css";
 
 const AdminPanel = () => {
   return (
     <AdminLayout>
-      <div className="admin-panel-container">
+      <div className={styles.adminlayout}>
         <AdminPanelBodyLayout />
       </div>
     </AdminLayout>

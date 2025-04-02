@@ -1,20 +1,19 @@
 import React from "react";
-import AdminPanel from "./AdminPanel";
+import RequestPage from "./RequestPage";
 import { BrowserRouter as Router } from "react-router-dom";
 
 export default {
-  title: "Layouts/AdminPanel",
-  component: AdminPanel,
+  title: "Pages/RequestPage",
+  component: RequestPage,
   parameters: {
     layout: "fullscreen",
   },
 };
 
-const Template = (args) => (
+const Template = () => (
   <Router>
-    <AdminPanel {...args} />
+    <RequestPage />
   </Router>
 );
 
 export const Default = Template.bind({});
-Default.args = {};

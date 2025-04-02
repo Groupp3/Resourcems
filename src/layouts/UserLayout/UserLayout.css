@@ -1,16 +1,18 @@
 /* AdminLayout.css */
 .user-layout {
-  display: flex;
-  height: 100vh;
-  background-color: #ffffff; 
+    display: flex;
+    height: 92vh;
+    width: 82vw;
+    background-color: #ffffff; 
+    overflow: hidden;
 }
 
 .main-content {
-  flex-grow: 1;
-  margin-left: 250px; /* Adjust to match sidebar width */
-  padding: 20px;
-  position: relative;
-  padding-top: 80px; /* Adjusted for fixed header */
+    flex-grow: 1;
+    margin-left: 50px; /* Adjust to match sidebar width */
+    padding: 20px;
+    position: relative;
+    padding-top: 80px; /* Adjusted for fixed header */
 }
 
 .profile-container {

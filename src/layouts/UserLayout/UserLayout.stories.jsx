@@ -3,7 +3,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import UserLayout from "./UserLayout";
 
 export default {
-  title: "User/UserLayout",
+  title: "Layouts/UserLayout",
   component: UserLayout,
 };
 

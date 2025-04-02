@@ -1,14 +1,40 @@
 // src/components/Card/Card.jsx
 import React from "react";
-import "./Card.css"; // Make sure this file exists
+import "./Card.css";
 
-const Card = ({ title, description, size, onClick, disabled, icon, showImage, color }) => {
+const Card = ({ 
+  title, 
+  description, 
+  size, 
+  onClick, 
+  disabled, 
+  icon, 
+  showImage, 
+  color, 
+  backgroundColor,  
+  backgroundGradient 
+}) => {
+  
+  const getBackgroundStyle = () => {
+    if (backgroundColor) {
+      return backgroundColor; 
+    } else if (backgroundGradient) {
+      return backgroundGradient; // Custom gradient
+    } else if (color) {
+      return color; 
+    } else {
+      return "linear-gradient(to bottom right, #ddd6fe, #f5f3ff)"; // Default gradient
+    }
+  };
+
   return (
     <div 
       className={`card card-${size} ${disabled ? "disabled" : ""}`} 
       onClick={disabled ? null : onClick}
-      style={{ background: color || "linear-gradient(to bottom right, #ddd6fe, #f5f3ff)", color: "#000" }}
-
+      style={{ 
+        background: getBackgroundStyle(),
+        color: "#000" 
+      }}
     >
       <div className="card-body">
         <div className="card-title-container">
@@ -24,4 +50,3 @@ const Card = ({ title, description, size, onClick, disabled, icon, showImage, co
 };
 
 export default Card;
-

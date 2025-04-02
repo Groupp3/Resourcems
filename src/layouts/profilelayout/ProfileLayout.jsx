@@ -47,8 +47,8 @@ const ProfileLayout = () => {
       {/* Profile Content Section */}
       <div className="row">
         {/* Left Side - Profile Picture */}
-        <div className="col-12 col-md-4 mb-4">
-          <div className="card shadow-sm h-100">
+        <div className="col-12 col-md-2 mb-4">
+          <div className="card shadow-sm h-100 profile-card">
             <div className="card-body text-center">
               <div className="mb-3">
                 <UserProfileIcon 
@@ -57,44 +57,13 @@ const ProfileLayout = () => {
                   size="lg" 
                 />
               </div>
-              <button className="btn btn-primary mb-4">
-                <FaUser className="me-2" />
-                Edit Photo
-              </button>
               
-              <h5 className="card-title">Photo Gallery</h5>
-              <div className="row g-2 mt-3">
-                <div className="col-4">
-                  <div className="card">
-                    <img src="https://via.placeholder.com/100" className="card-img-top" alt="Placeholder" />
-                    <div className="card-body p-2">
-                      <p className="card-text small">Photo 1</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-4">
-                  <div className="card">
-                    <img src="https://via.placeholder.com/100" className="card-img-top" alt="Placeholder" />
-                    <div className="card-body p-2">
-                      <p className="card-text small">Photo 2</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-4">
-                  <div className="card">
-                    <img src="https://via.placeholder.com/100" className="card-img-top" alt="Placeholder" />
-                    <div className="card-body p-2">
-                      <p className="card-text small">Photo 3</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
         
         {/* Right Side - Profile Details */}
-        <div className="col-12 col-md-8">
+        <div className="col-12 col-md-10">
           <div className="card shadow-sm">
             <div className="card-body">
               <h4 className="card-title mb-4">Personal Details</h4>

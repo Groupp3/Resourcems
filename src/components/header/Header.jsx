@@ -6,25 +6,24 @@ import "./Header.css";
 const Header = ({ backgroundColor, textColor, borderColor, profileSrc, profileName, onLogout }) => {
   return (
     <header className="header" style={{ backgroundColor, color: textColor, borderBottom: `2px solid ${borderColor}` }}>
-      <div className="header-content container-fluid">
-        <div className="row w-100 align-items-center">
-          
-          <div className="col-10"></div>  
-          
-          {/* Profile Icon in the 10th column */}
-          <div className="col-2 d-flex justify-content-start profile-container ms-auto">
-            <ProfileIcon 
-              src={profileSrc} 
-              name={profileName} 
-              size="sm"
-              onLogout={onLogout}
-            />
-          </div>
+      <div className="header-content container-fluid d-flex justify-content-between align-items-center">
+        {/* Other header content (if needed) */}
+
+        {/* Profile Icon at the top-right */}
+        <div className="profile-container">
+          <ProfileIcon 
+            src={profileSrc} 
+            name={profileName} 
+            size="sm"
+            onLogout={onLogout}
+          />
         </div>
       </div>
     </header>
   );
 };
+
+
 
 Header.propTypes = {
   backgroundColor: PropTypes.string,

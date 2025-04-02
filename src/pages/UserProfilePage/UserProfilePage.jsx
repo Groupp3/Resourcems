@@ -7,7 +7,7 @@ const UserProfilePage = () => {
   return (
     <AdminLayout>
       <div className="user-profile-page">
-        <h2>User Profile</h2>
+      
         <ProfileLayout />
       </div>
     </AdminLayout>

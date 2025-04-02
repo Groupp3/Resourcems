@@ -1,15 +1,18 @@
 .user-profile-page {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start; /* Aligns content to the left */
   gap: 20px;
+  margin-left: 20px; /* Adjust the left margin */
 }
+
 
 .profile-section {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
+  
 }
 
 .profile-icon-container {

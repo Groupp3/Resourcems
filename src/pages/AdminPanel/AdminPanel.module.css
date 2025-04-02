@@ -4,7 +4,7 @@
     height: 100vh;
     width: 100vw; /* Ensure it takes full width */
     background-color: #ffffff;
-    overflow: hidden; /* Prevent unwanted scrolling */
+    overflow: auto; /* Prevent unwanted scrolling */
 }
 
 .mainContent {

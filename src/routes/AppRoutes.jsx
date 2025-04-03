@@ -6,15 +6,13 @@ import UsersPage from "../pages/UsersPage/UsersPage";
 import UserProfilePage from "../pages/UserProfilePage/UserProfilePage"
 import ResourcePage from "../pages/ResourcePage/ResourcePage";
 import RequestPage from "../pages/RequestPage/RequestPage";
-import UserProfilePage from "../pages/UserProfilePage/UserProfilePage";
-
 
 
 const AppRoutes = () => {
   return (
     <Routes>
       {/* Auth Page */}
-      <Route path="/login" element={<AuthPage />} />
+      <Route path="/auth" element={<AuthPage />} />
 
       {/* Admin Pages (Each page already wraps itself in AdminLayout) */}
       <Route path="/admin" element={<AdminPanel />} />

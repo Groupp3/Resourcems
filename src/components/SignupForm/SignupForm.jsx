@@ -4,7 +4,7 @@ import styles from './SignupForm.module.css';
 import AuthService from '../../service/AuthService'; // Import your AuthService for registration
 
 
-import AuthService from '../../services/AuthService'; // Import your AuthService for registration
+ // Import your AuthService for registration
  
 const SignupForm = ({ onToggleForm }) => {
 

@@ -4,14 +4,16 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Card from "../../components/Card/Card";
 import { FaUsers, FaChalkboardTeacher, FaUserShield } from "react-icons/fa";
 import MyCalendar from "../../components/Calender/Calender";  
-import AdminService from "../../service/AdminService";  
-import './AdminPanelBodyLayout.css';
 import { getUsersByRole } from "../../services/AdminService"; 
+import './AdminPanelBodyLayout.css';
 
 const AdminPanelBodyLayout = ({ calendarStyle, cardSize }) => {
-  const [mentorCount, setMentorCount] = useState(0);
-  const [studentCount, setStudentCount] = useState(0);
-  const [adminCount, setAdminCount] = useState(0);
+  const [counts, setCounts] = useState({
+    mentors: 0,
+    students: 0,
+    admins: 0
+  });
+
   const navigate = useNavigate(); // To redirect to login if token is missing
 
   useEffect(() => {
@@ -40,9 +42,11 @@ const AdminPanelBodyLayout = ({ calendarStyle, cardSize }) => {
         });
 
         // Update state
-        setMentorCount(mentorCount);
-        setStudentCount(studentCount);
-        setAdminCount(adminCount);
+        setCounts({
+          mentors: mentorCount,
+          students: studentCount,
+          admins: adminCount
+        });
 
       } catch (error) {
         console.error("Error fetching users: ", error);
@@ -55,7 +59,7 @@ const AdminPanelBodyLayout = ({ calendarStyle, cardSize }) => {
   return (
     <div className="container-fluid p-3 bg-white">
       <div className="row">
-        <div className="col-12 col-md-9 ">  
+        <div className="col-12 col-md-9">  
           <Card 
             title="Welcome, Admin"
             description="Here's an overview of your admin dashboard"

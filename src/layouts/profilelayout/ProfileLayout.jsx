@@ -1,10 +1,9 @@
-// ProfileLayout.jsx
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Header from "../../components/header/Header";
 import UserProfileIcon from "../../components/UserProfileIcon/UserProfileIcon";
 import Modal from "../../components/Modal/Modal";
-import { FaUser, FaKey, FaSave } from "react-icons/fa";
+import { FaUser, FaKey, FaSave, FaEdit } from "react-icons/fa";
 import "./ProfileLayout.css";
 
 const ProfileLayout = () => {
@@ -26,51 +25,86 @@ const ProfileLayout = () => {
   };
 
   return (
-    <div className="container-fluid p-3 bg-white">
+    <div className="container-fluid">
       <Header />
       
-      {/* Profile Header Section */}
-      <div className="row mb-4">
-        <div className="col-12">
-          <div className="card shadow-sm">
+      {/* Enhanced Profile Header Section with Avatar */}
+      <div className="row">
+        <div className="col-12 mb-4">
+          <div className="card profile-header-panel">
+            <div className="pattern-overlay"></div>
             <div className="card-body">
-              <h2 className="card-title">
-                <FaUser className="me-2" />
-                Profile Information
-              </h2>
-              <p className="card-text text-muted">Manage your personal information and credentials</p>
+              <div className="row align-items-center">
+                {/* Left Side - Profile Avatar */}
+                <div className="col-md-3 text-center">
+                  
+                    <UserProfileIcon
+                    />
+                  
+                  <h5 className="mb-2">{profile.firstName} {profile.lastName}</h5>
+                  <p className="text-muted small mb-3">{profile.email}</p>
+                  <button 
+                    className="btn btn-light profile-avatar-edit-btn"
+                  >
+                    <FaEdit className="me-2" />
+                    Change Photo
+                  </button>
+                </div>
+                
+                {/* Right Side - Header Content */}
+                <div className="col-md-9">
+                  <div className="d-flex align-items-center justify-content-between">
+                    <div>
+                      <h2 className="mb-3 d-flex align-items-center">
+                        <FaUser className="me-3" style={{ color: "#7e64ff", fontSize: "1.8rem" }} />
+                        Profile Information
+                      </h2>
+                      <p className="mb-0">Manage your personal information and credentials</p>
+                    </div>
+                    <div className="d-none d-lg-block position-relative">
+                      <div className="position-relative" style={{ width: "100px", height: "100px" }}>
+                        <div style={{
+                          position: "absolute",
+                          width: "100%",
+                          height: "100%",
+                          borderRadius: "50%",
+                          background: "rgba(126, 100, 255, 0.2)",
+                          transform: "scale(1.2)",
+                          zIndex: 0
+                        }}></div>
+                        <div style={{
+                          position: "absolute",
+                          width: "100%",
+                          height: "100%",
+                          borderRadius: "50%",
+                          background: "#fff",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          zIndex: 1
+                        }}>
+                          <FaUser style={{ color: "#7e64ff", fontSize: "2.5rem" }} />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
       
-      {/* Profile Content Section */}
+      {/* Profile Content Section - Details Only */}
       <div className="row">
-        {/* Left Side - Profile Picture */}
-        <div className="col-12 col-md-2 mb-4">
-          <div className="card shadow-sm h-100 profile-card">
-            <div className="card-body text-center">
-              <div className="mb-3">
-                <UserProfileIcon 
-                  src={profile.avatar} 
-                  name={`${profile.firstName} ${profile.lastName}`} 
-                  size="lg" 
-                />
-              </div>
-              
-            </div>
-          </div>
-        </div>
-        
-        {/* Right Side - Profile Details */}
-        <div className="col-12 col-md-10">
-          <div className="card shadow-sm">
+        <div className="col-12">
+          <div className="card profile-details-card">
             <div className="card-body">
               <h4 className="card-title mb-4">Personal Details</h4>
               
               <form>
                 <div className="row mb-3">
-                  <div className="col-md-6">
+                  <div className="col-md-6 mb-3 mb-md-0">
                     <label htmlFor="firstName" className="form-label">First Name</label>
                     <input
                       type="text"
@@ -94,7 +128,7 @@ const ProfileLayout = () => {
                   </div>
                 </div>
                 
-                <div className="mb-3">
+                <div className="mb-4">
                   <label htmlFor="email" className="form-label">Email</label>
                   <input 
                     type="email" 
@@ -106,10 +140,10 @@ const ProfileLayout = () => {
                   <div className="form-text text-muted">Your email address cannot be changed</div>
                 </div>
                 
-                <div className="d-flex justify-content-between mt-4">
+                <div className="d-flex flex-column flex-sm-row justify-content-between gap-3 mt-4">
                   <button 
                     type="button" 
-                    className="btn btn-warning"
+                    className="btn btn-outline-primary password-btn"
                     onClick={() => setIsModalOpen(true)}
                   >
                     <FaKey className="me-2" />
@@ -118,7 +152,7 @@ const ProfileLayout = () => {
                   
                   <button 
                     type="button" 
-                    className="btn btn-success"
+                    className="btn btn-primary save-btn"
                     onClick={handleSaveChanges}
                   >
                     <FaSave className="me-2" />
@@ -131,7 +165,7 @@ const ProfileLayout = () => {
         </div>
       </div>
 
-      {/* Change Password Modal */}
+      
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -139,6 +173,10 @@ const ProfileLayout = () => {
         primaryButtonText="Save Password"
         onPrimaryClick={() => alert("Password Changed!")}
       >
+        <div className="mb-3">
+          <label htmlFor="currentPassword" className="form-label">Current Password</label>
+          <input type="password" className="form-control" id="currentPassword" />
+        </div>
         <div className="mb-3">
           <label htmlFor="newPassword" className="form-label">New Password</label>
           <input type="password" className="form-control" id="newPassword" />

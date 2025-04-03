@@ -70,7 +70,7 @@ const AdminPanelBodyLayout = () => {
                 <div>
                   <h2 className="mb-3 d-flex align-items-center">
                     <FaGraduationCap className="me-3" style={{ color: "#ff8d4e", fontSize: "1.8rem" }} />
-                    Welcome to Eduhouse Admin
+                    Welcome to EduVault Admin
                   </h2>
                   <p className="mb-0">Manage your educational platform with ease. Monitor students, mentors, and more.</p>
                 </div>

@@ -1,0 +1,294 @@
+
+.profile-header-panel {
+  background: linear-gradient(135deg, #f0ebff 0%, #e0d4ff 100%);
+  border-radius: 20px;
+  border: none;
+  box-shadow: 0 15px 30px rgba(126, 100, 255, 0.15);
+  overflow: auto;
+  position: relative;
+  margin-bottom: 1.5rem;
+  border-left: 6px solid #7e64ff;
+}
+
+.profile-header-panel::before {
+  content: '';
+  position: absolute;
+  top: -80px;
+  right: -50px;
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  background: rgba(126, 100, 255, 0.15);
+  z-index: 0;
+}
+
+.profile-header-panel::after {
+  content: '';
+  position: absolute;
+  bottom: -100px;
+  left: 30%;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: rgba(126, 100, 255, 0.1);
+  z-index: 0;
+}
+
+.profile-header-panel .card-body {
+  position: relative;
+  z-index: 1;
+  padding: 2.5rem;
+}
+
+.profile-header-panel h2 {
+  font-weight: 700;
+  color: #333;
+  font-size: 1.8rem;
+}
+
+.profile-header-panel p {
+  color: #666;
+  font-weight: 500;
+}
+
+
+.card {
+  border-radius: 20px;
+  border: none;
+  background: white;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  height: 100%;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+}
+
+
+.profile-details-card {
+  background: white;
+  border-left: 6px solid #7e64ff;
+  position: relative;
+  z-index: 1;
+}
+
+.profile-details-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(to bottom right, rgba(247, 241, 255, 0.5) 0%, rgba(255, 255, 255, 0.8) 100%);
+  z-index: -1;
+}
+
+/* Enhanced profile avatar wrapper */
+.profile-avatar-wrapper {
+  width: 150px;
+  height: 150px;
+  margin: 0 auto;
+  border-radius: 50%;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(126, 100, 255, 0.2), rgba(126, 100, 255, 0.05));
+  padding: 5px;
+  box-shadow: 0 15px 30px rgba(126, 100, 255, 0.2), 
+              inset 0 2px 10px rgba(255, 255, 255, 0.8),
+              0 0 0 2px rgba(255, 255, 255, 0.8);
+  position: relative;
+  z-index: 2;
+}
+
+.profile-avatar-wrapper::after {
+  content: '';
+  position: absolute;
+  top: -15px;
+  left: -15px;
+  right: -15px;
+  bottom: -15px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(126, 100, 255, 0.1) 0%, rgba(126, 100, 255, 0) 70%);
+  z-index: -1;
+}
+
+.profile-avatar-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+/* Enhanced button styling */
+.btn {
+  border-radius: 15px;
+  padding: 0.75rem 1.75rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2));
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.btn:hover::before {
+  opacity: 1;
+}
+
+.profile-avatar-edit-btn {
+  background: rgba(126, 100, 255, 0.1);
+  color: #7e64ff;
+  border-radius: 15px;
+  font-size: 0.9rem;
+}
+
+.profile-avatar-edit-btn:hover {
+  background: rgba(126, 100, 255, 0.2);
+  color: #6a52e5;
+}
+
+.password-btn {
+  border: 2px solid #7e64ff;
+  color: #7e64ff;
+  position: relative;
+  z-index: 1;
+}
+
+.password-btn:hover {
+  background: rgba(126, 100, 255, 0.1);
+  border-color: #6a52e5;
+  color: #6a52e5;
+}
+
+.save-btn {
+  background: linear-gradient(135deg, #7e64ff 0%, #6a52e5 100%);
+  border: none;
+  position: relative;
+  z-index: 1;
+}
+
+.save-btn:hover {
+  background: linear-gradient(135deg, #6a52e5 0%, #5b43d6 100%);
+}
+
+/* Enhanced form controls styling */
+.form-control {
+  border-radius: 15px;
+  padding: 0.85rem 1.25rem;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.02);
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.form-control:focus {
+  border-color: #7e64ff;
+  box-shadow: 0 0 0 0.25rem rgba(126, 100, 255, 0.25);
+  background: white;
+}
+
+.form-label {
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.5px;
+}
+
+/* Enhanced pattern overlay with more subtle pattern */
+.pattern-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%237e64ff' fill-opacity='0.03'%3E%3Cpath d='M50 0 L100 50 L50 100 L0 50 Z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Container spacing */
+.container-fluid {
+  padding: 1.75rem;
+}
+
+/* Card title enhancement */
+.card-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #333;
+  position: relative;
+  padding-bottom: 0.75rem;
+}
+
+.card-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 50px;
+  height: 4px;
+  background: linear-gradient(90deg, #7e64ff, rgba(126, 100, 255, 0.3));
+  border-radius: 2px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .profile-header-panel h2 {
+    font-size: 1.5rem;
+  }
+  
+  .profile-avatar-wrapper {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container-fluid {
+    padding: 1rem;
+  }
+  
+  .card-body {
+    padding: 1.5rem;
+  }
+  
+  .profile-avatar-wrapper {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+@media (max-width: 576px) {
+  .btn {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* Enhanced typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+p, span, a, label, input {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}

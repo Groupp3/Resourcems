@@ -1,4 +1,3 @@
-/* ListLayout.css - Updated to ensure proper layout and full height */
 .data-layout {
   display: flex;
   flex-direction: column;
@@ -7,13 +6,15 @@
   border-radius: 12px;
   background-color: rgb(255, 255, 255);
   flex: 1;  /* Take up all available space */
-  width: 100%;   
+  width: 100%; 
+  height: 100%;  
   overflow: hidden; 
   margin: 0 auto;
 }
 
 .data-layout-content {
-  flex: 1; /* This allows content to grow and take available space */
+  flex: 1; 
+  
 }
 
 .layout-theme-purple {
@@ -86,4 +87,3 @@
     font-size: 20px;
   }
 }
-

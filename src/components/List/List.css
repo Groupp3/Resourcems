@@ -1,15 +1,15 @@
-/* Enhanced List Component CSS */
+
 .list-container {
   width: 100%;
   border: 1px solid #e2e8f0;
   border-radius: 10px;
   overflow: hidden;
   font-family: 'Poppins', Arial, sans-serif;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); */
   margin-bottom: 20px;
 }
 
-/* Theme options */
+
 .list-theme-default {
   background-color: white;
   --list-header-bg: #f7fafc;
@@ -31,7 +31,7 @@
   --card-bg: #f4fcf8;
 }
 
-/* List Header */
+
 .list-header {
   display: flex;
   background-color: var(--list-header-bg, #f7fafc);
@@ -58,7 +58,7 @@
   text-align: right;
 }
 
-/* List Body */
+
 .list-body {
   background-color: white;
 }
@@ -81,9 +81,10 @@
   font-style: italic;
 }
 
-/* Table/Card View Control */
+
 .list-table {
   display: block;
+
 }
 
 .list-cards {

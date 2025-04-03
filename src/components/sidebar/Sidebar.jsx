@@ -3,7 +3,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import './Sidebar.css';
 import Logo from "../../assets/logo.svg?url";
-
+ 
 const MENU_ITEMS = {
   ADMIN: [
     { icon: <i className="bi bi-house-door" />, text: 'Home', path: '/admin' },
@@ -25,7 +25,7 @@ const MENU_ITEMS = {
     { icon: <i className="bi bi-box-seam" />, text: 'Resource', path: '/resource' },
   ]
 };
-
+ 
 const Sidebar = ({
   userRole = 'STUDENT',
   defaultOpen = true,
@@ -43,7 +43,7 @@ const Sidebar = ({
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const location = useLocation();
   const menuItems = MENU_ITEMS[userRole.toUpperCase()] || [];
-
+ 
   const handleToggle = () => {
     setIsOpen(!isOpen);
     if (onToggle) onToggle(!isOpen);
@@ -53,7 +53,7 @@ const Sidebar = ({
       document.body.classList.toggle('sidebar-open', !isOpen);
     }
   };
-
+ 
   const handleResize = () => {
     const mobile = window.innerWidth <= 768;
     setIsMobile(mobile);
@@ -69,7 +69,7 @@ const Sidebar = ({
     // Set mobile-view class on body
     document.body.classList.toggle('mobile-view', mobile);
   };
-
+ 
   useEffect(() => {
     document.documentElement.style.setProperty('--backgroundColor', backgroundColor);
     document.documentElement.style.setProperty('--textColor', textColor);
@@ -86,30 +86,30 @@ const Sidebar = ({
       document.body.classList.remove('sidebar-open', 'mobile-view');
     };
   }, [backgroundColor, textColor, borderColor, hoverColor, activeColor, linkHoverColor]);
-
+ 
   // Close sidebar when clicking outside on mobile
   useEffect(() => {
     const handleClickOutside = (event) => {
       const sidebar = document.querySelector('.sidebar');
       const mobileLogoContainer = document.querySelector('.mobile-logo-container');
       
-      if (isMobile && isOpen && 
-          sidebar && 
-          !sidebar.contains(event.target) && 
-          mobileLogoContainer && 
+      if (isMobile && isOpen &&
+          sidebar &&
+          !sidebar.contains(event.target) &&
+          mobileLogoContainer &&
           !mobileLogoContainer.contains(event.target)) {
         setIsOpen(false);
         document.body.classList.remove('sidebar-open');
         if (onToggle) onToggle(false);
       }
     };
-
+ 
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isMobile, isOpen, onToggle]);
-
+ 
   return (
     <>
       {/* Mobile Header Logo - only appears in mobile view */}
@@ -136,8 +136,8 @@ const Sidebar = ({
         <ul className="menu">
           {menuItems.map((item, index) => (
             <li key={index} className="menu-item">
-              <NavLink 
-                to={item.path} 
+              <NavLink
+                to={item.path}
                 className={({ isActive }) => isActive ? 'menu-link active' : 'menu-link'}
                 end
               >
@@ -154,7 +154,7 @@ const Sidebar = ({
     </>
   );
 };
-
+ 
 Sidebar.propTypes = {
   userRole: PropTypes.oneOf(['ADMIN', 'MENTOR', 'STUDENT']),
   defaultOpen: PropTypes.bool,
@@ -171,5 +171,6 @@ Sidebar.propTypes = {
   linkHoverColor: PropTypes.string,
   onToggle: PropTypes.func
 };
-
+ 
 export default Sidebar;
+ 

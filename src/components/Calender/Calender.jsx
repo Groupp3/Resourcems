@@ -12,6 +12,7 @@ const MyCalendar = ({ value }) => {
         value={date}
         tileDisabled={() => true} // Disable all date selection
         className="my-calendar"
+        style={{ width: '100%', height: '250px', margin: '0 auto' }}  // Adjusted size
       />
     </div>
   );

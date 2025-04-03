@@ -6,10 +6,10 @@
     --activeColor: #01C38D;
     --linkHoverColor: #3182ce;
 }
-
-
-
-
+ 
+ 
+ 
+ 
 .sidebar {
     width: 250px;
     height: 100vh;
@@ -24,12 +24,12 @@
     transition: all 0.3s ease;
     box-sizing: border-box;
 }
-
+ 
 /* Sidebar Collapsed State */
 .sidebar.closed {
     width: 80px;
 }
-
+ 
 /* Menu List */
 .menu {
     list-style: none;
@@ -38,13 +38,13 @@
     overflow-y: auto;
     max-height: calc(100vh - 80px);
 }
-
+ 
 /* Menu Items */
 .menu-item {
     margin-bottom: 5px;
     padding: 0 20px;
 }
-
+ 
 /* Menu Links */
 .menu-link {
     display: flex;
@@ -56,7 +56,7 @@
     border-radius: 4px;
     transition: background 0.3s ease, border-right 0.3s ease;
 }
-
+ 
 /* Change icon color to white */
 .menu-link .icon {
     font-size: 1.2rem;
@@ -65,38 +65,38 @@
     justify-content: center;
     color: white !important; /* Set icon color to white */
 }
-
+ 
 /* Hover and Active Effects */
 .menu-link:hover {
     background-color: rgba(255, 255, 255, 0.2) !important;
     border-right: 5px solid #ddd6fe !important;
 }
-
+ 
 .menu-link.active {
     background-color: rgba(255, 255, 255, 0.3) !important;
     border-right: 5px solid #a78bfa !important;
     color: white !important;
     font-weight: bold;
 }
-
+ 
 .menu-link .text {
     margin-left: 10px;
 }
-
+ 
 /* Closed sidebar adjustments */
 .sidebar.closed .menu-item {
     padding: 0;
 }
-
+ 
 .sidebar.closed .menu-link {
     justify-content: center;
     padding: 12px 0;
 }
-
+ 
 .sidebar.closed .menu-link .text {
     display: none;
 }
-
+ 
 /* Sidebar Header */
 .sidebar-header {
     display: flex;
@@ -106,36 +106,36 @@
     cursor: pointer;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
-
+ 
 .sidebar.closed .sidebar-header {
     justify-content: center;
     padding: 0;
 }
-
+ 
 .logo {
     font-size: 1.2rem;
     font-weight: bold;
     margin-left: 8px;
     color: white;
 }
-
+ 
 .brand-logo {
     width: 30px;
     height: 30px;
 }
-
+ 
 /* Content shift when sidebar is open/closed */
 .main-content {
     margin-left: 250px;
     transition: margin-left 0.3s ease;
     padding-top: 0;
 }
-
+ 
 .main-content.sidebar-closed {
     margin-left: 80px;
 }
-
-
+ 
+ 
 .mobile-logo-wrapper {
     display: none;
     position: fixed;
@@ -144,32 +144,32 @@
     width: 100%;
     height: 100vh;
     background-color: rgb(255, 255, 255);
-    z-index: 1001; 
+    z-index: 1001;
     height: 60px;
     box-sizing: border-box;
 }
-
+ 
 .mobile-logo-container {
     display: flex;
     align-items: center;
     padding: 0 15px;
     height: 100%;
 }
-
+ 
 .mobile-logo-container .brand-logo {
     width: 30px;
     height: 30px;
     cursor: pointer;
 }
-
+ 
 .mobile-logo-container .logo {
     font-size: 1.2rem;
     font-weight: bold;
     margin-left: 8px;
     color: white;
 }
-
-
+ 
+ 
 @media (max-width: 768px) {
     
     .mobile-logo-wrapper {
@@ -179,7 +179,7 @@
    
     .sidebar {
         left: -250px;
-        top: 60px; 
+        top: 60px;
         height: 100vh;
         z-index: 1000;
         box-shadow: none;
@@ -191,7 +191,7 @@
     
     .sidebar.closed {
         left: -250px;
-        width: 250px; 
+        width: 250px;
     }
     
     
@@ -224,14 +224,14 @@
    
     .main-content {
         margin-left: 0;
-        padding-top: 60px; 
+        padding-top: 60px;
     }
     
     .main-content.sidebar-closed {
         margin-left: 0;
     }
 }
-
+ 
 @media (max-width: 1024px) and (min-width: 769px) {
     .sidebar {
         width: 200px;
@@ -249,3 +249,4 @@
         margin-left: 70px;
     }
 }
+ 

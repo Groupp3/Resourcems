@@ -4,6 +4,10 @@
     width: 100vw;
     background-color: #ffffff;
     overflow: hidden;
+    height: 100vh;
+    width: 82vw;
+    background-color: #ffffff; 
+    overflow: auto;
 }
  
 .main-content {
@@ -11,13 +15,43 @@
     margin-left: 250px; /* Match sidebar width */
     padding: 20px;
     position: relative;
-    padding-top: 60px; /* Adjusted for fixed header */
-    width: calc(100% - 250px);
-    overflow-y: auto;
+    padding-top: 80px; /* Adjusted for fixed header */
 }
- 
+
+.profile-container {
+    position: absolute;
+    top:-20px;
+    right: 100px;
+    z-index: 1000;
+}
+
 .content {
+    padding-top: 60px; /* Space for the profile icon */
+}
+
+.searchbar-container {
+    position: absolute;
+    top: 5px;
+    right:  10%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    width: 300px;
     width: 100%;
+}
+
+@media (max-width: 1024px) and (min-width: 769px) {
+    .main-content {
+        margin-left: 200px;
+        width: calc(100% - 200px);
+    }
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+        padding-left: 80px;
+    }
 }
 
 @media (max-width: 1024px) and (min-width: 769px) {

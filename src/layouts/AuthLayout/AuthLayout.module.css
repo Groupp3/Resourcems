@@ -6,7 +6,19 @@
   justify-content: center;
   align-items: center;
   padding: 1rem; /* Added padding for smaller screens */
+  overflow: hidden; 
+/* Prevent any overflow from causing issues */
 }
+
+/* Prevent scrollbars from appearing on the whole page */
+html, body {
+  overflow: hidden;
+  margin: 0; /* Remove any default margin */
+  padding: 0; /* Remove any default padding */
+  height: 100%; /* Ensure full height for both html and body */
+}
+
+
 
 /* Headings */
 h1 {
@@ -33,6 +45,9 @@ h2 {
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+  position: fixed;
+  left: 325px; 
+  top: 90px/* Fixes positioning issues */
 }
 
 /* Left Section - Image Side */

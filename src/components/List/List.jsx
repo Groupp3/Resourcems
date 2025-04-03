@@ -12,7 +12,8 @@ import {
   ChevronLeft,
   ChevronRight,
   Mail,
-  UserCircle
+  UserCircle,
+ 
 } from 'lucide-react';
 import './List.css';
 

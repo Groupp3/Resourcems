@@ -20,36 +20,25 @@ const Header = ({ backgroundColor, textColor, borderColor, profileSrc, profileNa
   }, []);
 
   return (
-    <header 
-      className="app-header" 
-      style={{ 
-        backgroundColor, 
-        color: textColor, 
-        borderBottom: `1px solid ${borderColor}` 
-      }}
-    >
-      <div className="header-content">
-        <div className="header-left">
-          {children}
-        </div>
+    <header className="header" style={{ backgroundColor, color: textColor, borderBottom: `2px solid ${borderColor}` }}>
+      <div className="header-content container-fluid d-flex justify-content-between align-items-center">
+       
+
         
-        <div className="header-right">
-          <div className="profile-container">
-            <ProfileIcon src={profileSrc} alt={profileName} />
-            <span className="profile-name">{profileName}</span>
-            <button 
-              className="logout-button" 
-              onClick={onLogout}
-              aria-label="Logout"
-            >
-              <i className="bi bi-box-arrow-right"></i>
-            </button>
-          </div>
+        <div className="profile-container">
+          <ProfileIcon 
+            src={profileSrc} 
+            name={profileName} 
+            size="sm"
+            onLogout={onLogout}
+          />
         </div>
       </div>
     </header>
   );
 };
+
+
 
 Header.propTypes = {
   backgroundColor: PropTypes.string,

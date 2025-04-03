@@ -75,7 +75,7 @@ const Pagination = ({
         <ChevronLeft size={18} />
       </button>
       
-      <ul className="pagination-list">
+      <div className="pagination-list">
         {pageNumbers.map((number, index) => (
           number === '...' ? 
           <li key={`ellipsis-${index}`} className="pagination-ellipsis">...</li> :
@@ -89,7 +89,7 @@ const Pagination = ({
             {number}
           </button>
         ))}
-      </ul>
+      </div>
 
       <button 
         className="pagination-button next" 

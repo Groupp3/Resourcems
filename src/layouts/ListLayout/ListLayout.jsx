@@ -1,3 +1,4 @@
+// ListLayout.js - Updated to use your Pagination component
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import List from '../../components/List/List';
@@ -17,40 +18,39 @@ const ListLayout = ({
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [displayData, setDisplayData] = useState([]);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true); // Sidebar open by default
 
   const totalItems = data.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   useEffect(() => {
+    
     if (data.length > 0 && currentPage > Math.ceil(data.length / itemsPerPage)) {
       setCurrentPage(1);
     }
+    
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
     setDisplayData(data.slice(startIndex, endIndex));
   }, [data, currentPage, itemsPerPage, totalItems]);
 
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+    
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
-    <div className={`layout-container ${isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
-      {/* Sidebar */}
-      <div className={`sidebar ${isSidebarOpen ? 'open' : 'closed'}`}>
-        <button className="toggle-btn" onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
-          {isSidebarOpen ? 'Close Sidebar' : 'Open Sidebar'}
-        </button>
-        {/* Sidebar content goes here */}
-      </div>
+    <div className={`data-layout layout-theme-${theme}`}>
+      {(title || description) && (
+        <div className="data-layout-header">
+          {title && <h2 className="data-layout-title">{title}</h2>}
+          {description && <p className="data-layout-description">{description}</p>}
+        </div>
+      )}
 
-      {/* Main Content */}
-      <div className="data-layout">
-        {(title || description) && (
-          <div className="data-layout-header">
-            {title && <h2 className="data-layout-title">{title}</h2>}
-            {description && <p className="data-layout-description">{description}</p>}
-          </div>
-        )}
-
-        {totalItems > 0 ? (
-          <>
+      {totalItems > 0 ? (
+        <>
+          <div className="data-layout-content">
             <List 
               type={type} 
               data={displayData} 
@@ -59,19 +59,21 @@ const ListLayout = ({
               onActionClick={onActionClick} 
               theme={theme}
             />
-            
-            <Pagination 
-              totalItems={totalItems} 
-              itemsPerPage={itemsPerPage} 
-              currentPage={currentPage} 
-              onPageChange={setCurrentPage} 
+          </div>
+          
+          {totalPages > 1 && (
+            <Pagination
+              totalItems={totalItems}
+              itemsPerPage={itemsPerPage}
+              currentPage={currentPage}
+              onPageChange={handlePageChange}
               theme={theme}
             />
-          </>
-        ) : (
-          <div className="data-layout-empty">No items available</div>
-        )}
-      </div>
+          )}
+        </>
+      ) : (
+        <div className="data-layout-empty">No items available</div>
+      )}
     </div>
   );
 };

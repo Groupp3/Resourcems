@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Header from "../../components/header/Header";
@@ -6,10 +6,15 @@ import "./AdminLayout.css";
 
 const AdminLayout = ({ children }) => {
   const navigate = useNavigate();
+  const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768);
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
     navigate("/");
+  };
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
   };
 
   return (
@@ -21,9 +26,16 @@ const AdminLayout = ({ children }) => {
          profileSrc="https://via.placeholder.com/100"
          profileName="Admin"
          onLogout={handleLogout}
+         onMenuClick={toggleSidebar}
       />
       
-      <Sidebar userRole="ADMIN" defaultOpen={true} logoText="EduVault" />
+      <Sidebar 
+        userRole="ADMIN" 
+        defaultOpen={sidebarOpen} 
+        logoText="EduVault" 
+        isOpen={sidebarOpen}
+        onClose={() => window.innerWidth < 768 && setSidebarOpen(false)}
+      />
 
       <div className="admin-main-content">
         <div className="content">{children}</div>

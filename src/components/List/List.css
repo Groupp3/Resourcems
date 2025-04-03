@@ -1,259 +1,429 @@
 /* Enhanced List Component CSS */
 .list-container {
-    width: 100%;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    overflow: hidden;
-    font-family: 'Poppins', Arial, sans-serif;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    margin-bottom: 20px;
-  }
-  
-  /* Theme options */
-  .list-theme-default {
-    background-color: white;
-  }
-  
-  .list-theme-purple {
-    --list-header-bg: #E2D9FD;
-    --list-row-hover: rgba(226, 217, 253, 0.1);
-    --list-border: #d4c6fc;
-  }
-  
-  .list-theme-green {
-    --list-header-bg: #E3F5EE;
-    --list-row-hover: rgba(227, 245, 238, 0.2);
-    --list-border: #c7e8dc;
-  }
-  
-  /* List Header */
-  .list-header {
-    display: flex;
-    background-color: var(--list-header-bg, #f7fafc);
-    border-bottom: 1px solid var(--list-border, #e2e8f0);
-    font-weight: 600;
-    color: #4a5568;
-    padding: 14px 0;
-  }
-  
-  .list-header-cell,
-  .list-cell {
-    padding: 12px 16px;
-    text-align: left;
-    flex-grow: 1;
-  }
-  
-  .list-header-cell:first-child, .list-cell:first-child {
-    width: 50px;
-    text-align: center;
-  }
-  
-  .list-header-cell:last-child, .list-cell:last-child {
-    width: 120px;
-    text-align: right;
-  }
-  
-  /* List Body */
-  .list-body {
-    background-color: white;
-  }
-  
-  .list-row {
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid var(--list-border, #e2e8f0);
-    transition: background-color 0.2s ease;
-  }
-  
-  .list-row:hover {
-    background-color: var(--list-row-hover, #f8f9fa);
-  }
-  
-  .list-empty {
-    text-align: center;
-    padding: 30px;
-    color: #718096;
-    font-style: italic;
-  }
-  
-  /* Custom Checkbox */
-  .checkbox-container {
-    display: block;
-    position: relative;
-    padding-left: 28px;
-    cursor: pointer;
-    user-select: none;
-    height: 20px;
-  }
-  
-  .checkbox-container input {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-    height: 0;
-    width: 0;
-  }
-  
-  .checkmark {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 20px;
-    width: 20px;
-    background-color: #f8f9fa;
-    border: 1px solid #e2e8f0;
-    border-radius: 4px;
-    transition: all 0.2s ease;
-  }
-  
-  .checkbox-container:hover input ~ .checkmark {
-    background-color: #edf2f7;
-  }
-  
-  .checkbox-container input:checked ~ .checkmark {
-    background-color: #E2D9FD;
-    border-color: #d0c4ff;
-  }
-  
-  .checkmark:after {
-    content: "";
-    position: absolute;
+  width: 100%;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+  font-family: 'Poppins', Arial, sans-serif;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+}
+
+/* Theme options */
+.list-theme-default {
+  background-color: white;
+  --list-header-bg: #f7fafc;
+  --list-row-hover: #f8f9fa;
+  --list-border: #e2e8f0;
+}
+
+.list-theme-purple {
+  --list-header-bg: #E2D9FD;
+  --list-row-hover: rgba(226, 217, 253, 0.1);
+  --list-border: #d4c6fc;
+  --card-bg: #f8f6ff;
+}
+
+.list-theme-green {
+  --list-header-bg: #E3F5EE;
+  --list-row-hover: rgba(227, 245, 238, 0.2);
+  --list-border: #c7e8dc;
+  --card-bg: #f4fcf8;
+}
+
+/* List Header */
+.list-header {
+  display: flex;
+  background-color: var(--list-header-bg, #f7fafc);
+  border-bottom: 1px solid var(--list-border, #e2e8f0);
+  font-weight: 600;
+  color: #4a5568;
+  padding: 14px 0;
+}
+
+.list-header-cell,
+.list-cell {
+  padding: 12px 16px;
+  text-align: left;
+  flex-grow: 1;
+}
+
+.list-header-cell:first-child, .list-cell:first-child {
+  width: 50px;
+  text-align: center;
+}
+
+.list-header-cell:last-child, .list-cell:last-child {
+  width: 120px;
+  text-align: right;
+}
+
+/* List Body */
+.list-body {
+  background-color: white;
+}
+
+.list-row {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--list-border, #e2e8f0);
+  transition: background-color 0.2s ease;
+}
+
+.list-row:hover {
+  background-color: var(--list-row-hover, #f8f9fa);
+}
+
+.list-empty {
+  text-align: center;
+  padding: 30px;
+  color: #718096;
+  font-style: italic;
+}
+
+/* Table/Card View Control */
+.list-table {
+  display: block;
+}
+
+.list-cards {
+  display: none;
+}
+
+/* Card View Styles */
+.list-card {
+  background-color: var(--card-bg, white);
+  border: 1px solid var(--list-border, #e2e8f0);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.card-avatar {
+  margin-right: 12px;
+}
+
+.card-title {
+  flex-grow: 1;
+}
+
+.card-title h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.card-subtitle {
+  font-size: 14px;
+  color: #718096;
+  margin-top: 4px;
+}
+
+.card-content {
+  margin-bottom: 16px;
+}
+
+.card-field {
+  display: flex;
+  margin-bottom: 8px;
+  align-items: center;
+}
+
+.card-field-label {
+  width: 80px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #718096;
+}
+
+.card-field-value {
+  flex-grow: 1;
+  font-size: 14px;
+  color: #2d3748;
+}
+
+.card-email, .card-role {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.card-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 12px;
+  border-top: 1px solid var(--list-border, #e2e8f0);
+  padding-top: 12px;
+}
+
+/* Custom Checkbox */
+.checkbox-container {
+  display: block;
+  position: relative;
+  padding-left: 28px;
+  cursor: pointer;
+  user-select: none;
+  height: 20px;
+}
+
+.checkbox-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background-color: #f8f9fa;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.checkbox-container:hover input ~ .checkmark {
+  background-color: #edf2f7;
+}
+
+.checkbox-container input:checked ~ .checkmark {
+  background-color: #E2D9FD;
+  border-color: #d0c4ff;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.checkbox-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.checkbox-container .checkmark:after {
+  left: 7px;
+  top: 3px;
+  width: 5px;
+  height: 10px;
+  border: solid #4a5568;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* Actions */
+.list-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.action-btn:hover {
+  background-color: #f1f5f9;
+  transform: translateY(-1px);
+}
+
+.action-btn-label {
+  display: none;
+}
+
+.card-actions .action-btn-label {
+  display: inline;
+  font-size: 14px;
+}
+
+.action-btn-danger {
+  color: #e53e3e;
+}
+
+.action-btn-danger:hover {
+  background-color: rgba(229, 62, 62, 0.1);
+}
+
+.action-btn-primary {
+  color: #3182ce;
+}
+
+.action-btn-primary:hover {
+  background-color: rgba(49, 130, 206, 0.1);
+}
+
+/* Avatar */
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-weight: 600;
+  margin-right: 10px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.user-name {
+  font-weight: 500;
+}
+
+/* Bulk Actions */
+.bulk-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.bulk-delete-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #e53e3e;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.bulk-delete-btn:hover {
+  background-color: #c53030;
+}
+
+.document-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.document-icon {
+  color: #4a5568;
+}
+
+.document-name {
+  font-weight: 500;
+}
+
+/* Pagination */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 8px 0;
+}
+
+.pagination-container button {
+  min-width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  background-color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.pagination-container button:hover:not(:disabled) {
+  background-color: #f7fafc;
+  border-color: #cbd5e0;
+}
+
+.pagination-container button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination-container button.active {
+  background-color: #E2D9FD;
+  border-color: #d0c4ff;
+  color: #4a5568;
+  font-weight: 600;
+}
+
+.pagination-ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+}
+
+.pagination-info {
+  margin-left: 12px;
+  font-size: 14px;
+  color: #718096;
+}
+
+.pagination-theme-purple button.active {
+  background-color: #E2D9FD;
+  border-color: #d0c4ff;
+}
+
+.pagination-theme-green button.active {
+  background-color: #E3F5EE;
+  border-color: #c7e8dc;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .list-table {
     display: none;
   }
   
-  .checkbox-container input:checked ~ .checkmark:after {
+  .list-cards {
     display: block;
   }
   
-  .checkbox-container .checkmark:after {
-    left: 7px;
-    top: 3px;
-    width: 5px;
-    height: 10px;
-    border: solid #4a5568;
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
-  }
-  
-  /* Actions */
-  .list-actions {
-    display: flex;
-    gap: 8px;
-    justify-content: flex-end;
-  }
-  
-  .action-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 6px;
-    border-radius: 6px;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .action-btn:hover {
-    background-color: #f1f5f9;
-    transform: translateY(-1px);
-  }
-  
-  .action-btn-danger {
-    color: #e53e3e;
-  }
-  
-  .action-btn-danger:hover {
-    background-color: rgba(229, 62, 62, 0.1);
-  }
-  
-  .action-btn-primary {
-    color: #3182ce;
-  }
-  
-  .action-btn-primary:hover {
-    background-color: rgba(49, 130, 206, 0.1);
-  }
-  
-  /* Avatar */
-  .avatar {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    font-weight: 600;
-    margin-right: 10px;
-  }
-  
-  .user-info {
-    display: flex;
-    align-items: center;
-  }
-  
-  .user-name {
-    font-weight: 500;
-  }
-  
-  /* Bulk Actions */
   .bulk-actions {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 16px;
-    background-color: #f8f9fa;
-    border-bottom: 1px solid #e2e8f0;
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
   }
   
-  .bulk-delete-btn {
-    display: flex;
-    align-items: center;
+  .pagination-container {
+    flex-wrap: wrap;
     gap: 6px;
-    background-color: #e53e3e;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: background-color 0.2s ease;
   }
   
-  .bulk-delete-btn:hover {
-    background-color: #c53030;
+  .pagination-info {
+    width: 100%;
+    text-align: center;
+    margin-top: 8px;
+    margin-left: 0;
   }
-
-  .document-info {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  
-  .document-icon {
-    color: #4a5568;
-  }
-  
-  .document-name {
-    font-weight: 500;
-  }
-  
-  /* Responsive adjustments */
-  @media (max-width: 768px) {
-    .list-container {
-      overflow-x: auto;
-    }
-    
-    .list-header, .list-row {
-      width: max-content;
-      min-width: 100%;
-    }
-    
-    .pagination-container {
-      flex-wrap: wrap;
-    }
-    
-    .pagination-info {
-      width: 100%;
-      text-align: center;
-      margin-top: 8px;
-    }
-  }
+}

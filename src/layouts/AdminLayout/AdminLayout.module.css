@@ -1,0 +1,93 @@
+
+.adminLayout {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    height: 92vh;
+    width: 82vw;
+    background-color: #ffffff;
+    overflow: hidden;
+    margin: auto;
+}
+
+.adminMainContent {
+    flex-grow: 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    width: 100%;
+}
+
+.profileContainer {
+    position: absolute;
+    top: 10px;
+    right: 100px;
+    z-index: 1000;
+}
+
+.content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+   
+}
+
+.cardContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+    max-width: 800px;
+}
+
+.card {
+    flex: 1;
+    min-width: 250px;
+    max-width: 100%; 
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.welcomeCard {
+    width: 100%;
+    max-width: 800px;
+    padding: 20px;
+    background: #f0f0f0;
+    text-align: center;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Design */
+@media screen and (max-width: 1024px) {
+    .cardContainer {
+        max-width: 90%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .adminMainContent {
+        padding: 60px 10px;
+    }
+
+    .cardContainer {
+        flex-direction: column;
+        align-items: center;
+        max-width: 100%;
+    }
+
+    .card {
+        width: 90%;
+    }
+
+    .welcomeCard {
+        width: 90%;
+    }
+}

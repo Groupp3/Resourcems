@@ -1,8 +1,9 @@
+// RequestPage.js - Updated to ensure full height
 import React, { useState } from "react";
 import AdminLayout from "../../layouts/AdminLayout/AdminLayout";
 import ListLayout from "../../layouts/ListLayout/ListLayout";
 import { Edit, Trash2 } from "lucide-react";
-import styles from  "./RequestPage.module.css";
+import styles from "./RequestPage.module.css";
 
 const requestList = [
   { id: 1, number: "#001", username: "John Doe", email: "john@example.com", role: "Student" },

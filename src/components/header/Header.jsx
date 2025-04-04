@@ -7,9 +7,9 @@ const Header = ({ backgroundColor, textColor, borderColor, profileSrc, profileNa
   return (
     <header className="header" style={{ backgroundColor, color: textColor, borderBottom: `2px solid ${borderColor}` }}>
       <div className="header-content container-fluid d-flex justify-content-between align-items-center">
-        {/* Other header content (if needed) */}
+       
 
-        {/* Profile Icon at the top-right */}
+        
         <div className="profile-container">
           <ProfileIcon 
             src={profileSrc} 

@@ -6,7 +6,7 @@ const UserProfileIcon = ({
     name: 'John Doe', 
     profileImage: '/api/placeholder/200/200' 
   },
-  size = 60,
+  size = 100,
   onProfileClick = () => {},
   onLogout = () => {},
 }) => {
@@ -52,8 +52,10 @@ const UserProfileIcon = ({
 
   return (
     <div className="profile-icon-container" ref={dropdownRef}>
+      <div className="profile-avatar-wrapper mb-3">
       <div className="profile-wrapper" onClick={toggleDropdown}>
         <div className="profile-icon-wrapper">
+          
           <div className="profile-icon" style={iconStyle}>
             <img src={selectedFile || user.profileImage} alt={`${user.name}'s profile`} />
           </div>
@@ -68,8 +70,9 @@ const UserProfileIcon = ({
             +
           </button>
         </div>
+        </div>
         <div className="profile-info">
-          <div className="profile-name">{user.name}</div>
+          
          
         </div>
       </div>

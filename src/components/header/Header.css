@@ -18,6 +18,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    
 }
 
 .profile-container {
@@ -27,4 +28,5 @@
     display: flex;
     align-items: flex-start; /* Align the profile icon to the top */
     justify-content: flex-end; /* Align the profile icon to the right */
+    padding-top: 20px; /* Adjust this value as needed to bring it down */
 }

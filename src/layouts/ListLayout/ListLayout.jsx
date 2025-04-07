@@ -13,8 +13,6 @@ const ListLayout = ({
   onActionClick,
   itemsPerPage = 10,
   theme = "default",
-  title,
-  description,
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [displayData, setDisplayData] = useState([]);
@@ -41,13 +39,7 @@ const ListLayout = ({
 
   return (
     <div className={`data-layout layout-theme-${theme}`}>
-      {(title || description) && (
-        <div className="data-layout-header">
-          {title && <h2 className="data-layout-title">{title}</h2>}
-          {description && <p className="data-layout-description">{description}</p>}
-        </div>
-      )}
-
+      
       {totalItems > 0 ? (
         <>
           <div className="data-layout-content">

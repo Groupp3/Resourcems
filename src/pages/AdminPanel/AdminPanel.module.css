@@ -1,20 +1,18 @@
-/* AdminLayout.css */
-.adminLayout {
-    display: flex;
-    height: 100vh;
-    width: 100vw; 
-    background-color: #ffffff;
-    overflow: auto; /* Prevent unwanted scrolling */
-}
-
-.mainContent {
-    flex-grow: 1;
+.adminlayout {
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; /* Align content properly */
-    align-items: stretch;
-    margin-left: 250px; /* Match sidebar width */
-    padding: 20px;
-    height: 100vh;
-    overflow-y: auto; /* Enable scrolling if needed */
-}
+  }
+  .mainContent {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start; 
+      align-items: stretch;
+      margin-left: 250px; 
+      padding: 20px;
+      height: 100vh;
+      
+  }

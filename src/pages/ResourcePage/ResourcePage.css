@@ -1,0 +1,82 @@
+.adminlayout {
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  
+.resource-page {
+    padding: 16px;
+    background-color: #f0f0f7;
+    width: 100%;
+    height: 100%;
+  }
+  
+
+  .storage-section {
+    margin-top: 24px;
+    margin-bottom: 24px;
+  }
+  
+  .storage-cards {
+    display: flex;
+    gap: 16px;
+  }
+  
+  .storage-card-wrapper {
+    flex: 1;
+    min-width: 0; 
+  }
+  
+ 
+  .content-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 16px;
+  }
+  
+ 
+  .files-section {
+    background-color: white;
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  .files-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  
+  .view-all-btn {
+    background: none;
+    border: none;
+    color: #666;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  
+
+  .storage-illustration {
+    margin-top: auto;
+  }
+  
+  .storage-illustration img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  @media (max-width: 992px) {
+    .content-wrapper {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    
+    .storage-cards {
+      flex-direction: column;
+    }
+  }

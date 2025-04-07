@@ -13,7 +13,6 @@ import {
   ChevronRight,
   Mail,
   UserCircle,
- 
 } from 'lucide-react';
 import './List.css';
 
@@ -361,7 +360,7 @@ const List = ({
         </div>
       )}
       
-      {/* Table View (for desktop) */}
+      
       <div className="list-table">
         {/* List Header */}
         <div className="list-header">

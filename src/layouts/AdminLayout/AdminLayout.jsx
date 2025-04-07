@@ -1,39 +1,44 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import Sidebar from "../../components/sidebar/Sidebar";
-import Header from "../../components/header/Header"; 
+import Header from "../../components/header/Header";
+import adminRoutes from "../../routes/AdminRoutes"; 
 import "./AdminLayout.css";
 
 const AdminLayout = ({ children }) => {
   const navigate = useNavigate();
-  const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768);
+  const location = useLocation();
+  const [pageTitle, setPageTitle] = useState("");
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
     navigate("/");
   };
 
-  const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
-  };
+  useEffect(() => {
+    // Prioritize more specific routes
+    const matched = [...adminRoutes]
+      .sort((a, b) => b.path.length - a.path.length)
+      .find(route => location.pathname.startsWith(route.path));
+    
+    setPageTitle(matched ? matched.title : "Admin");
+  }, [location.pathname]);
 
   return (
     <div className="admin-layout">
-      {/* Header with customizable props */}
-      <Header 
-        backgroundColor="#FFFFFF" 
-        textColor="#000000" 
+      <Header
+        backgroundColor="#FFFFFF"
+        textColor="#000000"
         borderColor="#DDDDDD"
         profileSrc="https://via.placeholder.com/100"
         profileName="Admin"
         onLogout={handleLogout}
       />
-      
-      {/* Sidebar */}
+
       <Sidebar userRole="ADMIN" defaultOpen={true} logoText="EduVault" />
 
-      {/* Main Content */}
       <div className="admin-main-content">
+        <div className="title">{pageTitle}</div>
         <div className="content">{children}</div>
       </div>
     </div>

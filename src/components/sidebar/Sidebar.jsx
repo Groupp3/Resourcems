@@ -27,7 +27,7 @@ const MENU_ITEMS = {
 };
  
 const Sidebar = ({
-  userRole = 'STUDENT',
+  userRole = '',
   defaultOpen = true,
   logoText = 'EduVault',
   toggleIcons,

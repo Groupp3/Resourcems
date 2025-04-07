@@ -3,15 +3,14 @@ import { useNavigate } from "react-router-dom";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Header from "../../components/header/Header";
 import SearchBar from "../../components/SearchBar/SearchBar";
-import AuthService from "../../services/AuthService"; // Import AuthService
-import "./UserLayout.css";
+import "./StudentUserLayout.css"; // Reuse same styling
 
-const UserLayout = ({ children }) => {
+const StudentUserLayout = ({ children }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    AuthService.logout();
-    navigate("/"); // Redirect to landing/login page after logout
+    localStorage.removeItem("authToken");
+    navigate("/");
   };
 
   return (
@@ -21,23 +20,24 @@ const UserLayout = ({ children }) => {
           backgroundColor="#FFFFFF" 
           textColor="#000000" 
           borderColor="#DDDDDD"
-          profileSrc={AuthService.getProfileImageUrl()}
-          profileName={AuthService.getCurrentUser()?.name || "User"}
+          profileSrc="https://via.placeholder.com/100"
+          profileName="Student"
           onLogout={handleLogout}
         />
 
         <div className="searchbar-container"> 
-          <SearchBar suggestions={["Dashboard", "Users", "Settings", "Reports"]} />
+          <SearchBar suggestions={["Mentors", "Dashboard", "Resources"]} />
         </div>
-      </div>
+      
 
-      <Sidebar userRole="ADMIN" defaultOpen={true} logoText="EduVault" />
+      <Sidebar userRole="STUDENT" defaultOpen={true} logoText="EduVault" />
 
       <div className="main-content">
         <div className="content">{children}</div>
       </div>
     </div>
+    </div>
   );
 };
 
-export default UserLayout;
+export default StudentUserLayout;

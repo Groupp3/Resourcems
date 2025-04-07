@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:8080/api/admin"; // Base API URL
+const API_BASE_URL = "http://localhost:8080/api"; // Base API URL
 
 // Function to fetch all users
 export const getUsersByRole = async () => {
@@ -51,7 +51,7 @@ export const getPendingUsers = async () => {
 
     console.log("Fetching pending users...");
 
-    const response = await axios.get(`${API_BASE_URL}/request`, config);
+    const response = await axios.get(`${API_BASE_URL}/admin/request`, config);
 
     console.log("Pending users retrieved:", response.data);
 

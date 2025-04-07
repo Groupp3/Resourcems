@@ -3,73 +3,53 @@ import UserLayout from "../../layouts/UserLayout/UserLayout";
 import { getUsersByRole } from "../../services/AdminService"; 
 import UserCard from "../../components/UserCard/UserCard";
 import { FaList, FaTh } from "react-icons/fa";
-import "./UsersPage.css";
-
-const UsersPage = () => {
-  const [activeTab, setActiveTab] = useState("All");
+import "./StudentPage.css"; // You can keep the same styles
+import StudentUserLayout from "../../layouts/StudentUserLayout/StudentUserLayout";
+import StudentLayout from "../../layouts/Studentlayout/StudentLayout";
+const StudentsPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [usersData, setUsersData] = useState([]);
+  const [mentors, setMentors] = useState([]);
   const [viewMode, setViewMode] = useState("grid");
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchMentors = async () => {
       try {
-        const allUsers = await getUsersByRole(); 
-        setUsersData(allUsers);
+        const mentorUsers = await getUsersByRole("MENTOR"); // ✅ only mentors
+        setMentors(mentorUsers);
       } catch (error) {
-        console.error("Error fetching users: ", error);
+        console.error("Error fetching mentors: ", error);
       }
     };
 
-    fetchUsers();
+    fetchMentors();
   }, []);
 
-  const tabs = ["All", "Admin", "Mentor", "Student"];
-  
- 
   const getAccentColor = () => {
     const colors = ["#6366f1", "#8b5cf6", "#d946ef", "#ec4899", "#f43f5e", "#f97316", "#eab308"];
     return colors[Math.floor(Math.random() * colors.length)];
   };
 
-  
-  const filteredUsers = usersData.filter(user => {
-    const nameMatch = (user.firstName?.toLowerCase() + " " + user.lastName?.toLowerCase())
-      .includes(searchQuery.toLowerCase());
-
-    if (activeTab === "All") return nameMatch;
-    return nameMatch && user.role.toLowerCase() === activeTab.toLowerCase();
-  });
+  const filteredMentors = mentors.filter((mentor) =>
+    (mentor.firstName?.toLowerCase() + " " + mentor.lastName?.toLowerCase())
+      .includes(searchQuery.toLowerCase())
+  );
 
   return (
-    <UserLayout>
+    <StudentUserLayout>
       <div className="verlof-page">
         <div className="verlof-header">
-          <h1>USERS</h1>
-          
-        </div>
-
-        <div className="verlof-tabs">
-          {tabs.map((tab) => (
-            <button
-              key={tab}
-              className={`verlof-tab-button ${activeTab === tab ? "active" : ""}`}
-              onClick={() => setActiveTab(tab)}
-            >
-              {tab}
-            </button>
-          ))}
+          <h1>MENTORS</h1>
         </div>
 
         <div className="verlof-search-container">
           <input
             type="text"
-            placeholder="Search users..."
+            placeholder="Search mentors..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="search-input"
           />
-          
+
           <div className="verlof-view-toggle">
             <button 
               className={`list-view-btn ${viewMode === "list" ? "active" : ""}`}
@@ -87,19 +67,19 @@ const UsersPage = () => {
         </div>
 
         <div className={`users-${viewMode}-view`}>
-          {filteredUsers.map((user) => (
+          {filteredMentors.map((mentor) => (
             <UserCard
-              key={user.id}
-              name={`${user.firstName} ${user.lastName || ""}`}
-              email={user.email || "example@email.com"}
-              avatar={user.profileImageUrl || "https://via.placeholder.com/150"}
+              key={mentor.id}
+              name={`${mentor.firstName} ${mentor.lastName || ""}`}
+              email={mentor.email || "example@email.com"}
+              avatar={mentor.profileImageUrl || "https://via.placeholder.com/150"}
               accentColor={getAccentColor()}
             />
           ))}
         </div>
       </div>
-    </UserLayout>
+    </StudentUserLayout>
   );
 };
 
-export default UsersPage;
+export default StudentsPage;

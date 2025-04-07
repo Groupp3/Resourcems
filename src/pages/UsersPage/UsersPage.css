@@ -1,41 +1,208 @@
-.users-page {
+.verlof-page {
     padding: 20px;
-    text-align: center;
-    
-}
-
-.tabs {
+    max-width: 1200px;
+    margin-left: -50px; 
+  }
+  
+  .verlof-header {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 20px;
-    gap: 15px;
-}
-
-.tab-button {
-    padding: 10px 20px;
-    background: #f5f5f5;
-    border: 2px solid #ddd6fe;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background 0.3s, transform 0.2s;
-}
-
-.tab-button:hover {
-    background: #ddd6fe;
-}
-
-.tab-button.active {
-    background: #ddd6fe;
+  }
+  
+  .verlof-header h1 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .add-verlof-btn {
+    background-color: #6366f1;
     color: white;
-    transform: scale(1.1);
-}
-
-.users-list {
+    border: none;
+    border-radius: 6px;
+    padding: 10px 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .add-verlof-btn:hover {
+    background-color: #4f46e5;
+  }
+  
+  .verlof-tabs {
     display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+    border-bottom: 1px solid #e5e7eb;
+    margin-bottom: 20px;
+  }
+  
+  .verlof-tab-button {
+    background: transparent;
+    border: none;
+    padding: 12px 16px;
+    font-size: 14px;
+    color: #6b7280;
+    cursor: pointer;
+    position: relative;
+    transition: color 0.2s ease;
+  }
+  
+  .verlof-tab-button.active {
+    color: #6366f1;
+    font-weight: 500;
+  }
+  
+  .verlof-tab-button.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #6366f1;
+  }
+  
+  .verlof-search-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .verlof-search {
+    display: flex;
+    align-items: center;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 0 12px;
+    background-color: #fff;
+    width: 300px;
+    transition: box-shadow 0.2s ease;
+  }
+  
+  .verlof-search:focus-within {
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+    border-color: #6366f1;
+  }
+  
+  .verlof-search input {
+    border: none;
+    padding: 10px;
+    flex: 1;
+    outline: none;
+    font-size: 14px;
+  }
+  
+  .search-icon {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #9ca3af;
+    display: flex;
+    align-items: center;
+  }
+  
+  .verlof-view-toggle {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .list-view-btn, .grid-view-btn {
+    background-color: #f3f4f6;
+    border: none;
+    border-radius: 4px;
+    padding: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
     justify-content: center;
-}
-
-
+    transition: background-color 0.2s ease;
+  }
+  
+  .list-view-btn.active, .grid-view-btn.active {
+    background-color: #e5e7eb;
+    color: #4f46e5;
+  }
+  
+  /* User Grid and List Views */
+  .users-grid-view {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  
+  .users-list-view {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .users-list-view .usercard {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    text-align: left;
+    align-items: center;
+    padding: 15px;
+    height: auto;
+  }
+  
+  .users-list-view .usercard .imageContainer {
+    margin-right: 20px;
+  }
+  
+  .users-list-view .usercard .name,
+  .users-list-view .usercard .email,
+  .users-list-view .usercard .role {
+    margin: 0 15px 0 0;
+  }
+  
+  .users-list-view .usercard .actionButtons {
+    margin-left: auto;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .users-grid-view {
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+    
+    .verlof-search {
+      width: 250px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .users-grid-view {
+      grid-template-columns: 1fr;
+    }
+    
+    .verlof-search {
+      width: 100%;
+    }
+    
+    .verlof-search-container {
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .verlof-view-toggle {
+      justify-content: flex-end;
+    }
+    
+    .users-list-view .usercard {
+      flex-direction: column;
+      text-align: center;
+    }
+    
+    .users-list-view .usercard .imageContainer {
+      margin-right: 0;
+      margin-bottom: 15px;
+    }
+    
+    .users-list-view .usercard .actionButtons {
+      margin-left: 0;
+      margin-top: 15px;
+    }
+  }

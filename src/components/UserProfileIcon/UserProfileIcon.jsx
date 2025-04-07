@@ -1,91 +1,76 @@
-import React, { useState, useRef, useEffect } from 'react';
-import './UserProfileIcon.css';
+import React, { useState, useRef, useEffect } from "react";
+import "./UserProfileIcon.css";
 
 const UserProfileIcon = ({ 
-  user = { 
-    name: 'John Doe', 
-    profileImage: '/api/placeholder/200/200' 
-  },
+  avatar = "/api/placeholder/200/200", 
+  name = "John Doe",
   size = 100,
-  onProfileClick = () => {},
-  onLogout = () => {},
+  onProfileUpdate = () => {},
 }) => {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
-  const dropdownRef = useRef(null);
-
-  const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen);
-  };
+  const fileInputRef = useRef(null);
 
   const iconStyle = {
     width: `${size}px`,
-    height: `${size}px`
+    height: `${size}px`,
+    borderRadius: "50%",
+    overflow: "hidden",
+    backgroundColor: "#f0f0f0",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    border: "2px solid #ddd",
   };
 
   const addButtonStyle = {
+    position: "absolute",
+    bottom: "5px",
+    right: "5px",
     width: `${size * 0.35}px`,
     height: `${size * 0.35}px`,
-    fontSize: `${size * 0.2}px`
+    fontSize: `${size * 0.2}px`,
+    backgroundColor: "#007bff",
+    color: "white",
+    border: "none",
+    borderRadius: "50%",
+    cursor: "pointer",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   };
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setDropdownOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      setSelectedFile(URL.createObjectURL(file));
+      const objectUrl = URL.createObjectURL(file);
+      setSelectedFile(objectUrl);
+      onProfileUpdate && onProfileUpdate(file);
     }
   };
 
   return (
-    <div className="profile-icon-container" ref={dropdownRef}>
-      <div className="profile-avatar-wrapper mb-3">
-      <div className="profile-wrapper" onClick={toggleDropdown}>
-        <div className="profile-icon-wrapper">
-          
-          <div className="profile-icon" style={iconStyle}>
-            <img src={selectedFile || user.profileImage} alt={`${user.name}'s profile`} />
-          </div>
-          <button 
-            className="add-profile-button" 
-            style={addButtonStyle} 
-            onClick={(e) => {
-              e.stopPropagation();
-              setModalOpen(true);
-            }}
-          >
-            +
-          </button>
-        </div>
-        </div>
-        <div className="profile-info">
-          
-         
-        </div>
+    <div className="profile-icon-container" style={{ position: "relative" }}>
+      <div className="profile-icon-wrapper" style={iconStyle}>
+        <img
+          src={selectedFile || avatar}
+          alt={`${name}'s profile`}
+          style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }}
+        />
       </div>
-
-      {modalOpen && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            
-            <input type="file" accept="image/*" onChange={handleFileChange} />
-            <button onClick={() => setModalOpen(false)}>Close</button>
-          </div>
-        </div>
-      )}
+      <button 
+        className="add-profile-button" 
+        style={addButtonStyle}
+        onClick={() => fileInputRef.current.click()}
+      >
+        +
+      </button>
+      <input 
+        type="file" 
+        ref={fileInputRef}
+        style={{ display: "none" }} 
+        accept="image/*" 
+        onChange={handleFileChange} 
+      />
     </div>
   );
 };

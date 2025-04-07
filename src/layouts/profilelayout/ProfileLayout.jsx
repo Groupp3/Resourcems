@@ -87,6 +87,7 @@ const ProfileLayout = () => {
                 <h4 className="card-title mb-4">Edit Personal Details</h4>
                 
                 <form>
+                  
                   <div className="row mb-3">
                     <div className="col-md-6 mb-3 mb-md-0">
                       <label htmlFor="firstName" className="form-label">First Name</label>

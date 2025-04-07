@@ -1,11 +1,10 @@
 .usercard {
   background: white;
-  padding: 25px 20px;
-  border-radius: 20px;
+  border-radius: 10px;
   color: #333;
   position: relative;
-  width: 90%;
-  height: 100%;
+  width: 325px;
+  height: 300px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease;
   display: flex;
@@ -14,27 +13,158 @@
   z-index: 1;
 }
 
+
+
+
 .usercard:hover {
   transform: translateY(-8px);
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
 }
 
+/* Purple header background */
+.card-header-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 30%;
+  z-index: 0;
+}
+
+/* Pattern overlay for the diagonal lines */
 .pattern-overlay {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0 L100 100 M20 0 L100 80 M0 20 L80 100 M40 0 L100 60 M0 40 L60 100 M60 0 L100 40 M0 60 L40 100 M80 0 L100 20 M0 80 L20 100' stroke='%23ffffff' stroke-width='2' stroke-opacity='0.1' fill='none'/%3E%3C/svg%3E");
   opacity: 0.5;
   pointer-events: none;
-  z-index: -1;
+}
+
+/* Top right buttons - VISIBLE ON HOVER */
+.top-actions {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  display: flex;
+  gap: 12px;
+  z-index: 10;
+  opacity: 0;
+  transform: translateY(-5px);
+  transition: all 0.3s ease;
+}
+
+.usercard:hover .top-actions {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.menu-container {
+  position: relative;
+  background: transparent;
+
+}
+
+.action-button {
+  background: transparent;
+  border: none;
+  color: #666;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.action-button:hover {
+  transform: translateY(-2px);
+  box-shadow: none !important; 
+  background: transparent !important;
+}
+
+
+
+.delete-option {
+  color: #ff5252;
+}
+
+.menu-divider {
+  height: 1px;
+  background-color: #eee;
+  margin: 5px 0;
+}
+
+.role-menu {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  width: 160px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  z-index: 20;
+  animation: fadeIn 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.role-menu-title {
+  padding: 12px 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #555;
+  border-bottom: 1px solid #eee;
+  background: #f9f9f9;
+}
+
+.role-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 16px;
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #444;
+}
+
+.role-option:hover {
+  background-color: #f5f5f5;
+}
+
+.role-option svg {
+  font-size: 0.9rem;
+}
+
+.card-content {
+  position: relative;
+  padding: 25px 20px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  z-index: 5;
 }
 
 .card-header {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  flex-direction: column;
+  align-items: center;
   margin-bottom: 20px;
 }
 
@@ -43,6 +173,8 @@
   width: 70px;
   height: 70px;
   margin-bottom: 15px;
+  margin-top: 25px;
+  cursor: pointer;
 }
 
 .hoverCircle {
@@ -55,6 +187,9 @@
   left: 0;
   transition: transform 0.3s ease, opacity 0.3s ease;
   z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .avatar {
@@ -65,34 +200,37 @@
   object-fit: cover;
   border: 3px solid white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, filter 0.3s ease;
   z-index: 1;
 }
 
 .imageContainer:hover .hoverCircle {
   transform: scale(1.4);
-  opacity: 0.3;
+  opacity: 0.5;
 }
 
 .imageContainer:hover .avatar {
   transform: scale(1.05);
+  filter: brightness(0.85);
 }
 
-.card-icon {
-  width: 50px;
-  height: 50px;
+/* New avatar overlay */
+.avatar-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 12px;
-  font-size: 1.4rem;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
+  z-index: 2;
 }
 
-
-.usercard:hover .card-icon {
-  transform: scale(1.1) rotate(5deg);
+.avatar-edit-icon {
+  color: white;
+  font-size: 1.2rem;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
 }
 
 .user-info {
@@ -121,66 +259,20 @@
 }
 
 .role {
-  display: inline-block;
   font-size: 0.85rem;
   font-weight: 600;
   padding: 5px 12px;
   border-radius: 20px;
   letter-spacing: 0.5px;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-}
-
-.actionButtons {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  margin-top: auto;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.usercard:hover .actionButtons {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.editButton, .deleteButton {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 1rem;
-  padding: 8px;
-  border-radius: 8px;
-  transition: all 0.2s ease;
+  margin-top: 10px;
+  text-align: center;
+  max-width: 100%;
+  word-wrap: break-word;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-
-.editButton {
-  color: #4ecaff;
-  background-color: rgba(78, 202, 255, 0.1);
-}
-
-.deleteButton {
-  color: #ff5252;
-  background-color: rgba(255, 82, 82, 0.1);
-}
-
-.editButton:hover {
-  background-color: rgba(78, 202, 255, 0.2);
-  transform: translateY(-3px);
-}
-
-.deleteButton:hover {
-  background-color: rgba(255, 82, 82, 0.2);
-  transform: translateY(-3px);
-}
-
-
-
-/* Role-specific card styling is now handled with inline styles in the React component */
 
 /* Responsive adjustments */
 @media (max-width: 992px) {
@@ -193,6 +285,10 @@
 
 @media (max-width: 768px) {
   .usercard {
+    padding: 0;
+  }
+  
+  .card-content {
     padding: 20px;
   }
 }

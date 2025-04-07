@@ -34,7 +34,8 @@ const AdminLayout = ({ children }) => {
         profileName="Admin"
         onLogout={handleLogout}
       />
-
+      
+      
       <Sidebar userRole="ADMIN" defaultOpen={true} logoText="EduVault" />
 
       <div className="admin-main-content">

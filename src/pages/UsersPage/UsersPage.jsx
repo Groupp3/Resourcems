@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import AdminLayout from "../../layouts/AdminLayout/AdminLayout"; 
 import UserLayout from "../../layouts/AdminLayout/AdminLayout"; 
 import { getUsersByRole } from "../../services/AdminService"; 
 import UserCard from "../../components/UserCard/UserCard";
@@ -25,14 +26,12 @@ const UsersPage = () => {
   }, []);
 
   const tabs = ["All", "Admin", "Mentor", "Student"];
-  
- 
+
   const getAccentColor = () => {
     const colors = ["#6366f1", "#8b5cf6", "#d946ef", "#ec4899", "#f43f5e", "#f97316", "#eab308"];
     return colors[Math.floor(Math.random() * colors.length)];
   };
 
-  
   const filteredUsers = usersData.filter(user => {
     const nameMatch = (user.firstName?.toLowerCase() + " " + user.lastName?.toLowerCase())
       .includes(searchQuery.toLowerCase());
@@ -42,7 +41,7 @@ const UsersPage = () => {
   });
 
   return (
-    <UserLayout>
+    <AdminLayout>
       <div className="verlof-page">
         
 
@@ -66,7 +65,7 @@ const UsersPage = () => {
             onChange={(e) => setSearchQuery(e.target.value)}
             className="search-input"
           />
-          
+
           <div className="verlof-view-toggle">
             <button 
               className={`list-view-btn ${viewMode === "list" ? "active" : ""}`}
@@ -91,11 +90,12 @@ const UsersPage = () => {
               email={user.email || "example@email.com"}
               avatar={user.profileImageUrl || "https://via.placeholder.com/150"}
               accentColor={getAccentColor()}
+              role={user.role}
             />
           ))}
         </div>
       </div>
-    </UserLayout>
+    </AdminLayout>
   );
 };
 

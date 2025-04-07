@@ -1,6 +1,5 @@
 import React from "react";
 import AdminLayout from "../../layouts/AdminLayout/AdminLayout";
-
 import AdminPanelBodyLayout from "../../layouts/adminpanelbodylayout/AdminPanelBodyLayout";
 import styles from "./AdminPanel.module.css";
 

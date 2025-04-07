@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./ResourcePage.css";
 import AdminLayout from "../../layouts/AdminLayout/AdminLayout";
 import ResourceCard from "../../components/ResourceCard/ResourceCard";
 import FileList from "../../components/FileList/FileList";
+import { getResources } from "../../services/ResourceService";
 
 import {
   VideoIcon,
@@ -10,81 +11,96 @@ import {
   BadgeCheckIcon,
 } from "lucide-react";
 
+const iconMap = {
+  video: <VideoIcon size={24} />,
+  document: <FileTextIcon size={24} />,
+  certificate: <BadgeCheckIcon size={24} />,
+};
+
+const colorMap = {
+  video: "#9747FF",
+  document: "#FF9900",
+  certificate: "#FF00FF",
+};
+
+const getType = (contentType) => {
+  if (contentType.startsWith("video/")) return "video";
+  if (contentType.startsWith("application/")) return "document";
+  if (contentType.startsWith("image/")) return "certificate";
+  return "other";
+};
 
 const ResourcePage = () => {
-  // Storage data with appropriate icons for each title
-  const storageItems = [
-    {
-      title: "Videos",
-      used: 24,
-      total: 50,
-      icon: <VideoIcon size={24} />, // Suitable for videos
-      color: "#9747FF"
-    },
-    {
-      title: "Documents",
-      used: 10,
-      total: 50,
-      icon: <FileTextIcon size={24} />, // Better for documents
-      color: "#FF9900"
-    },
-    {
-      title: "Certificates",
-      used: 16,
-      total: 50,
-      icon: <BadgeCheckIcon size={24} />, // Certificate-like appearance
-      color: "#FF00FF"
-    }
-  ];
+  const [resources, setResources] = useState([]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getResources();
+      setResources(data);
+    };
 
-  // Recent files data
-  const recentFiles = [
-    { name: "Wiz Khalifa - See You Again", extension: "MP3", size: "5.265 KB" },
-    { name: "honest.psd", extension: "PDF", size: "825 KB" },
-    { name: "Screenshot2023.png", extension: "PNG", size: "121 KB" }
-  ];
+    fetchData();
+  }, []);
 
-  // Format files for the FileList component
-  const formattedFiles = recentFiles.map(file => ({
-    name: file.name,
-    size: file.size,
-    type: file.extension.toLowerCase()
+  const groupedResources = resources.reduce((acc, res) => {
+    const type = getType(res.contentType);
+    if (!acc[type]) acc[type] = [];
+    acc[type].push(res);
+    return acc;
+  }, {});
+
+  const storageItems = Object.keys(groupedResources).map((type) => ({
+    title: type.charAt(0).toUpperCase() + type.slice(1) + "s",
+    noFiles: groupedResources[type].length,
+    icon: iconMap[type] || <FileTextIcon size={24} />,
+    color: colorMap[type] || "#ccc",
   }));
+
+  const files = resources
+  .slice() 
+  .sort((a, b) => new Date(b.modifiedAt) - new Date(a.modifiedAt)) // sort descending
+  .slice(0, 4) 
+  .map((res) => ({
+    name: res.title,
+    type: getType(res.contentType),
+    fileSize: res.fileSize,
+    access: res.isPublic ? "Public" : "Private",
+    modifiedAt: res.modifiedAt,
+  }));
+
 
   return (
     <AdminLayout>
-    <div className="adminlayout">
-      <div className="resource-page">
-        <section className="storage-section">
-        
-          <div className="storage-cards">
-            {storageItems.map((item, index) => (
-              <div key={index} className="storage-card-wrapper">
-                <ResourceCard 
-                  title={item.title} 
-                  color={item.color}
-                  usedStorage={`${item.used} GB of ${item.total} GB used`}
-                  percentage={item.used / item.total * 100}
-                />
+      <div className="adminlayout">
+        <div className="resource-page">
+          <div className="content-container">
+            <section className="storage-section">
+              <div className="storage-cards">
+                {storageItems.map((item, index) => (
+                  <div key={index} className="storage-card-wrapper">
+                    <ResourceCard 
+                      title={item.title} 
+                      noFiles={item.noFiles}
+                      color={item.color}
+                      icon={item.icon}
+                    />
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </section>
+            </section>
 
-        <div className="content-wrapper">
-          <section className="files-section">
-            <div className="files-header">
-              <h2 className="section-title">New Files</h2>
-              <button className="view-all-btn">VIEW ALL</button>
-            </div>
-            
-            <FileList files={formattedFiles} />
-          </section>
-         
+            <section className="files-section">
+              <div className="files-header">
+                <h2 className="section-title">New Files</h2>
+              </div>
+              
+              <div className="file-list-container-wrapper">
+                <FileList files={files} />
+              </div>
+            </section>
+          </div>
         </div>
       </div>
-    </div>
     </AdminLayout>
   );
 };

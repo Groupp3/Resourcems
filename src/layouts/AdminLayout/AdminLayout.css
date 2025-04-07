@@ -24,7 +24,7 @@
 }
 
 .content {
-    padding-top: 60px; /* Space for the profile icon */
+    padding-top: 60px; 
 }
 
 .header {
@@ -35,8 +35,8 @@
     background-color: #fff;
     color: #000;
     padding: 20px 20px 10px 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional shadow */
-    z-index: 5; /* Ensures header stays below sidebar */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+    z-index: 5; 
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -46,11 +46,11 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 250px; /* Sidebar width */
+  width: 250px; 
   height: 100%;
-  background-color: #2b3d51; /* Sidebar background color */
+  background-color: #2b3d51;
   color: white;
   padding: 20px;
-  z-index: 1001; /* Ensures sidebar stays on top */
+  z-index: 1001;
 }
 

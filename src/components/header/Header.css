@@ -22,11 +22,11 @@
 }
 
 .profile-container {
-    position: absolute; /* Makes the profile icon fixed relative to the header */
-    top: 0px; /* Move it towards the top */
-    right: 20px; /* Align it to the right side of the header */
+    position: absolute; 
+    top: 0px; 
+    right: 20px; 
     display: flex;
-    align-items: flex-start; /* Align the profile icon to the top */
-    justify-content: flex-end; /* Align the profile icon to the right */
-    padding-top: 20px; /* Adjust this value as needed to bring it down */
+    align-items: flex-start; 
+    /* justify-content: flex-end;  */
+   
 }

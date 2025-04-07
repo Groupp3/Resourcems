@@ -1,4 +1,4 @@
-/* AdminLayout.css */
+
 .user-layout {
     display: flex;
     height: 100vh;
@@ -9,10 +9,10 @@
 
 .main-content {
     flex-grow: 1;
-    margin-left: 50px; /* Adjust to match sidebar width */
+    margin-left: 50px; 
     padding: 20px;
     position: relative;
-    padding-top: 80px; /* Adjusted for fixed header */
+    padding-top: 80px; 
 }
 
 .profile-container {
@@ -23,7 +23,7 @@
 }
 
 .content {
-    padding-top: 60px; /* Space for the profile icon */
+    padding-top: 60px; 
 }
 
 .searchbar-container {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import AuthService from '../../service/AuthService';
 import styles from './LoginForm.module.css';
-import AuthService from '../../services/AuthService'; // Adjust path as needed
 
 const LoginForm = ({ onToggleForm }) => {
   const [formData, setFormData] = useState({

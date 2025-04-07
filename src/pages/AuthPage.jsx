@@ -13,9 +13,10 @@ const AuthPage = () => {
   return (
     <AuthLayout>
       {isLoginForm ? (
-        <LoginForm onToggleForm={toggleForm} />
-      ) : (
         <SignupForm onToggleForm={toggleForm} />
+      ) : (
+        
+        <LoginForm onToggleForm={toggleForm} />
       )}
     </AuthLayout>
   );

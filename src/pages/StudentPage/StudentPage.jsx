@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import UserLayout from "../../layouts/UserLayout/UserLayout"; 
 import { getUsersByRole } from "../../services/AdminService"; 
 import UserCard from "../../components/UserCard/UserCard";
 import { FaList, FaTh } from "react-icons/fa";
-import "./StudentPage.css"; // You can keep the same styles
+import "./StudentPage.css";
 import StudentUserLayout from "../../layouts/StudentUserLayout/StudentUserLayout";
-import StudentLayout from "../../layouts/Studentlayout/StudentLayout";
+
 const StudentsPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [mentors, setMentors] = useState([]);
@@ -14,8 +13,11 @@ const StudentsPage = () => {
   useEffect(() => {
     const fetchMentors = async () => {
       try {
-        const mentorUsers = await getUsersByRole("MENTOR"); // ✅ only mentors
-        setMentors(mentorUsers);
+        const allUsers = await getUsersByRole(); // Fetch all users
+        const onlyMentors = allUsers.filter((user) => 
+          user.roles?.some(role => role.name === "MENTOR")
+        );
+        setMentors(onlyMentors);
       } catch (error) {
         console.error("Error fetching mentors: ", error);
       }
@@ -30,8 +32,9 @@ const StudentsPage = () => {
   };
 
   const filteredMentors = mentors.filter((mentor) =>
-    (mentor.firstName?.toLowerCase() + " " + mentor.lastName?.toLowerCase())
-      .includes(searchQuery.toLowerCase())
+    `${mentor.firstName?.toLowerCase() || ""} ${mentor.lastName?.toLowerCase() || ""}`.includes(
+      searchQuery.toLowerCase()
+    )
   );
 
   return (
@@ -70,7 +73,7 @@ const StudentsPage = () => {
           {filteredMentors.map((mentor) => (
             <UserCard
               key={mentor.id}
-              name={`${mentor.firstName} ${mentor.lastName || ""}`}
+              name={`${mentor.firstName || ""} ${mentor.lastName || ""}`}
               email={mentor.email || "example@email.com"}
               avatar={mentor.profileImageUrl || "https://via.placeholder.com/150"}
               accentColor={getAccentColor()}

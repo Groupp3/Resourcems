@@ -19,10 +19,10 @@ const MENU_ITEMS = {
     { icon: <i className="bi bi-box-seam" />, text: 'Resource', path: '/resource' },
   ],
   STUDENT: [
-    { icon: <i className="bi bi-house-door" />, text: 'Home', path: '/' },
-    { icon: <i className="bi bi-person" />, text: 'Profile', path: '/profile' },
-    { icon: <i className="bi bi-people" />, text: 'Mentors', path: '/users' },
-    { icon: <i className="bi bi-box-seam" />, text: 'Resource', path: '/resource' },
+    { icon: <i className="bi bi-house-door" />, text: 'Home', path: '/student' },
+    { icon: <i className="bi bi-person" />, text: 'Profile', path: '/student/profile' },
+    { icon: <i className="bi bi-people" />, text: 'Mentors', path: '/student/user' },
+    { icon: <i className="bi bi-box-seam" />, text: 'Resource', path: '/student/resource' },
   ]
 };
  

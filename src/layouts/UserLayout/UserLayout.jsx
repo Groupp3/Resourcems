@@ -4,7 +4,7 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import Header from "../../components/header/Header";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import AuthService from "../../services/AuthService"; // Import AuthService
-import "./UserLayout.css";
+
 
 const UserLayout = ({ children }) => {
   const navigate = useNavigate();

@@ -31,7 +31,7 @@ const AdminLayout = ({ children }) => {
         textColor="#000000"
         borderColor="#DDDDDD"
         profileSrc="https://via.placeholder.com/100"
-        profileName="Admin"
+        
         onLogout={handleLogout}
       />
 

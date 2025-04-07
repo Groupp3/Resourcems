@@ -10,7 +10,9 @@ import {
   Trash, 
   Check,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Mail,
+  UserCircle,
 } from 'lucide-react';
 import './List.css';
 
@@ -42,19 +44,21 @@ const Avatar = ({ name, size = 32 }) => {
   );
 };
 
-const ActionButton = ({ icon, onClick, variant = 'default' }) => (
+const ActionButton = ({ icon, onClick, variant = 'default', label = null }) => (
   <button 
     className={`action-btn action-btn-${variant}`} 
     onClick={onClick}
   >
     {icon}
+    {label && <span className="action-btn-label">{label}</span>}
   </button>
 );
 
 ActionButton.propTypes = {
   icon: PropTypes.node.isRequired,
   onClick: PropTypes.func,
-  variant: PropTypes.oneOf(['default', 'primary', 'danger'])
+  variant: PropTypes.oneOf(['default', 'primary', 'danger']),
+  label: PropTypes.string
 };
 
 const Pagination = ({ totalItems, itemsPerPage, currentPage, onPageChange, theme }) => {
@@ -196,7 +200,7 @@ const List = ({
   };
 
   // Render different list types based on configuration
-  const renderListContent = () => {
+  const renderTableView = () => {
     return currentItems.map((item, index) => (
       <div key={item.id || index} className="list-row">
         <div className="list-cell select-item">
@@ -255,6 +259,91 @@ const List = ({
     ));
   };
 
+  // Render card view for mobile
+  const renderCardView = () => {
+    return currentItems.map((item, index) => (
+      <div key={item.id || index} className="list-card">
+        <div className="card-header">
+          {type === 'request' && (
+            <div className="card-avatar">
+              <Avatar name={item.username} size={48} />
+            </div>
+          )}
+          
+          <div className="card-title">
+            {/* Display primary info based on type */}
+            {type === 'request' ? (
+              <h3>{item.username}</h3>
+            ) : (
+              <h3>{item.name || item.title || `Item #${item.id}`}</h3>
+            )}
+            
+            {/* Show request number as subtitle for request type */}
+            {type === 'request' && item.number && (
+              <div className="card-subtitle">{item.number}</div>
+            )}
+          </div>
+          
+          <div className="card-checkbox">
+            <label className="checkbox-container">
+              <input
+                type="checkbox"
+                checked={selectedItems.includes(item.id)}
+                onChange={() => handleSelectItem(item.id)}
+                className="list-checkbox"
+              />
+              <span className="checkmark"></span>
+            </label>
+          </div>
+        </div>
+        
+        <div className="card-content">
+          {columns.map((column) => {
+            // Skip rendering certain columns that are already displayed in the header
+            if (type === 'request' && (column.key === 'username' || column.key === 'number')) {
+              return null;
+            }
+            
+            return (
+              <div key={column.key} className="card-field">
+                <div className="card-field-label">{column.title}</div>
+                <div className="card-field-value">
+                  {column.key === 'email' ? (
+                    <div className="card-email">
+                      <Mail size={14} />
+                      <span>{item[column.key]}</span>
+                    </div>
+                  ) : column.key === 'role' ? (
+                    <div className="card-role">
+                      <UserCircle size={14} />
+                      <span>{item[column.key]}</span>
+                    </div>
+                  ) : (
+                    (column.render ? column.render(item) : item[column.key])
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {actions && (
+          <div className="card-actions">
+            {actions.map((action, actionIndex) => (
+              <ActionButton
+                key={actionIndex}
+                icon={action.icon}
+                variant={action.variant}
+                onClick={() => onActionClick(action.type, item)}
+                label={action.type.charAt(0).toUpperCase() + action.type.slice(1)}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    ));
+  };
+
   return (
     <div className={`list-container list-${type} list-theme-${theme}`}>
       {/* Bulk Actions */}
@@ -271,43 +360,63 @@ const List = ({
         </div>
       )}
       
-      {/* List Header */}
-      <div className="list-header">
-        <div className="list-header-cell select-all">
-          <label className="checkbox-container">
-            <input
-              type="checkbox"
-              checked={selectAll}
-              onChange={handleSelectAll}
-              className="list-checkbox"
-            />
-            <span className="checkmark"></span>
-          </label>
-        </div>
-        
-        {columns.map((column) => (
-          <div 
-            key={column.key} 
-            className="list-header-cell"
-            style={{ width: column.width || 'auto' }}
-          >
-            {column.title}
+      
+      <div className="list-table">
+        {/* List Header */}
+        <div className="list-header">
+          <div className="list-header-cell select-all">
+            <label className="checkbox-container">
+              <input
+                type="checkbox"
+                checked={selectAll}
+                onChange={handleSelectAll}
+                className="list-checkbox"
+              />
+              <span className="checkmark"></span>
+            </label>
           </div>
-        ))}
-        {actions && <div className="list-header-cell">Actions</div>}
-      </div>
+          
+          {columns.map((column) => (
+            <div 
+              key={column.key} 
+              className="list-header-cell"
+              style={{ width: column.width || 'auto' }}
+            >
+              {column.title}
+            </div>
+          ))}
+          {actions && <div className="list-header-cell">Actions</div>}
+        </div>
 
-      {/* List Content */}
-      <div className="list-body">
+        {/* List Content */}
+        <div className="list-body">
+          {data.length > 0 ? (
+            renderTableView()
+          ) : (
+            <div className="list-empty">No items to display</div>
+          )}
+        </div>
+      </div>
+      
+      {/* Card View (for mobile) */}
+      <div className="list-cards">
         {data.length > 0 ? (
-          renderListContent()
+          renderCardView()
         ) : (
           <div className="list-empty">No items to display</div>
         )}
       </div>
       
       {/* Pagination */}
-      
+      {data.length > itemsPerPage && (
+        <Pagination 
+          totalItems={data.length} 
+          itemsPerPage={itemsPerPage} 
+          currentPage={currentPage} 
+          onPageChange={setCurrentPage} 
+          theme={theme}
+        />
+      )}
     </div>
   );
 };

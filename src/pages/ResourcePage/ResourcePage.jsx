@@ -1,71 +1,90 @@
 import React from "react";
+import "./ResourcePage.css";
 import AdminLayout from "../../layouts/AdminLayout/AdminLayout";
-import ListLayout from "../../layouts/ListLayout/ListLayout";
-import { FileText, Eye, Download, Trash2, Lock, Globe } from "lucide-react";
-import styles from  "./ResourcePage.module.css";
+import ResourceCard from "../../components/ResourceCard/ResourceCard";
+import FileList from "../../components/FileList/FileList";
 
-const documentData = [
-  { id: 1, name: "Project Proposal.pdf", type: "PDF", size: "2.5 MB", uploadedBy: "John Doe", access: "public" },
-  { id: 2, name: "Financial Report.xlsx", type: "Excel", size: "1.2 MB", uploadedBy: "Jane Smith", access: "private" },
-  { id: 3, name: "Marketing Strategy.docx", type: "Word", size: "3.7 MB", uploadedBy: "Mike Johnson", access: "public" },
-  { id: 4, name: "Q2 Results.pdf", type: "PDF", size: "5.1 MB", uploadedBy: "Sarah Williams", access: "private" },
-  { id: 5, name: "Product Roadmap.pptx", type: "PowerPoint", size: "8.3 MB", uploadedBy: "David Lee", access: "public" }
-];
+import {
+  VideoIcon,
+  FileTextIcon,
+  BadgeCheckIcon,
+} from "lucide-react";
 
-const documentColumns = [
-  {
-    key: "document",
-    title: "Document",
-    render: (item) => (
-      <div className="document-info">
-        <FileText className="document-icon" size={18} />
-        <span className="document-name">{item.name}</span>
-      </div>
-    ),
-    width: "40%",
-  },
-  {
-    key: "uploadedBy",
-    title: "Uploaded By",
-    width: "30%",
-  },
-  {
-    key: "access",
-    title: "Access",
-    render: (item) => (
-      <div className="access-icon">
-        {item.access === "public" ? <Globe size={18} /> : <Lock size={18} />}
-      </div>
-    ),
-    width: "20%",
-  },
-];
-
-const documentActions = [
-  { type: "view", icon: <Eye size={18} />, variant: "default" },
-  { type: "download", icon: <Download size={18} />, variant: "primary" },
-  { type: "delete", icon: <Trash2 size={18} />, variant: "danger" },
-];
-
-const handleActionClick = (actionType, item) => {
-  console.log(`${actionType} clicked for`, item);
-};
 
 const ResourcePage = () => {
+  // Storage data with appropriate icons for each title
+  const storageItems = [
+    {
+      title: "Videos",
+      used: 24,
+      total: 50,
+      icon: <VideoIcon size={24} />, // Suitable for videos
+      color: "#9747FF"
+    },
+    {
+      title: "Documents",
+      used: 10,
+      total: 50,
+      icon: <FileTextIcon size={24} />, // Better for documents
+      color: "#FF9900"
+    },
+    {
+      title: "Certificates",
+      used: 16,
+      total: 50,
+      icon: <BadgeCheckIcon size={24} />, // Certificate-like appearance
+      color: "#FF00FF"
+    }
+  ];
+
+
+  // Recent files data
+  const recentFiles = [
+    { name: "Wiz Khalifa - See You Again", extension: "MP3", size: "5.265 KB" },
+    { name: "honest.psd", extension: "PDF", size: "825 KB" },
+    { name: "Screenshot2023.png", extension: "PNG", size: "121 KB" }
+  ];
+
+  // Format files for the FileList component
+  const formattedFiles = recentFiles.map(file => ({
+    name: file.name,
+    size: file.size,
+    type: file.extension.toLowerCase()
+  }));
+
   return (
     <AdminLayout>
-      <div className={styles.adminlayout}>
-        <ListLayout
-          type="document"
-          data={documentData}
-          columns={documentColumns}
-          actions={documentActions}
-          onActionClick={handleActionClick}
-          itemsPerPage={3}
-          title="Document Resources"
-          theme="purple"
-        />
+    <div className="adminlayout">
+      <div className="resource-page">
+        <section className="storage-section">
+        
+          <div className="storage-cards">
+            {storageItems.map((item, index) => (
+              <div key={index} className="storage-card-wrapper">
+                <ResourceCard 
+                  title={item.title} 
+                  color={item.color}
+                  usedStorage={`${item.used} GB of ${item.total} GB used`}
+                  percentage={item.used / item.total * 100}
+                />
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <div className="content-wrapper">
+          <section className="files-section">
+            <div className="files-header">
+              <h2 className="section-title">New Files</h2>
+              <button className="view-all-btn">VIEW ALL</button>
+            </div>
+            
+            <FileList files={formattedFiles} />
+          </section>
+         
+        </div>
       </div>
+    </div>
     </AdminLayout>
   );
 };

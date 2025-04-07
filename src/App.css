@@ -5,6 +5,22 @@
   text-align: center;
 }
 
+/* Global layout adjustments */
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* Main content container */
+.main-content {
+  transition: margin-left 0.3s ease, width 0.3s ease;
+  padding-top: 80px; /* Same as header height */
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -30,6 +46,29 @@
 @media (prefers-reduced-motion: no-preference) {
   a:nth-of-type(2) .logo {
     animation: logo-spin infinite 20s linear;
+  }
+}
+
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .main-content {
+      margin-left: 0 !important;
+      padding-top: 120px; /* Space for both mobile headers (60px + 60px) */
+  }
+  
+  /* When sidebar is open on mobile */
+  body.sidebar-open .main-content {
+      margin-left: 0 !important;
+      width: calc(100% - 250px);
+      margin-right: 0;
+  }
+}
+
+/* Tablet adjustments */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .main-content {
+      padding-top: 70px; /* Same as tablet header height */
   }
 }
 

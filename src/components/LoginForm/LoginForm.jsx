@@ -87,11 +87,11 @@ const LoginForm = ({ onToggleForm }) => {
                 required
                 disabled={isLoading}
               />
-              <button 
+<button 
                 type="button" 
                 className={styles.passwordToggle}
                 onClick={() => setShowPassword(!showPassword)}
-              >
+>
                 {showPassword ? "Hide" : "Show"}
               </button>
             </div>
@@ -108,10 +108,10 @@ const LoginForm = ({ onToggleForm }) => {
 
         <p className={styles.loginLink}>
           New User? <span onClick={onToggleForm}>Signup</span>
-        </p>
-      </form>
-    </div>
+</p>
+</form>
+</div>
   );
 };
-
+ 
 export default LoginForm;

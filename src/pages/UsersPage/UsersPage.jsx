@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import UserLayout from "../../layouts/UserLayout/UserLayout"; 
+import UserLayout from "../../layouts/AdminLayout/AdminLayout"; 
 import { getUsersByRole } from "../../services/AdminService"; 
 import UserCard from "../../components/UserCard/UserCard";
 import { FaList, FaTh } from "react-icons/fa";
@@ -44,10 +44,7 @@ const UsersPage = () => {
   return (
     <UserLayout>
       <div className="verlof-page">
-        <div className="verlof-header">
-          <h1>USERS</h1>
-          
-        </div>
+        
 
         <div className="verlof-tabs">
           {tabs.map((tab) => (

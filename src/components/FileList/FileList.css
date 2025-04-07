@@ -1,0 +1,131 @@
+.file-list-container {
+    background-color: #f5f5f7;
+    border-radius: 8px;
+    padding: 16px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: #333;
+    box-sizing: border-box;
+  }
+  
+  .file-list-header {
+    display: flex;
+    justify-content: space-between;
+    color: #888;
+    font-size: 14px;
+    margin-bottom: 8px;
+    padding-right: 16px;
+  }
+  
+  .file-name-header {
+    flex-grow: 1;
+  }
+  
+  .file-size-header {
+    min-width: 80px;
+    text-align: right;
+  }
+  
+  .file-items {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .file-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    width: 100%;
+  }
+  
+  .file-info {
+    display: flex;
+    gap: 6px; 
+    flex-grow: 1;
+    
+    
+  }
+  
+  .file-type-badge {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px; 
+    min-width: 36px;
+    height: 36px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    color: white;
+    flex-shrink: 0;
+    
+  }
+  
+  .file-name {
+    font-size: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex-grow: 1;
+    width: 300px; 
+    align-items: center;
+  }
+  
+  .file-size {
+    font-size: 14px;
+    color: #888;
+    min-width: 80px;
+    text-align: right;
+    flex-shrink: 0; /* Prevent size from shrinking */
+  }
+  
+  .share-button {
+    margin-top: 16px;
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+    text-align: left;
+  }
+  
+  .share-button:hover {
+    color: #0066cc;
+  }
+  
+  /* Responsive styles for smaller screens */
+  @media screen and (max-width: 480px) {
+    .file-info {
+      margin-right: 16px; /* Reduce spacing on small screens */
+    }
+    
+    .file-type-badge {
+      width: 30px; /* Slightly smaller badge on mobile */
+      height: 30px;
+      font-size: 8px;
+    }
+    
+    .file-name {
+      font-size: 13px;
+    }
+    
+    .file-size {
+      min-width: 60px;
+      font-size: 13px;
+    }
+  }
+  
+  /* For very small screens */
+  @media screen and (max-width: 320px) {
+    .file-info {
+      gap: 8px;
+      margin-right: 12px;
+    }
+    
+    .file-size {
+      min-width: 50px;
+    }
+  }

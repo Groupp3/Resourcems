@@ -25,14 +25,15 @@ export const getUsersByRole = async () => {
 
     console.log("Users retrieved:", response.data);
 
-    return response.data.response || []; // Ensure it returns an array
+    return response.data.response || []; 
   } catch (error) {
     handleApiError(error);
     return [];
   }
 };
 
-// Function to fetch pending user requests
+
+
 export const getPendingUsers = async () => {
   try {
     const token = localStorage.getItem("token");
@@ -55,7 +56,7 @@ export const getPendingUsers = async () => {
 
     console.log("Pending users retrieved:", response.data);
 
-    return response.data.response || []; // Ensure it returns an array
+    return response.data.response || []; 
   } catch (error) {
     handleApiError(error);
     return [];
@@ -69,5 +70,56 @@ const handleApiError = (error) => {
     console.error("Error details:", error.response.data);
   } else {
     console.error("Request error:", error.message);
+  }
+};
+
+export const updateUserStatus = async (userId, status) => {
+  try {
+    const token = localStorage.getItem("token");
+    
+    if (!token) {
+      throw new Error("No authentication token found");
+    }
+    
+    const response = await axios.put(
+      `${API_BASE_URL}/users/${userId}/status?status=${status}`, 
+      {},  
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    return response.data.response;
+  } catch (error) {
+    console.error('Error updating user status:', error);
+    throw error;
+  }
+};
+
+export const updateUserRole = async (userId, roleName) => {
+  try {
+    const token = localStorage.getItem("token");
+    
+    if (!token) {
+      throw new Error("No authentication token found");
+    }
+    
+    
+    const response = await axios.put(
+      `${API_BASE_URL}/users/${userId}/role?role=${roleName}`,
+      {}, 
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data.response;
+  } catch (error) {
+    console.error("Error updating user role:", error);
+    throw error;
   }
 };

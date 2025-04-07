@@ -60,7 +60,6 @@ const AuthService = {
       throw error.response?.data || { message: 'Login failed' };
     }
   },
-
   logout: () => {
     // Clear all authentication data from localStorage
     localStorage.removeItem('token');
@@ -71,7 +70,6 @@ const AuthService = {
     // Remove Authorization header
     delete axios.defaults.headers.common['Authorization'];
   },
-
   getCurrentUser: () => {
     // Retrieve user data from localStorage
     const userStr = localStorage.getItem('user');

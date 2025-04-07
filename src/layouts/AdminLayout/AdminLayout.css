@@ -5,26 +5,26 @@
     width: 83vw;
     background-color: #ffffff; 
     overflow: auto;
+    font-family: 'Poppins', sans-serif;
 }
 
 .admin-main-content {
     flex-grow: 1;
-    margin-left: 10px; 
-    padding: 20px;
+    padding: 10px 20px;
     position: relative;
-    padding-top: 80px; 
-    padding-left: 20px;
+    padding-top: 90px; /* extra space for header */
+    transition: all 0.3s ease;
 }
 
 .profile-container {
     position: absolute;
     top: 10px;
-    right: 100px;
+    right: 20px;
     z-index: 1000;
 }
 
 .content {
-    padding-top: 60px; /* Space for the profile icon */
+    padding-top: 30px; /* Space below the title */
 }
 
 .header {
@@ -35,22 +35,44 @@
     background-color: #fff;
     color: #000;
     padding: 20px 20px 10px 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional shadow */
-    z-index: 5; /* Ensures header stays below sidebar */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 5;
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
-
-  .sidebar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 250px; /* Sidebar width */
-  height: 100%;
-  background-color: #2b3d51; /* Sidebar background color */
-  color: white;
-  padding: 20px;
-  z-index: 1001; /* Ensures sidebar stays on top */
 }
 
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100%;
+    background-color: #2b3d51;
+    color: white;
+    padding: 20px;
+    z-index: 1001;
+}
+
+
+.title {
+    font-size: 28px;
+    font-weight: 600;
+    color: #2b3d51;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    padding-left: 12px;
+    text-align: start;
+}
+
+/* Optional Responsive Tweaks */
+@media (max-width: 768px) {
+    .admin-main-content {
+        padding-top: 80px;
+    }
+
+    .title {
+        font-size: 22px;
+        padding-left: 10px;
+    }
+}

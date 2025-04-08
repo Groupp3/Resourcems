@@ -11,7 +11,7 @@ const VideoCardPage = () => {
       createdAt: "2025-04-06T10:00:00Z",
       isPublic: true,
       uploadedBy: "John Doe",
-      role: "Instructor",
+      role: "Admin",
       thumbnailUrl: "https://via.placeholder.com/320x180.png?text=React",
       tags: ["React", "Frontend", "JavaScript"]
     },
@@ -21,7 +21,7 @@ const VideoCardPage = () => {
       createdAt: "2025-03-30T14:00:00Z",
       isPublic: false,
       uploadedBy: "Jane Smith",
-      role: "Senior Developer",
+      role: "Mentor",
       thumbnailUrl: "https://via.placeholder.com/320x180.png?text=Spring+Boot",
       tags: ["Java", "Backend", "Spring"]
     },
@@ -31,7 +31,7 @@ const VideoCardPage = () => {
       createdAt: "2025-04-01T09:30:00Z",
       isPublic: true,
       uploadedBy: "Alex Johnson",
-      role: "UI Designer",
+      role: "Mentor",
       thumbnailUrl: "https://via.placeholder.com/320x180.png?text=CSS+Advanced",
       tags: ["CSS", "Design", "Frontend"]
     },
@@ -41,7 +41,7 @@ const VideoCardPage = () => {
       createdAt: "2025-03-25T16:45:00Z",
       isPublic: true,
       uploadedBy: "Sarah Williams",
-      role: "Database Admin",
+      role: "Admin",
       thumbnailUrl: "https://via.placeholder.com/320x180.png?text=Database",
       tags: ["SQL", "Performance", "Backend"]
     }

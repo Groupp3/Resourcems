@@ -7,14 +7,12 @@
 .breadcrumb-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  margin-bottom: 1rem;
-  gap: 1rem;
-  overflow-x: auto;
-  white-space: nowrap;
-  z-index: 10; /* Ensures it stays above other content */
+  justify-content: space-between; /* 👈 This ensures breadcrumbs left, button right */
+  padding: 1rem 2rem;
+  margin-top: 40px;
   position: relative;
+  z-index: 10;
+  flex-wrap: wrap;
 }
 
 .upload-button {
@@ -27,7 +25,9 @@
   border-radius: 12px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  z-index: 10; /* Ensures it stays above other content */
+  z-index: 99;
+  margin-top: 0; /* 👈 remove top margin */
+  margin-right: 500px; /* 👈 remove this to avoid shifting */
 }
 
 .upload-button:hover {

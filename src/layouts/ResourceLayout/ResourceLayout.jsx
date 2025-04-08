@@ -58,12 +58,14 @@ const ResourceLayout = ({ children, onUploadSave }) => {
             
       <Sidebar userRole="ADMIN" defaultOpen={true} logoText="EduVault" />
       <div className="content-area">
-        <div className="breadcrumb-header">
-          <Breadcrumb items={breadcrumbs} />
-          <button className="upload-button" onClick={() => setShowModal(true)}>
-            Upload +
-          </button>
-        </div>
+      <div className="breadcrumb-header">
+  <div className="breadcrumb-wrapper">
+    <Breadcrumb items={breadcrumbs} />
+  </div>
+  <button className="upload-button" onClick={() => setShowModal(true)}>
+    Upload +
+  </button>
+</div>
 
         {/* Render the children passed to this layout */}
         {children}

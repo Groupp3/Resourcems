@@ -1,37 +1,31 @@
-// src/context/AuthContext.js
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import AuthService from '../services/AuthService';
+// states/AuthContext.jsx
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(AuthService.getCurrentUser());
-  const [token, setToken] = useState(AuthService.getToken());
+  const [user, setUser] = useState(null); // <== must be null if not logged in
 
   useEffect(() => {
-    const storedUser = AuthService.getCurrentUser();
-    const storedToken = AuthService.getToken();
-    if (storedUser && storedToken) {
-      setUser(storedUser);
-      setToken(storedToken);
+    // Optional: Load user from localStorage or session
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
     }
   }, []);
 
-  const login = async (email, password) => {
-    const data = await AuthService.login(email, password);
-    setUser(data.user);
-    setToken(data.token);
-    return data;
+  const login = (userData) => {
+    setUser(userData);
+    localStorage.setItem("user", JSON.stringify(userData));
   };
 
   const logout = () => {
-    AuthService.logout();
     setUser(null);
-    setToken(null);
+    localStorage.removeItem("user");
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

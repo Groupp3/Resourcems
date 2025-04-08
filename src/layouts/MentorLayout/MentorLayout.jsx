@@ -3,10 +3,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Header from "../../components/header/Header"; 
 
-import adminRoutes from "../../routes/AdminRoutes"; 
-import "./AdminLayout.css";
+import mentorRoutes from "../../routes/MentorRoute"; 
+import "./MentorLayout.css";
 
-const AdminLayout = ({ children }) => {
+const MentorLayout = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [pageTitle, setPageTitle] = useState("");
@@ -17,28 +17,26 @@ const AdminLayout = ({ children }) => {
   };
 
   useEffect(() => {
-    // Prioritize more specific routes
-    const matched = [...adminRoutes]
+    const matched = [...mentorRoutes]
       .sort((a, b) => b.path.length - a.path.length)
       .find(route => location.pathname.startsWith(route.path));
     
-    setPageTitle(matched ? matched.title : "Admin");
+    setPageTitle(matched ? matched.title : "Mentor");
   }, [location.pathname]);
 
   return (
-    <div className="admin-layout">
+    <div className="mentor-layout">
       <Header
         backgroundColor="#FFFFFF"
         textColor="#000000"
         borderColor="#DDDDDD"
         profileSrc="https://via.placeholder.com/100"
-        
         onLogout={handleLogout}
       />
 
-      <Sidebar userRole="ADMIN" defaultOpen={true} logoText="EduVault" />
+      <Sidebar userRole="MENTOR" defaultOpen={true} logoText="EduVault" />
 
-      <div className="admin-main-content">
+      <div className="mentor-main-content">
         <div className="title">{pageTitle}</div>
         <div className="content">{children}</div>
       </div>
@@ -46,4 +44,4 @@ const AdminLayout = ({ children }) => {
   );
 };
 
-export default AdminLayout;
+export default MentorLayout;

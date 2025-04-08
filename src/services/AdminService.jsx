@@ -89,7 +89,7 @@ export const updateUserStatus = async (userId, status) => {
 };
 
 // Update user role
-export const updateUserRole = async (userId, roleName) => {
+export const updateUserRole = async (userId, role) => {
   try {
     const token = localStorage.getItem("token");
     
@@ -98,7 +98,7 @@ export const updateUserRole = async (userId, roleName) => {
     }
     
     const response = await axios.put(
-      `${API_BASE_URL}/users/${userId}/role?role=${roleName}`,
+      `${API_BASE_URL}/users/${userId}/role?role=${role}`,
       {}, 
       {
         headers: {

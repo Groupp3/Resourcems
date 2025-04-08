@@ -4,15 +4,17 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import AuthPage from "../pages/AuthPage";
 import adminRoutes from "./AdminRoutes";
 import studentRoutes from "./StudentRoute";
-import { useAuth } from "../states/AuthContext"; // Make sure this is the correct path
+import mentorRoutes from "./MentorRoute";
+import { useAuth } from "../states/AuthContext";
+import ProtectedRoute from "../routes/ProtectedRoute"; // import it
 
 const AppRoutes = () => {
   const { user } = useAuth();
 
-  // Simple role-based check
   const getDefaultRoute = () => {
     if (user?.role === "ADMIN") return "/admin";
     if (user?.role === "STUDENT") return "/student";
+    if (user?.role === "MENTOR") return "/mentor";
     return "/auth";
   };
 
@@ -22,12 +24,29 @@ const AppRoutes = () => {
 
       {/* Admin Routes */}
       {adminRoutes.map(({ path, element }) => (
-        <Route key={path} path={path} element={element} />
+        <Route
+          key={path}
+          path={path}
+          element={<ProtectedRoute>{element}</ProtectedRoute>}
+        />
       ))}
 
       {/* Student Routes */}
       {studentRoutes.map(({ path, element }) => (
-        <Route key={path} path={path} element={element} />
+        <Route
+          key={path}
+          path={path}
+          element={<ProtectedRoute>{element}</ProtectedRoute>}
+        />
+      ))}
+
+      {/* Mentor Routes */}
+      {mentorRoutes.map(({ path, element }) => (
+        <Route
+          key={path}
+          path={path}
+          element={<ProtectedRoute>{element}</ProtectedRoute>}
+        />
       ))}
 
       {/* Default redirect based on role */}

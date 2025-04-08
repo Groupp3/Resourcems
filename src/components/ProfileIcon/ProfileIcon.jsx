@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 import { FaChevronDown, FaSignOutAlt, FaUser } from 'react-icons/fa';
+import AuthService from '../../services/AuthService'; // Adjust path if needed
 import './ProfileIcon.css';
 
 const ProfileIcon = ({ 
@@ -14,42 +16,34 @@ const ProfileIcon = ({
   const [imageError, setImageError] = useState(false);
   const [profileImageUrl, setProfileImageUrl] = useState('');
   const [token, setToken] = useState('');
+  const navigate = useNavigate(); // ✅ Hook for navigation
 
-  // Load profile image URL and token from localStorage on component mount
   useEffect(() => {
-    const storedImageUrl = localStorage.getItem('profileImageUrl'); // Fetch from localStorage key 'profileImageUrl'
+    const storedImageUrl = localStorage.getItem('profileImageUrl');
     const storedToken = localStorage.getItem('token');
     
-    if (storedImageUrl) {
-      setProfileImageUrl(storedImageUrl);
-    }
-    
-    if (storedToken) {
-      setToken(storedToken);
-    }
+    if (storedImageUrl) setProfileImageUrl(storedImageUrl);
+    if (storedToken) setToken(storedToken);
   }, []);
 
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
+  const toggleDropdown = () => setIsOpen(!isOpen);
 
   const handleLogout = () => {
     setIsOpen(false);
-    if (onLogout) onLogout();
+    AuthService.logout();         // Clear storage and remove headers
+    if (onLogout) onLogout();     // Optional callback
+    navigate('/auth');            // ✅ Redirect to /auth
   };
 
-  const handleImageError = () => {
-    setImageError(true);
-  };
+  const handleImageError = () => setImageError(true);
   
   return (
     <div className={`profile-icon-container ${className}`}>
-      {/* Profile Icon and Name (Always Visible) */}
       <div className="profile-wrapper" onClick={toggleDropdown}>
         <div className={`profile-icon ${size}`}>
           {!imageError && profileImageUrl ? (
             <img 
-              src={profileImageUrl} // Directly use the S3 URL from localStorage
+              src={profileImageUrl}
               alt={alt} 
               onError={handleImageError}
             />
@@ -61,7 +55,6 @@ const ProfileIcon = ({
         <FaChevronDown className="dropdown-icon" />
       </div>
 
-      {/* Dropdown (Only Logout Option) */}
       {isOpen && (
         <div className="profile-dropdown">
           <button className="dropdown-item logout-btn" onClick={handleLogout}>

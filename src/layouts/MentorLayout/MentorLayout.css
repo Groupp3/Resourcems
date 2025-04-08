@@ -1,5 +1,4 @@
-
-.admin-layout {
+.mentor-layout {
     display: flex;
     height: 100vh;
     width: 83vw;
@@ -8,7 +7,7 @@
     font-family: 'Poppins', sans-serif;
 }
 
-.admin-main-content {
+.mentor-main-content {
     flex-grow: 1;
     padding: 10px 20px;
     position: relative;
@@ -42,15 +41,14 @@
     align-items: center;
 }
 
-  .sidebar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 250px; 
-  height: 100%;
-  background-color: #2b3d51;
-  color: white;
-  padding: 20px;
-  z-index: 1001;
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px; 
+    height: 100%;
+    background-color: #2b3d51;
+    color: white;
+    padding: 20px;
+    z-index: 1001;
 }
-

@@ -1,33 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
-import "./UserCard.css";
-import {
-  FaTrashAlt,
-  FaUserShield,
-  FaUserTie,
-  FaUserGraduate,
-  FaEllipsisH,
-  FaPencilAlt,
-  FaCamera
-} from "react-icons/fa";
-import { updateUserRole } from "../../services/AdminService"; // Adjust path as needed
+import "./UserMSCard.css";
+import { FaUserShield, FaUserTie, FaUserGraduate, FaCamera } from "react-icons/fa";
 
-const UserCard = ({ userId, name, email, avatar, role, onRoleChange, onDelete }) => {
-  const [menuOpen, setMenuOpen] = useState(false);
+const UserMSCard = ({ userId, name, email, avatar, role }) => {
   const [showAvatarOverlay, setShowAvatarOverlay] = useState(false);
   const menuRef = useRef(null);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (menuRef.current && !menuRef.current.contains(event.target)) {
-        setMenuOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   const getAccentStyle = (role) => {
     const normalizedRole = role?.toLowerCase();
@@ -57,18 +34,6 @@ const UserCard = ({ userId, name, email, avatar, role, onRoleChange, onDelete })
 
   const { background, borderColor } = getAccentStyle(role);
 
-  const handleRoleChange = async (newRole) => {
-    try {
-      await updateUserRole(userId, newRole);
-      if (onRoleChange) {
-        onRoleChange(newRole);
-      }
-      setMenuOpen(false);
-    } catch (error) {
-      console.error("Failed to update role", error);
-    }
-  };
-
   const getRoleIcon = () => {
     const normalizedRole = role?.toLowerCase();
     switch (normalizedRole) {
@@ -93,52 +58,6 @@ const UserCard = ({ userId, name, email, avatar, role, onRoleChange, onDelete })
     >
       <div className="card-header-bg" style={{ background: background }}>
         <div className="pattern-overlay"></div>
-      </div>
-
-      <div className="top-actions">
-        <div className="menu-container" ref={menuRef}>
-          <button
-            className="menu-button"
-            title="Change role"
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
-            <FaEllipsisH />
-          </button>
-
-          {menuOpen && (
-            <div className="role-menu">
-              <div className="role-menu-title">Change Role</div>
-              <button
-                className="role-option"
-                onClick={() => handleRoleChange("ADMIN")}
-                style={role.toLowerCase() === "ADMIN" ? { backgroundColor: "rgba(78, 202, 255, 0.1)" } : {}}
-              >
-                <FaUserShield /> Admin
-              </button>
-              <button
-                className="role-option"
-                onClick={() => handleRoleChange("MENTOR")}
-                style={role.toLowerCase() === "MENTOR" ? { backgroundColor: "rgba(126, 100, 255, 0.1)" } : {}}
-              >
-                <FaUserTie /> Mentor
-              </button>
-              <button
-                className="role-option"
-                onClick={() => handleRoleChange("STUDENT")}
-                style={role.toLowerCase() === "STUDENT" ? { backgroundColor: "rgba(255, 141, 78, 0.1)" } : {}}
-              >
-                <FaUserGraduate /> Student
-              </button>
-            </div>
-          )}
-        </div>
-        <button
-          className="top-delete-button"
-          title="Delete user"
-          onClick={() => onDelete && onDelete()}
-        >
-          <FaTrashAlt />
-        </button>
       </div>
 
       <div className="card-content">
@@ -180,4 +99,4 @@ const UserCard = ({ userId, name, email, avatar, role, onRoleChange, onDelete })
   );
 };
 
-export default UserCard;
+export default UserMSCard;

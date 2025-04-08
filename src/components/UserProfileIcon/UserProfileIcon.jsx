@@ -1,14 +1,31 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./UserProfileIcon.css";
 
-const UserProfileIcon = ({ 
-  avatar = "/api/placeholder/200/200", 
+const UserProfileIcon = ({
+  avatar = "/api/placeholder/200/200",
   name = "John Doe",
   size = 100,
   onProfileUpdate = () => {},
 }) => {
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [profileImageUrl, setProfileImageUrl] = useState(null);
   const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    const storedUrl = localStorage.getItem("profileImageUrl");
+    if (storedUrl) {
+      fetch(storedUrl, { method: "GET" })
+        .then((res) => {
+          if (res.ok) {
+            setProfileImageUrl(storedUrl);
+          } else {
+            setProfileImageUrl(null);
+          }
+        })
+        .catch(() => {
+          setProfileImageUrl(null);
+        });
+    }
+  }, []);
 
   const iconStyle = {
     width: `${size}px`,
@@ -42,8 +59,10 @@ const UserProfileIcon = ({
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      const objectUrl = URL.createObjectURL(file);
-      setSelectedFile(objectUrl);
+      // You can upload to a server here and get back a URL
+      const objectUrl = URL.createObjectURL(file); // For preview only
+      setProfileImageUrl(objectUrl);
+      localStorage.setItem("profileImageUrl", objectUrl);
       onProfileUpdate && onProfileUpdate(file);
     }
   };
@@ -52,24 +71,24 @@ const UserProfileIcon = ({
     <div className="profile-icon-container" style={{ position: "relative" }}>
       <div className="profile-icon-wrapper" style={iconStyle}>
         <img
-          src={selectedFile || avatar}
+          src={profileImageUrl || avatar}
           alt={`${name}'s profile`}
           style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }}
         />
       </div>
-      <button 
-        className="add-profile-button" 
+      <button
+        className="add-profile-button"
         style={addButtonStyle}
         onClick={() => fileInputRef.current.click()}
       >
         +
       </button>
-      <input 
-        type="file" 
+      <input
+        type="file"
         ref={fileInputRef}
-        style={{ display: "none" }} 
-        accept="image/*" 
-        onChange={handleFileChange} 
+        style={{ display: "none" }}
+        accept="image/*"
+        onChange={handleFileChange}
       />
     </div>
   );

@@ -13,9 +13,9 @@ const MENU_ITEMS = {
     { icon: <i className="bi bi-clipboard-check" />, text: 'Request', path: '/admin/request' },
   ],
   MENTOR: [
-    { icon: <i className="bi bi-house-door" />, text: 'Home', path: '/' },
-    { icon: <i className="bi bi-person" />, text: 'Profile', path: '/profile' },
-    { icon: <i className="bi bi-people" />, text: 'Students', path: '/users' },
+    { icon: <i className="bi bi-house-door" />, text: 'Home', path: '/mentor' },
+    { icon: <i className="bi bi-person" />, text: 'Profile', path: '/mentor/profile' },
+    { icon: <i className="bi bi-people" />, text: 'Students', path: '/mentor/users' },
     { icon: <i className="bi bi-box-seam" />, text: 'Resource', path: '/resource' },
   ],
   STUDENT: [

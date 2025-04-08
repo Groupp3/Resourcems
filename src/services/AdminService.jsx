@@ -2,6 +2,8 @@ import axios from "axios";
 
 const API_BASE_URL = "http://localhost:8080/api/admin"; // Base API URL
 
+
+const API_USER_URL = "http://localhost:8080/api";
 // Function to fetch all users
 export const getUsersByRole = async () => {
   try {
@@ -21,7 +23,7 @@ export const getUsersByRole = async () => {
 
     console.log("Fetching users...");
 
-    const response = await axios.get(`${API_BASE_URL}/users`, config);
+    const response = await axios.get(`${API_USER_URL}/users`, config);
 
     console.log("Users retrieved:", response.data);
 

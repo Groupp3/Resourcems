@@ -1,97 +1,173 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ResourceLayout from "../../layouts/ResourceLayout/ResourceLayout";
 import VideoCard from "../../components/VideoCard/VideoCard";
+import { getUsersByRole } from "../../services/AdminService";
+import { getResources } from "../../services/ResourceService";
+import ReactPlayer from "react-player";
+import { IoCloseOutline } from "react-icons/io5"; // Updated to IoCloseOutline
 import "./VideoCardPage.css";
 
+const BASE_VIDEO_URL = "https://resourcebucket-1111.s3.amazonaws.com/";
+
 const VideoCardPage = () => {
-  const [videos, setVideos] = useState([
-    {
-      id: "1",
-      title: "Introduction to React",
-      createdAt: "2025-04-06T10:00:00Z",
-      isPublic: true,
-      uploadedBy: "John Doe",
-      role: "Admin",
-      thumbnailUrl: "https://via.placeholder.com/320x180.png?text=React",
-      tags: ["React", "Frontend", "JavaScript"]
-    },
-    {
-      id: "2",
-      title: "Spring Boot Basics",
-      createdAt: "2025-03-30T14:00:00Z",
-      isPublic: false,
-      uploadedBy: "Jane Smith",
-      role: "Mentor",
-      thumbnailUrl: "https://via.placeholder.com/320x180.png?text=Spring+Boot",
-      tags: ["Java", "Backend", "Spring"]
-    },
-    {
-      id: "3",
-      title: "Advanced CSS Techniques",
-      createdAt: "2025-04-01T09:30:00Z",
-      isPublic: true,
-      uploadedBy: "Alex Johnson",
-      role: "Mentor",
-      thumbnailUrl: "https://via.placeholder.com/320x180.png?text=CSS+Advanced",
-      tags: ["CSS", "Design", "Frontend"]
-    },
-    {
-      id: "4",
-      title: "Database Optimization",
-      createdAt: "2025-03-25T16:45:00Z",
-      isPublic: true,
-      uploadedBy: "Sarah Williams",
-      role: "Admin",
-      thumbnailUrl: "https://via.placeholder.com/320x180.png?text=Database",
-      tags: ["SQL", "Performance", "Backend"]
-    }
-  ]);
+  const [videos, setVideos] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedVideo, setSelectedVideo] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const usersData = await getUsersByRole();
+        setUsers(usersData);
+
+        const resourcesData = await getResources();
+        const videoResources = resourcesData.filter(
+          (item) => item.contentType && item.contentType.startsWith("video/")
+        );
+
+        const enhancedVideos = videoResources.map((video) => {
+          const user = usersData.find((user) => user.id === video.userId);
+          return {
+            id: video.id,
+            title: video.title || video.filename,
+            createdAt: video.createdAt,
+            isPublic: video.isPublic === true,
+            uploadedBy: user
+              ? `${user.firstName} ${user.lastName}`
+              : "Unknown User",
+            role: user ? user.role : "Unknown",
+            thumbnailUrl:
+              video.thumbnailUrl ||
+              "https://via.placeholder.com/320x180.png?text=Video",
+            tags: video.tags || [],
+            originalData: video,
+          };
+        });
+
+        setVideos(enhancedVideos);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const videoBreadcrumbs = [
+    { label: "Dashboard", url: "/dashboard" },
+    { label: "Resources", url: "/resources" },
+    { label: "Videos" },
+  ];
 
   const handleVideoClick = (video) => {
-    console.log("Video clicked:", video);
-    // Navigate to video detail page or play the video
+    setSelectedVideo(video);
+    document.body.style.overflow = "hidden";
   };
 
-  const handleVideoDelete = (videoToDelete) => {
+  const handleClosePlayer = () => {
+    setSelectedVideo(null);
+    document.body.style.overflow = "auto";
+  };
+
+  const handleVideoDelete = async (videoToDelete) => {
     if (window.confirm("Are you sure you want to delete this video?")) {
-      setVideos(videos.filter(video => video.id !== videoToDelete.id));
+      try {
+        setVideos(videos.filter((video) => video.id !== videoToDelete.id));
+        if (selectedVideo?.id === videoToDelete.id) {
+          handleClosePlayer();
+        }
+      } catch (error) {
+        console.error("Error deleting video:", error);
+      }
     }
   };
 
-  const handleUploadSave = (data) => {
-    console.log("Uploaded Data:", data);
-    // Add new video to the videos array
-    const newVideo = {
-      id: Date.now().toString(),
-      title: data.title || "New Video",
-      createdAt: new Date().toISOString(),
-      isPublic: data.isPublic || false,
-      uploadedBy: "Current User",
-      role: "Content Creator",
-      thumbnailUrl: data.thumbnailUrl || "https://via.placeholder.com/320x180.png?text=New+Video",
-      tags: data.tags || ["New"]
-    };
-    
-    setVideos([newVideo, ...videos]);
+  const handleUploadSave = async () => {
+    try {
+      const usersData = users.length ? users : await getUsersByRole();
+      const resourcesData = await getResources();
+      const videoResources = resourcesData.filter(
+        (item) => item.contentType && item.contentType.startsWith("video/")
+      );
+
+      const enhancedVideos = videoResources.map((video) => {
+        const user = usersData.find((user) => user.id === video.userId);
+        return {
+          id: video.id,
+          title: video.title || video.filename,
+          createdAt: video.createdAt,
+          isPublic: video.isPublic === true,
+          uploadedBy: user
+            ? `${user.firstName} ${user.lastName}`
+            : "Unknown User",
+          role: user ? user.role : "Unknown",
+          thumbnailUrl:
+            video.thumbnailUrl ||
+            "https://via.placeholder.com/320x180.png?text=Video",
+          tags: video.tags || [],
+          originalData: video,
+        };
+      });
+
+      setVideos(enhancedVideos);
+    } catch (error) {
+      console.error("Error refreshing videos after upload:", error);
+    }
   };
 
   return (
-    <ResourceLayout>
-      <div className="video-cards-container">
-        {videos.length > 0 ? (
-          <div className="video-cards-row">
-            {videos.map((video) => (
-              <div className="video-card-item" key={video.id}>
-                <VideoCard 
-                  video={video} 
-                  onClick={handleVideoClick}
-                  onDelete={handleVideoDelete}
-                />
-              </div>
-            ))}
-          </div>
+    <ResourceLayout
+      breadcrumbItems={videoBreadcrumbs}
+      pageTitle="Videos"
+      onUploadSave={handleUploadSave}
+    >
+      <div className="video-page-content">
+        {loading ? (
+          <div className="loading-message">Loading videos...</div>
         ) : (
-          <p className="no-videos-message">No videos available. Click "Upload +" to add videos.</p>
+          <div className="video-cards-container">
+            {videos.length > 0 ? (
+              <div className="video-cards-row">
+                {videos.map((video) => (
+                  <div className="video-card-item" key={video.id}>
+                    <VideoCard
+                      video={video}
+                      onClick={handleVideoClick}
+                      onDelete={handleVideoDelete}
+                    />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="no-videos-message">
+                No videos available. Click "Upload +" to add videos.
+              </p>
+            )}
+          </div>
+        )}
+
+        {selectedVideo && (
+          <div className="video-modal-overlay" onClick={handleClosePlayer}>
+            <div
+              className="video-modal-content"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <ReactPlayer
+                url={`${BASE_VIDEO_URL}${selectedVideo.originalData.objectKey}`}
+                controls
+                width="100%"
+                height="100%"
+              />
+              <button className="video-close-btn" onClick={handleClosePlayer}>
+                <IoCloseOutline size={24} /> {/* Updated close icon */}
+              </button>
+              <h3 className="video-title">{selectedVideo.title}</h3>
+            </div>
+          </div>
         )}
       </div>
     </ResourceLayout>

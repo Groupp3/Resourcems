@@ -4,9 +4,14 @@ import AuthPage from "../pages/AuthPage";
 import AdminPanel from "../pages/AdminPanel/AdminPanel";
 import UsersPage from "../pages/UsersPage/UsersPage";
 import UserProfilePage from "../pages/UserProfilePage/UserProfilePage";
-import ResourcePage from "../pages/ResourcePage/ResourcePage";
+import DocumentPage from "../pages/DocumentPage/DocumentPage";
 import RequestPage from "../pages/RequestPage/RequestPage";
-import VideoCardPage from "../pages/VideoCardPage/VideoCardPage"; 
+import VideoCardPage from "../pages/VideoCardPage/VideoCardPage";
+import CertificatePage from "../pages/CertificatePage/CertificatePage";
+import ResourcePage from "../pages/ResourcePage/ResourcePage";
+
+
+
 
 const AppRoutes = () => {
   return (
@@ -18,11 +23,18 @@ const AppRoutes = () => {
       <Route path="/admin" element={<AdminPanel />} />
       <Route path="/admin/users" element={<UsersPage />} />
       <Route path="/admin/profile" element={<UserProfilePage />} />
-      <Route path="/admin/resource" element={<ResourcePage />} />
+      <Route path="/admin/document" element={<DocumentPage />} />
       <Route path="/admin/request" element={<RequestPage />} />
+      <Route path="/admin/resource" element={<ResourcePage />} />
 
-      {/* ✅ Resource - Videos Route */}
-      <Route path="resources/videos" element={<VideoCardPage />} />
+
+    
+      <Route path="resource/videos" element={<VideoCardPage />} />
+      <Route path="/resource/certificates" element={<CertificatePage />} />  
+      <Route path="/resource/documents" element={<DocumentPage />} />
+
+
+
 
 
       {/* Default Redirects */}

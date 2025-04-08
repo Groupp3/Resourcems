@@ -1,30 +1,19 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useMemo } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import Breadcrumb from "../../components/Breadcrumb/Breadcrumb";
 import UploadModal from "../../components/UploadModal/UploadModal";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Header from "../../components/header/Header"; 
 import "./ResourceLayout.css";
 
-const sampleVideos = [
-  {
-    title: "Introduction to React",
-    createdAt: "2025-04-06T10:00:00Z",
-    isPublic: true,
-    uploadedBy: "John Doe",
-    thumbnailUrl: "https://via.placeholder.com/320x180.png?text=React",
-  },
-  {
-    title: "Spring Boot Basics",
-    createdAt: "2025-03-30T14:00:00Z",
-    isPublic: false,
-    uploadedBy: "Jane Smith",
-    thumbnailUrl: "https://via.placeholder.com/320x180.png?text=Spring+Boot",
-  },
-];
-
-const ResourceLayout = ({ children, onUploadSave }) => {
+const ResourceLayout = ({ 
+  children, 
+  onUploadSave,
+  pageTitle = "Resource",
+  onBreadcrumbClick
+}) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [showModal, setShowModal] = useState(false);
 
   const handleLogout = () => {
@@ -32,18 +21,43 @@ const ResourceLayout = ({ children, onUploadSave }) => {
     navigate("/");
   };
 
-  const breadcrumbs = [
-    { label: "Dashboard", url: "/dashboard" },
-    { label: "Resources", url: "/resources" },
-    { label: "Videos" },
-  ];
-
   const handleUploadSaveInternal = (data) => {
     if (onUploadSave) {
       onUploadSave(data);
     }
     setShowModal(false);
   };
+
+  const handleBreadcrumbClick = (item) => {
+    if (onBreadcrumbClick) {
+      onBreadcrumbClick(item);
+    } else if (item.url) {
+      navigate(item.url);
+    }
+  };
+
+  const generateBreadcrumbItems = useMemo(() => {
+    const pathnames = location.pathname.split('/').filter(Boolean);
+
+    const labelMap = {
+      admin: "Dashboard",
+      resource: "Resources",
+      upload: "Upload",
+      video: "Video",
+      document: "Document",
+      // Add more mappings as needed
+    };
+
+    const items = pathnames.map((value, index) => {
+      const url = '/' + pathnames.slice(0, index + 1).join('/');
+      return {
+        label: labelMap[value] || value.charAt(0).toUpperCase() + value.slice(1),
+        url: index !== pathnames.length - 1 ? url : null // Last item is not clickable
+      };
+    });
+
+    return items;
+  }, [location.pathname]);
 
   return (
     <div className="resource-layout-container">
@@ -58,20 +72,26 @@ const ResourceLayout = ({ children, onUploadSave }) => {
             
       <Sidebar userRole="ADMIN" defaultOpen={true} logoText="EduVault" />
       <div className="content-area">
-      <div className="breadcrumb-header">
-  <div className="breadcrumb-wrapper">
-    <Breadcrumb items={breadcrumbs} />
-  </div>
-  <button className="upload-button" onClick={() => setShowModal(true)}>
-    Upload +
-  </button>
-</div>
+        <div className="breadcrumb-header">
+          <div className="breadcrumb-wrapper">
+            <Breadcrumb 
+              items={generateBreadcrumbItems} 
+              onClick={handleBreadcrumbClick}
+            />
+          </div>
+          <button className="upload-button" onClick={() => setShowModal(true)}>
+            Upload +
+          </button>
+        </div>
 
-        {/* Render the children passed to this layout */}
         {children}
 
         {showModal && (
-          <UploadModal onClose={() => setShowModal(false)} onSave={handleUploadSaveInternal} />
+          <UploadModal 
+            onClose={() => setShowModal(false)} 
+            onSave={handleUploadSaveInternal}
+            pageTitle={pageTitle}
+          />
         )}
       </div>
     </div>

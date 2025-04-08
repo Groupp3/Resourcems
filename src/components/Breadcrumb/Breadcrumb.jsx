@@ -74,9 +74,9 @@ Breadcrumb.propTypes = {
   separator: PropTypes.string,
   /** Additional CSS class for the breadcrumb */
   className: PropTypes.string,
-  /** CSS class for the active (current) breadcrumb item */
+ 
   activeClassName: PropTypes.string,
-  /** Optional click handler that receives the clicked item and its index */
+
   onClick: PropTypes.func
 };
 

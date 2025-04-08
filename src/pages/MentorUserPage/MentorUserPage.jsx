@@ -1,79 +1,102 @@
 import React, { useState, useEffect } from "react";
-import { getUsersByRole } from "../../services/AdminService";  // Assuming this function fetches users by role
-import MentorLayout from "../../layouts/MentorLayout/MentorLayout";
+import { getUsersByRole } from "../../services/AdminService"; 
+import UserMSCard from "../../components/UserMSCard/UserMSCard";
+import { FaList, FaTh } from "react-icons/fa";
 import "./MentorUserPage.css";
+import StudentUserLayout from "../../layouts/StudentUserLayout/StudentUserLayout";
 
-const MentorUserPage = () => {
-  const [mentor, setMentor] = useState(null);
+const StudentsPage = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [mentors, setMentors] = useState([]);
+  const [viewMode, setViewMode] = useState("grid");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchMentorDetails = async () => {
+    const fetchMentors = async () => {
       setIsLoading(true);
       try {
-        const usersData = await getUsersByRole("MENTOR"); // Fetch all mentors
-        // Filter the mentor data to find the logged-in mentor by matching the user ID (or any other unique property)
-        const loggedInMentor = usersData.find(user => user.id === "loggedInMentorId"); // Replace with actual logic for logged-in mentor ID
-        setMentor(loggedInMentor);
+        const usersData = await getUsersByRole("STUDENT"); // still using the same function
+        const onlyMentors = usersData.filter(user => user.role === "STUDENT");
+        setMentors(onlyMentors);
         setIsLoading(false);
       } catch (error) {
-        setError("Failed to load mentor details.");
+        console.error("Error fetching mentors: ", error);
+        setError("Failed to load mentors. Please try again later.");
         setIsLoading(false);
       }
     };
-
-    fetchMentorDetails();
+  
+    fetchMentors();
   }, []);
+  
+
+  const getAccentColor = () => {
+    const colors = ["#6366f1", "#8b5cf6", "#d946ef", "#ec4899", "#f43f5e", "#f97316", "#eab308"];
+    return colors[Math.floor(Math.random() * colors.length)];
+  };
+
+  const filteredMentors = mentors.filter((mentor) =>
+    `${mentor.firstName?.toLowerCase() || ""} ${mentor.lastName?.toLowerCase() || ""}`.includes(
+      searchQuery.toLowerCase()
+    )
+  );
 
   return (
-    <MentorLayout>
-      <div className="mentor-user-page">
-        <div className="mentor-user-header">
-          <h1>Welcome, {mentor ? mentor.firstName : "Mentor"}!</h1>
+    <StudentUserLayout>
+      <div className="verlof-page">
+        <div className="verlof-header">
+          <h1>MENTORS</h1>
+        </div>
+
+        <div className="verlof-search-container">
+          <input
+            type="text"
+            placeholder="Search mentors..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="search-input"
+          />
+
+          <div className="verlof-view-toggle">
+            <button 
+              className={`list-view-btn ${viewMode === "list" ? "active" : ""}`}
+              onClick={() => setViewMode("list")}
+            >
+              <FaList />
+            </button>
+            <button 
+              className={`grid-view-btn ${viewMode === "grid" ? "active" : ""}`}
+              onClick={() => setViewMode("grid")}
+            >
+              <FaTh />
+            </button>
+          </div>
         </div>
 
         {isLoading ? (
-          <div className="loading-state">Loading your details...</div>
+          <div className="loading-state">Loading mentors...</div>
         ) : error ? (
           <div className="error-state">{error}</div>
-        ) : mentor ? (
-          <div className="mentor-details">
-            <div className="mentor-info">
-              <img
-                src={mentor.profileImageUrl || "https://via.placeholder.com/150"}
-                alt={`${mentor.firstName} ${mentor.lastName}`}
-                className="mentor-avatar"
-              />
-              <div className="mentor-basic-info">
-                <h2>{mentor.firstName} {mentor.lastName}</h2>
-                <p>Email: {mentor.email}</p>
-                <p>Role: {mentor.role}</p>
-              </div>
-            </div>
-            
-            <div className="mentor-tasks">
-              <h3>Your Assigned Tasks</h3>
-              <ul>
-                {mentor.tasks && mentor.tasks.length > 0 ? (
-                  mentor.tasks.map((task, index) => (
-                    <li key={index} className="mentor-task-item">
-                      <h4>{task.title}</h4>
-                      <p>{task.description}</p>
-                    </li>
-                  ))
-                ) : (
-                  <p>No tasks assigned yet.</p>
-                )}
-              </ul>
-            </div>
-          </div>
+        ) : filteredMentors.length === 0 ? (
+          <div className="empty-state">No mentors found matching your search.</div>
         ) : (
-          <div className="empty-state">Mentor details not found.</div>
+          <div className={`users-${viewMode}-view`}>
+            {filteredMentors.map((mentor) => (
+              <UserMSCard
+                key={mentor.id}
+                name={`${mentor.firstName || ""} ${mentor.lastName || ""}`}
+                role={mentor.role}
+                email={mentor.email || "No email provided"}
+                avatar={mentor.profileImageUrl || "https://via.placeholder.com/150"}
+                accentColor={getAccentColor()}
+              />
+            ))}
+          </div>
         )}
       </div>
-    </MentorLayout>
+    </StudentUserLayout>
   );
 };
 
-export default MentorUserPage;
+export default StudentsPage;

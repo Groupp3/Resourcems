@@ -28,13 +28,19 @@ const ProfileIcon = ({
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     setIsOpen(false);
-    AuthService.logout();         // Clear storage and remove headers
-    if (onLogout) onLogout();     // Optional callback
-    navigate('/auth');            // ✅ Redirect to /auth
+    try {
+      await AuthService.logout(); // API + cleanup
+      if (onLogout) onLogout();
+    } catch (error) {
+      console.error('Logout API failed:', error);
+    } finally {
+      navigate('/auth');
+    }
   };
-
+  
+  
   const handleImageError = () => setImageError(true);
   
   return (

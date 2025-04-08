@@ -49,17 +49,29 @@ const AuthService = {
     }
   },
 
-  logout: (navigate) => {
+  logout: async (navigate) => {
+    try {
+      await axios.post(`${API_URL}/logout`, {}, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+    } catch (error) {
+      console.error("Server logout failed:", error.response?.data || error.message);
+      // still continue to clear local storage
+    }
+  
     localStorage.removeItem('token');
     localStorage.removeItem('role');
     localStorage.removeItem('user');
     localStorage.removeItem('profileImageUrl');
     delete axios.defaults.headers.common['Authorization'];
-
+  
     if (navigate) {
       navigate('/auth');
     }
   },
+  
 
   getCurrentUser: () => {
     const userStr = localStorage.getItem('user');

@@ -46,7 +46,7 @@ const StudentsPage = () => {
     <StudentUserLayout>
       <div className="verlof-page">
         <div className="verlof-header">
-          <h1>MENTORS</h1>
+          <h1>STUDENTS</h1>
         </div>
 
         <div className="verlof-search-container">

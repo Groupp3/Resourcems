@@ -1,15 +1,15 @@
 import React from "react";
-import StudentLayout from "../../layouts/Studentlayout/StudentLayout";
+import StudentUserLayout from "../../layouts/StudentUserLayout/StudentUserLayout";
 import ProfileLayout from "../../layouts/profilelayout/ProfileLayout";
 import "./StudentProfilePage.css"
 
 const StudentProfilePage = () => {
   return (
-    <StudentLayout>
+    <StudentUserLayout>
       <div className="user-profile-page">
         <ProfileLayout />
       </div>
-    </StudentLayout>
+    </StudentUserLayout>
   );
 };
 

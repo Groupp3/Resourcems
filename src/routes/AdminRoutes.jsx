@@ -5,11 +5,11 @@ import ResourcePage from "../pages/ResourcePage/ResourcePage";
 import RequestPage from "../pages/RequestPage/RequestPage";
 
 const adminRoutes = [
-  { path: "/admin", element: <AdminPanel />, title: "Dashboard" },
-  { path: "/admin/users", element: <UsersPage />, title: "User Management" },
-  { path: "/admin/profile", element: <UserProfilePage />, title: "Profile" },
-  { path: "/admin/resource", element: <ResourcePage />, title: "Resources" },
-  { path: "/admin/request", element: <RequestPage />, title: "Requests" },
+  { path: "/admin", element: <AdminPanel /> },
+  { path: "/admin/users", element: <UsersPage />},
+  { path: "/admin/profile", element: <UserProfilePage /> },
+  { path: "/admin/resource", element: <ResourcePage /> },
+  { path: "/admin/request", element: <RequestPage /> },
 ];
 
 export default adminRoutes;

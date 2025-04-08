@@ -37,7 +37,7 @@ const MentorLayout = ({ children }) => {
       <Sidebar userRole="MENTOR" defaultOpen={true} logoText="EduVault" />
 
       <div className="mentor-main-content">
-        <div className="title">{pageTitle}</div>
+        
         <div className="content">{children}</div>
       </div>
     </div>

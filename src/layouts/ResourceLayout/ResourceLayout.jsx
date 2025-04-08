@@ -1,89 +1,81 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { HardDrive, Share2, Plus, Upload } from 'lucide-react';
-import StorageCard from '../../components/StorageCard/StorageCard';
-import FileList from '../../components/FileList/FileList';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Breadcrumb from "../../components/Breadcrumb/Breadcrumb";
+import UploadModal from "../../components/UploadModal/UploadModal";
+import Sidebar from "../../components/sidebar/Sidebar";
+import Header from "../../components/header/Header"; 
+import "./ResourceLayout.css";
 
+const sampleVideos = [
+  {
+    title: "Introduction to React",
+    createdAt: "2025-04-06T10:00:00Z",
+    isPublic: true,
+    uploadedBy: "John Doe",
+    thumbnailUrl: "https://via.placeholder.com/320x180.png?text=React",
+  },
+  {
+    title: "Spring Boot Basics",
+    createdAt: "2025-03-30T14:00:00Z",
+    isPublic: false,
+    uploadedBy: "Jane Smith",
+    thumbnailUrl: "https://via.placeholder.com/320x180.png?text=Spring+Boot",
+  },
+];
 
-const ResourceLayout = ({ storageData, newFiles }) => {
+const ResourceLayout = ({ children, onUploadSave }) => {
+  const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+
+  const handleLogout = () => {
+    localStorage.removeItem("authToken");
+    navigate("/");
+  };
+
+  const breadcrumbs = [
+    { label: "Dashboard", url: "/dashboard" },
+    { label: "Resources", url: "/resources" },
+    { label: "Videos" },
+  ];
+
+  const handleUploadSaveInternal = (data) => {
+    if (onUploadSave) {
+      onUploadSave(data);
+    }
+    setShowModal(false);
+  };
+
   return (
-    <div className="resource-layout p-6 bg-gray-100 min-h-screen">
-    
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">Storage</h1>
-        <button className="flex items-center px-3 py-1 bg-purple-600 text-white rounded-full hover:bg-purple-700 transition-colors">
-          <Plus size={16} className="mr-1" />
-          Add New
-        </button>
-      </div>
-      
-     
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        {storageData.map((item, index) => (
-          <StorageCard 
-            key={index}
-            type={item.type}
-            usedSpace={item.usedSpace}
-            totalSpace={item.totalSpace}
-          />
-        ))}
-      </div>
-      
-      
-      <FileList files={newFiles} />
-      
-     
-      <div className="mt-8">
-        <h2 className="text-xl font-medium text-gray-800 mb-4">Share with me</h2>
-        <div className="grid grid-cols-3 md:grid-cols-5 gap-4">
-          {Array(5).fill(0).map((_, i) => (
-            <div key={i} className="bg-white rounded-lg p-4 flex items-center justify-center shadow-sm">
-              <div className="w-12 h-12 bg-gray-100 rounded flex items-center justify-center">
-                <Share2 size={20} className="text-gray-400" />
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-      
-     
-      <div className="mt-8 bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-        <div className="flex justify-between items-center">
-          <div>
-            <p className="text-lg font-medium text-gray-800">Get more space for your storage today!</p>
-            <button className="mt-4 bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-full flex items-center transition-colors duration-200">
-              <Upload size={18} className="mr-2" />
-              Upgrade Storage
-            </button>
-          </div>
-          <div className="hidden md:flex items-center justify-center">
-            <div className="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center">
-              <HardDrive size={40} className="text-blue-500" />
-            </div>
-          </div>
-        </div>
+    <div className="resource-layout-container">
+      <Header 
+        backgroundColor="#FFFFFF" 
+        textColor="#000000" 
+        borderColor="#DDDDDD"
+        profileSrc="https://via.placeholder.com/100"
+        profileName="Admin"
+        onLogout={handleLogout}
+      />
+            
+      <Sidebar userRole="ADMIN" defaultOpen={true} logoText="EduVault" />
+      <div className="content-area">
+      <div className="breadcrumb-header">
+  <div className="breadcrumb-wrapper">
+    <Breadcrumb items={breadcrumbs} />
+  </div>
+  <button className="upload-button" onClick={() => setShowModal(true)}>
+    Upload +
+  </button>
+</div>
+
+        {/* Render the children passed to this layout */}
+        {children}
+
+        {showModal && (
+          <UploadModal onClose={() => setShowModal(false)} onSave={handleUploadSaveInternal} />
+        )}
       </div>
     </div>
   );
-};
-
-ResourceLayout.propTypes = {
- 
-  storageData: PropTypes.arrayOf(
-    PropTypes.shape({
-      type: PropTypes.string.isRequired,
-      usedSpace: PropTypes.number.isRequired,
-      totalSpace: PropTypes.number.isRequired
-    })
-  ).isRequired,
-  /** Array of file objects for the file list */
-  newFiles: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      type: PropTypes.string.isRequired,
-      size: PropTypes.string.isRequired
-    })
-  ).isRequired
 };
 
 export default ResourceLayout;

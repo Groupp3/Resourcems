@@ -143,6 +143,33 @@ export const getUserProfile = async () => {
     return null;
   }
 };
+export const updateUserProfile = async (updateDTO) => {
+  try {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      throw new Error("No authentication token found");
+    }
+
+    const response = await axios.put(
+      `${USER_API_URL}/profile`,
+      updateDTO,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    console.log("User profile updated:", response.data);
+
+    return response.data.response || null;
+  } catch (error) {
+    handleApiError(error);
+    return null;
+  }
+};
 
 // Handle API errors
 const handleApiError = (error) => {

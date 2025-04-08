@@ -1,11 +1,32 @@
-// src/components/ProtectedRoute.jsx
+// src/routes/ProtectedRoute.jsx
 import React from "react";
-import { Navigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useAuth } from "../states/AuthContext";
+import NotFoundPage from "../pages/NotFoundPage";
 
 const ProtectedRoute = ({ children }) => {
   const { user } = useAuth();
-  return user ? children : <Navigate to="/auth" replace />;
+  const location = useLocation();
+
+  if (!user) {
+    return <NotFoundPage />;
+  }
+
+  const path = location.pathname;
+
+  const rolePathMap = {
+    ADMIN: "/admin",
+    STUDENT: "/student",
+    MENTOR: "/mentor",
+  };
+
+  const allowedPrefix = rolePathMap[user.role];
+
+  if (!path.startsWith(allowedPrefix)) {
+    return <NotFoundPage />;
+  }
+
+  return children;
 };
 
 export default ProtectedRoute;

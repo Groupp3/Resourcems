@@ -26,9 +26,7 @@ const UserLayout = ({ children }) => {
           onLogout={handleLogout}
         />
 
-        <div className="searchbar-container"> 
-          <SearchBar suggestions={["Dashboard", "Users", "Settings", "Reports"]} />
-        </div>
+       
       </div>
 
       <Sidebar userRole="ADMIN" defaultOpen={true} logoText="EduVault" />

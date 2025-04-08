@@ -1,137 +1,68 @@
-.resource-layout {
-    background-color: #f9fafb;
-    min-height: 100vh;
-    padding: 1.5rem;
+.resource-layout-container {
+  width: 100vw;
+  height: 100vh;
+  padding-top: 70px; /* Adding padding to prevent content from being hidden under the header */
+}
+
+.breadcrumb-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* 👈 This ensures breadcrumbs left, button right */
+  padding: 1rem 2rem;
+  margin-top: 40px;
+  position: relative;
+  z-index: 10;
+  flex-wrap: wrap;
+}
+
+.upload-button {
+  background-color: #6366f1;
+  color: white;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  font-size: 1rem;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  z-index: 99;
+  margin-top: 0; /* 👈 remove top margin */
+  margin-right: 500px; /* 👈 remove this to avoid shifting */
+}
+
+.upload-button:hover {
+  background-color: #4f46e5;
+}
+
+.resource-grid {
+  margin-top: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .breadcrumb-header {
+    flex-direction: column;
+    align-items: flex-start;
   }
-  
-  .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 1.5rem;
+
+  .upload-button {
+    width: 100%;
+    text-align: center;
   }
-  
-  .header h1 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #1f2937;
+}
+
+@media (min-width: 601px) and (max-width: 1024px) {
+  .breadcrumb-header {
+    gap: 2rem;
   }
-  
-  .add-button {
-    display: flex;
-    align-items: center;
-    background-color: #8b5cf6;
-    color: white;
-    padding: 0.25rem 0.75rem;
-    border-radius: 9999px;
-    font-size: 0.875rem;
-    transition: background-color 0.2s ease;
+}
+
+@media (min-width: 1025px) {
+  .breadcrumb-header {
+    gap: 50rem;
   }
-  
-  .add-button:hover {
-    background-color: #7c3aed;
-  }
-  
-  .cards-grid {
-    display: grid;
-    grid-template-columns: repeat(1, 1fr);
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-  }
-  
-  @media (min-width: 768px) {
-    .cards-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-  
-  .share-section {
-    margin-top: 2rem;
-  }
-  
-  .share-section h2 {
-    font-size: 1.25rem;
-    font-weight: 500;
-    color: #1f2937;
-    margin-bottom: 1rem;
-  }
-  
-  .share-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-  }
-  
-  @media (min-width: 768px) {
-    .share-grid {
-      grid-template-columns: repeat(5, 1fr);
-    }
-  }
-  
-  .share-item {
-    background-color: white;
-    border-radius: 0.5rem;
-    padding: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  }
-  
-  .share-icon {
-    width: 3rem;
-    height: 3rem;
-    background-color: #f3f4f6;
-    border-radius: 0.25rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .upgrade-section {
-    margin-top: 2rem;
-    background-color: white;
-    padding: 1.5rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    border: 1px solid #f3f4f6;
-  }
-  
-  .upgrade-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .upgrade-text {
-    font-size: 1.125rem;
-    font-weight: 500;
-    color: #1f2937;
-  }
-  
-  .upgrade-button {
-    display: flex;
-    align-items: center;
-    margin-top: 1rem;
-    background-color: #8b5cf6;
-    color: white;
-    padding: 0.5rem 1.5rem;
-    border-radius: 9999px;
-    font-size: 0.875rem;
-    transition: background-color 0.2s ease;
-  }
-  
-  .upgrade-button:hover {
-    background-color: #7c3aed;
-  }
-  
-  .storage-icon {
-    width: 6rem;
-    height: 6rem;
-    background-color: #dbeafe;
-    border-radius: 9999px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
+}

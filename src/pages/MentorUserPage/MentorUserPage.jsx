@@ -3,7 +3,7 @@ import { getUsersByRole } from "../../services/AdminService";
 import UserMSCard from "../../components/UserMSCard/UserMSCard";
 import { FaList, FaTh } from "react-icons/fa";
 import "./MentorUserPage.css";
-import StudentUserLayout from "../../layouts/StudentUserLayout/StudentUserLayout";
+import MentorLayout from "../../layouts/MentorLayout/MentorLayout";
 
 const StudentsPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -43,7 +43,7 @@ const StudentsPage = () => {
   );
 
   return (
-    <StudentUserLayout>
+    <MentorLayout>
       <div className="verlof-page">
         <div className="verlof-header">
           <h1>STUDENTS</h1>
@@ -95,7 +95,7 @@ const StudentsPage = () => {
           </div>
         )}
       </div>
-    </StudentUserLayout>
+    </MentorLayout>
   );
 };
 

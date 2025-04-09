@@ -16,7 +16,7 @@ const MENU_ITEMS = {
     { icon: <i className="bi bi-house-door" />, text: 'Home', path: '/mentor' },
     { icon: <i className="bi bi-person" />, text: 'Profile', path: '/mentor/profile' },
     { icon: <i className="bi bi-people" />, text: 'Students', path: '/mentor/users' },
-    { icon: <i className="bi bi-box-seam" />, text: 'Resource', path: '/resource' },
+    { icon: <i className="bi bi-box-seam" />, text: 'Resource', path: '/mentor/resource' },
   ],
   STUDENT: [
     { icon: <i className="bi bi-house-door" />, text: 'Home', path: '/student' },

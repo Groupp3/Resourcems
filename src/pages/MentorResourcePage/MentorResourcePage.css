@@ -1,0 +1,78 @@
+.adminlayout {
+    padding: 20px;
+    background-color: #f8f9fc;
+    min-height: 100vh;
+  }
+  
+  .resource-page {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .content-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .storage-section,
+  .files-section {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+  
+  .storage-header,
+  .files-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .upload-button {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background-color: #4f46e5;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .upload-button:hover {
+    background-color: #4338ca;
+  }
+  
+  .storage-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+  
+  .storage-card-wrapper {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .storage-card-wrapper:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+  }
+  
+  .file-list-container-wrapper {
+    max-height: 350px;
+    overflow-y: auto;
+  }
+  

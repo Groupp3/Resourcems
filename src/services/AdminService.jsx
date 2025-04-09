@@ -3,6 +3,8 @@ import axios from "axios";
 const API_BASE_URL = "http://localhost:8080/api/admin"; // Base API URL
 const USER_API_URL = "http://localhost:8080/api/users"; // For user profile
 
+
+const API_USER_URL = "http://localhost:8080/api";
 // Function to fetch all users
 export const getUsersByRole = async () => {
   try {

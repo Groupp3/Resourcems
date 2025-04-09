@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import "./ResourcePage.css";
-import AdminLayout from "../../layouts/AdminLayout/AdminLayout";
+import "./MentorResourcePage.css";
+import MentorLayout from "../../layouts/MentorLayout/MentorLayout";
 import ResourceCard from "../../components/ResourceCard/ResourceCard";
 import FileList from "../../components/FileList/FileList";
-import { getResources, uploadResource } from "../../services/ResourceService";
+import { getAccessibleResources, uploadResource } from "../../services/ResourceService";
 import { useNavigate } from "react-router-dom";
 import { VideoIcon, FileTextIcon, BadgeCheckIcon, Upload } from "lucide-react";
 import UploadModal from "../../components/UploadModal/UploadModal";
@@ -27,14 +27,14 @@ const getType = (contentType) => {
   return "other";
 };
 
-const ResourcePage = () => {
+const MentorResourcePage = () => {
   const navigate = useNavigate();
   const [resources, setResources] = useState([]);
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
 
   const fetchAndSetResources = async () => {
     try {
-      const data = await getResources();
+      const data = await getAccessibleResources();
       setResources(data);
     } catch (error) {
       console.error("Error fetching resources:", error);
@@ -61,7 +61,7 @@ const ResourcePage = () => {
 
   const files = resources
     .slice()
-    .sort((a, b) => new Date(b.modifiedAt) - new Date(a.modifiedAt)) // sort descending
+    .sort((a, b) => new Date(b.modifiedAt) - new Date(a.modifiedAt))
     .slice(0, 4)
     .map((res) => ({
       name: res.title,
@@ -71,26 +71,22 @@ const ResourcePage = () => {
       modifiedAt: res.modifiedAt,
     }));
 
-  // Handle breadcrumb navigation
   const handleBreadcrumbClick = (path) => {
     if (path === "resource") {
-      navigate("/admin/resource");
+      navigate("/mentor/resource");
     } else if (path === "dashboard") {
-      navigate("/admin");
+      navigate("/mentor");
     }
   };
 
-  // Handle upload button click
   const handleUploadClick = () => {
     setIsUploadModalOpen(true);
   };
 
-  // Handle upload modal close
   const handleUploadModalClose = () => {
     setIsUploadModalOpen(false);
   };
 
-  // Handle upload save
   const handleUploadSave = async ({ file, isPublic, tags }) => {
     try {
       console.log("Uploading resource with:", { file, isPublic, tags });
@@ -103,7 +99,7 @@ const ResourcePage = () => {
   };
 
   return (
-    <AdminLayout onBreadcrumbClick={handleBreadcrumbClick}>
+    <MentorLayout onBreadcrumbClick={handleBreadcrumbClick}>
       <div className="adminlayout">
         <div className="resource-page">
           <div className="content-container">
@@ -126,11 +122,11 @@ const ResourcePage = () => {
                     onClick={() => {
                       const lower = item.title.toLowerCase();
                       if (lower === "certificates") {
-                        navigate("/admin/resource/certificates");
+                        navigate("/mentor/resource/certificates");
                       } else if (lower === "documents") {
-                        navigate("/admin/resource/documents");
+                        navigate("/mentor/resource/documents");
                       } else if (lower === "videos") {
-                        navigate("/admin/resource/videos");
+                        navigate("/mentor/resource/videos");
                       }
                     }}
                     style={{ cursor: "pointer" }}
@@ -163,8 +159,8 @@ const ResourcePage = () => {
           onSave={handleUploadSave}
         />
       )}
-    </AdminLayout>
+    </MentorLayout>
   );
 };
 
-export default ResourcePage;
+export default MentorResourcePage;

@@ -1,0 +1,44 @@
+.resourceContent {
+    padding: 1rem;
+    width: 80%;
+    max-width: 100%;;
+   
+    border-radius: 12px;
+   
+  }
+  /* .resourceContent {
+    display: flex;
+    width: 80%;
+    max-width: 100%;;
+    background-color: #ffffff;
+    overflow: auto;
+    align-items: stretch;
+    padding: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+   */
+  .document-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .document-icon {
+    color: #6c63ff; /* lavender-purple tone */
+  }
+  
+  .document-name {
+    font-weight: 500;
+    color: #333;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .access-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  

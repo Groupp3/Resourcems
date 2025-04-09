@@ -17,7 +17,7 @@ const AdminLayout = ({ children }) => {
   };
 
   useEffect(() => {
-    // Prioritize more specific routes
+    
     const matched = [...adminRoutes]
       .sort((a, b) => b.path.length - a.path.length)
       .find(route => location.pathname.startsWith(route.path));

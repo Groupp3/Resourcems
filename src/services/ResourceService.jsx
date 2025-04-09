@@ -64,31 +64,44 @@ export const getAccessibleResources = async (contentType = "") => {
   }
 };
 
-// ✅ UPLOAD a new resource
-export const uploadResource = async (file, isPublic = false, tags = []) => {
-  try {
-    const token = localStorage.getItem("token");
-    if (!token) throw new Error("No token");
-
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("isPublic", isPublic ? "true" : "false");
-    tags.forEach((tag) => formData.append("tags", tag));
-
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "multipart/form-data",
-      },
-    };
-
-    const response = await axios.post(`${API_BASE_URL}/upload`, formData, config);
-    return response.data.response;
-  } catch (error) {
-    console.error("Error uploading resource:", error);
-    throw error;
-  }
-};
+/// ✅ UPLOAD multiple resources
+export const uploadResource = async (files, isPublic = false, tags = []) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) throw new Error("Authentication token missing. Please log in again.");
+  
+      const formData = new FormData();
+      
+      // Handle both single file or array of files
+      const fileArray = Array.isArray(files) ? files : [files];
+      
+      // Append each file to formData
+      for (const file of fileArray) {
+        formData.append("files", file);
+      }
+      
+      // Append visibility parameter as string "true" or "false"
+      formData.append("visibility", isPublic.toString());
+      
+       if (tags && tags.length > 0) {
+        formData.append("tags", JSON.stringify(tags));
+      }
+  
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`
+          // Let axios set the correct Content-Type for multipart/form-data
+        },
+      };
+  
+      const response = await axios.post(`${API_BASE_URL}/upload-multiple`, formData, config);
+      return response.data.response;
+    } catch (error) {
+      console.error("Error uploading resources:", error);
+      throw error;
+    }
+  };
+  
 
 // ✅ DELETE a resource
 export const deleteResource = async (resourceId) => {
@@ -113,3 +126,50 @@ export const getAllTags = async () => {
     return [];
   }
 };
+// ✅ SHARE a resource with another user
+export const shareResource = async (resourceId, userIds) => {
+    try {
+      const config = getAuthConfig();
+      const url = `${API_BASE_URL}/${resourceId}/share`;
+      
+      // Handle both single userId (string/number) and array of userIds
+      if (Array.isArray(userIds)) {
+        // If it's an array of user IDs, make multiple requests
+        const sharePromises = userIds.map(userId => 
+          axios.post(
+            url,
+            null, // No body needed
+            {
+              ...config,
+              params: {
+                userId: userId,
+              },
+            }
+          )
+        );
+        
+        // Wait for all share operations to complete
+        const results = await Promise.all(sharePromises);
+        console.log(`Resource shared successfully with ${userIds.length} users`);
+        return results.map(response => response.data.message);
+      } else {
+        // Original implementation for single user ID
+        const response = await axios.post(
+          url,
+          null, // No body needed
+          {
+            ...config,
+            params: {
+              userId: userIds, // Single user ID
+            },
+          }
+        );
+        
+        console.log("Resource shared successfully:", response.data.message);
+        return response.data.message;
+      }
+    } catch (error) {
+      console.error("Error sharing resource:", error);
+      throw error;
+    }
+  };

@@ -3,12 +3,13 @@ import "./UploadModal.css";
 import { getAllTags, uploadResource } from "../../services/ResourceService";
 
 const UploadModal = ({ onClose, onSave }) => {
-  const [file, setFile] = useState(null);
+  const [files, setFiles] = useState([]);
   const [isPublic, setIsPublic] = useState(true);
   const [selectedTags, setSelectedTags] = useState([]);
   const [availableTags, setAvailableTags] = useState([]);
   const [newTag, setNewTag] = useState("");
   const [isUploading, setIsUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   useEffect(() => {
     const fetchTags = async () => {
@@ -51,120 +52,114 @@ const UploadModal = ({ onClose, onSave }) => {
     setNewTag("");
   };
 
+  const handleFileChange = (e) => {
+    if (e.target.files.length > 0) {
+      setFiles(Array.from(e.target.files));
+    }
+  };
+
+  const handleFileDrop = (e) => {
+    e.preventDefault();
+    if (e.dataTransfer.files.length > 0) {
+      setFiles(Array.from(e.dataTransfer.files));
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!file) {
-      alert("Please select a file to upload.");
+    if (files.length === 0) {
+      alert("Please select at least one file to upload.");
       return;
     }
 
     setIsUploading(true);
     try {
-      console.log("Uploading with tags:", selectedTags);
-      const uploaded = await uploadResource(file, isPublic, selectedTags);
-      onSave(uploaded);
-      const updatedTags = await getAllTags(); // Optional refresh
+      // Upload files one by one and track progress
+      const uploadedFiles = [];
+      const fileCount = files.length;
+      
+      for (let i = 0; i < fileCount; i++) {
+        const file = files[i];
+        console.log(`Uploading file ${i+1}/${fileCount}: ${file.name} with tags:`, selectedTags);
+        
+        const uploaded = await uploadResource(file, isPublic, selectedTags);
+        uploadedFiles.push(uploaded);
+        
+        // Update progress
+        setUploadProgress(Math.floor(((i + 1) / fileCount) * 100));
+      }
+      
+      // Refresh tags
+      const updatedTags = await getAllTags();
       setAvailableTags(updatedTags);
+      
+      // Pass all uploaded files to parent component
+      onSave(uploadedFiles);
       onClose();
     } catch (err) {
       console.error("Upload failed:", err.response?.data || err.message);
       alert("Upload failed. Check console for details.");
     } finally {
       setIsUploading(false);
+      setUploadProgress(0);
     }
   };
 
-  const handleAddTag = () => {
-    if (newTag && !tags.includes(newTag)) {
-      setTags([...tags, newTag]);
-      setNewTag('');
-      setShowNewTagInput(false);
-    }
-  };
-
-  const handleTagSelect = (e) => {
-    const selectedTag = e.target.value;
-    if (selectedTag === "add-new") {
-      setShowNewTagInput(true);
-      setNewTag('');
-    } else if (selectedTag && !tags.includes(selectedTag)) {
-      setTags([...tags, selectedTag]);
-    }
-  };
-
-  const removeTag = (tagToRemove) => {
-    setTags(tags.filter(tag => tag !== tagToRemove));
-  };
-
-  const toggleGroupSelection = (groupId) => {
-    if (selectedGroups.includes(groupId)) {
-      setSelectedGroups(selectedGroups.filter(id => id !== groupId));
-    } else {
-      setSelectedGroups([...selectedGroups, groupId]);
-    }
-  };
-
-  const handleStudentSearch = (e) => {
-    const term = e.target.value;
-    setSearchTerm(term);
-    
-    if (term.length >= 2) {
-      // Filter students based on search term
-      const results = studentDatabase.filter(student => 
-        student.name.toLowerCase().includes(term.toLowerCase()) || 
-        student.email.toLowerCase().includes(term.toLowerCase())
-      );
-      setSearchResults(results);
-    } else {
-      setSearchResults([]);
-    }
-  };
-
-  const addStudentAccess = (student) => {
-    if (!selectedStudents.some(s => s.id === student.id)) {
-      setSelectedStudents([...selectedStudents, student]);
-    }
-    setSearchTerm('');
-    setSearchResults([]);
-  };
-
-  const removeStudentAccess = (studentId) => {
-    setSelectedStudents(selectedStudents.filter(student => student.id !== studentId));
+  const preventDefaultDrag = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
   };
 
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-        <h2>Upload Resource</h2>
+        <div className="modal-backdrop"></div>
+        <h2>Upload Resources</h2>
         <form onSubmit={handleSubmit}>
-          <label className="upload-area">
+          <label 
+            className={`upload-area ${files.length > 0 ? 'has-files' : ''}`}
+            onDragOver={preventDefaultDrag}
+            onDragEnter={preventDefaultDrag}
+            onDrop={handleFileDrop}
+          >
             <div className="upload-icon">📁</div>
-            <div className="upload-text">Click to select a file</div>
+            <div className="upload-text">Click or drag to select files</div>
             <div className="upload-subtext">
-              {file ? file.name : "Supported: PDF, MP4, PNG..."}
+              {files.length > 0 
+                ? `${files.length} file${files.length > 1 ? 's' : ''} selected` 
+                : "Supported: PDF, MP4, PNG..."}
             </div>
+            {files.length > 0 && (
+              <div className="file-list">
+                {files.map((file, index) => (
+                  <div key={index} className="file-item">
+                    <span className="file-name">{file.name}</span>
+                    <span className="file-size">({(file.size / 1024 / 1024).toFixed(2)} MB)</span>
+                  </div>
+                ))}
+              </div>
+            )}
             <input
               type="file"
-              onChange={(e) => {
-                if (e.target.files.length > 0) {
-                  setFile(e.target.files[0]);
-                }
-              }}
+              onChange={handleFileChange}
               className="file-input"
+              multiple
               required
             />
           </label>
 
-          <select
-            value={isPublic ? "true" : "false"}
-            onChange={(e) => setIsPublic(e.target.value === "true")}
-            required
-          >
-            <option value="">-- Select Access --</option>
-            <option value="true">Public</option>
-            <option value="false">Private</option>
-          </select>
+          <div className="form-group">
+            <label>Access Level</label>
+            <select
+              value={isPublic ? "true" : "false"}
+              onChange={(e) => setIsPublic(e.target.value === "true")}
+              required
+            >
+              <option value="true">Public</option>
+              <option value="false">Private</option>
+            </select>
+          </div>
 
           <div className="tag-section">
             <p>Select Tags:</p>
@@ -203,6 +198,18 @@ const UploadModal = ({ onClose, onSave }) => {
               </button>
             </div>
           </div>
+
+          {isUploading && (
+            <div className="upload-progress">
+              <div className="progress-container">
+                <div className="progress-bar" style={{ width: `${uploadProgress}%` }}></div>
+              </div>
+              <div className="progress-text">
+                <span>Uploading...</span>
+                <span>{uploadProgress}%</span>
+              </div>
+            </div>
+          )}
 
           <div className="buttons-container">
             <button type="button" className="btn btn-cancel" onClick={onClose}>

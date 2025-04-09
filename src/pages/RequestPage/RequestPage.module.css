@@ -3,9 +3,11 @@
   height: 100%;
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  margin-top: 20px;
+  margin-left: 20px;
+  font-family: 'Poppins', sans-serif;
 }
-
 
 :global(.list-container) {
  

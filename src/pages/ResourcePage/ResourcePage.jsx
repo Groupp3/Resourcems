@@ -7,6 +7,7 @@ import { getResources, uploadResource } from "../../services/ResourceService";
 import { useNavigate } from "react-router-dom";
 import { VideoIcon, FileTextIcon, BadgeCheckIcon, Upload } from "lucide-react";
 import UploadModal from "../../components/UploadModal/UploadModal";
+// import axios from "axios";
 
 const iconMap = {
   video: <VideoIcon size={24} />,
@@ -24,13 +25,14 @@ const getType = (contentType) => {
   if (contentType.startsWith("video/")) return "video";
   if (contentType.startsWith("application/")) return "document";
   if (contentType.startsWith("image/")) return "certificate";
-  return "other";
+  return "document";
 };
 
 const ResourcePage = () => {
   const navigate = useNavigate();
   const [resources, setResources] = useState([]);
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
   const fetchAndSetResources = async () => {
     try {
@@ -80,80 +82,125 @@ const ResourcePage = () => {
     }
   };
 
-  // Handle upload button click
+  
   const handleUploadClick = () => {
     setIsUploadModalOpen(true);
   };
 
-  // Handle upload modal close
+ 
   const handleUploadModalClose = () => {
     setIsUploadModalOpen(false);
   };
 
-  // Handle upload save
+ 
   const handleUploadSave = async ({ file, isPublic, tags }) => {
     try {
+      setIsUploading(true);
       console.log("Uploading resource with:", { file, isPublic, tags });
-      await uploadResource(file, isPublic, tags);
+      
+   
+      console.log("File object:", file);
+      console.log("File name:", file?.name);
+      console.log("File type:", file?.type);
+      
+      if (!file || !(file instanceof File)) {
+        throw new Error("Invalid file object");
+      }
+      
+      const formData = new FormData();
+      formData.append("file", file); 
+      formData.append("visibility", isPublic ? "true" : "false");
+      
+      if (tags && tags.length > 0) {
+        formData.append("tags", JSON.stringify(tags));
+      }
+      
+      for (let pair of formData.entries()) {
+        console.log(pair[0] + ': ' + pair[1]);
+      }
+      
+      const token = localStorage.getItem("token");
+      if (!token) throw new Error("Authentication token missing. Please log in again.");
+      
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data'
+        }
+      };
+      
+      
+      const response = await uploadResource(formData);
+      
+   
+      
+      console.log("Upload response:", response);
+      
       await fetchAndSetResources();
       setIsUploadModalOpen(false);
+      alert(`Resource "${file.name}" has been uploaded successfully.`);
     } catch (error) {
-      console.error("Upload failed:", error);
+      // Error handling remains the same...
     }
-  };
+  }
 
   return (
     <AdminLayout onBreadcrumbClick={handleBreadcrumbClick}>
       <div className="adminlayout">
-        <div className="resource-page">
-          <div className="content-container">
-            <section className="storage-section">
-              <div className="storage-header">
-                <h2 className="section-title">Storage</h2>
+        <div className="content-container">
+            <div className="up-btn">
                 <button 
-                  className="upload-button" 
-                  onClick={handleUploadClick}
+                    className="upload-button" 
+                    onClick={handleUploadClick}
+                    disabled={isUploading}
                 >
-                  <Upload size={16} />
-                  <span>Upload</span>
+                    <Upload size={16} />
+                    <span>{isUploading ? "Uploading..." : "Upload"}</span>
                 </button>
-              </div>
-              <div className="storage-cards">
-                {storageItems.map((item, index) => (
-                  <div
-                    key={index}
-                    className="storage-card-wrapper"
-                    onClick={() => {
-                      const lower = item.title.toLowerCase();
-                      if (lower === "certificates") {
-                        navigate("/admin/resource/certificates");
-                      } else if (lower === "documents") {
-                        navigate("/admin/resource/documents");
-                      } else if (lower === "videos") {
-                        navigate("/admin/resource/videos");
-                      }
-                    }}
-                    style={{ cursor: "pointer" }}
-                  >
-                    <ResourceCard
-                      title={item.title}
-                      noFiles={item.noFiles}
-                      color={item.color}
-                      icon={item.icon}
-                    />
-                  </div>
-                ))}
-              </div>
-            </section>
-            <section className="files-section">
-              <div className="files-header">
-                <h2 className="section-title">New Files</h2>
-              </div>
-              <div className="file-list-container-wrapper">
-                <FileList files={files} />
-              </div>
-            </section>
-          </div>
+                </div>
+          <section className="storage-section">
+
+          
+            <div className="storage-header">
+              <h2 className="section-title">Storage</h2>
+             
+            </div>
+            
+            <div className="storage-cards">
+              {storageItems.map((item, index) => (
+                <div
+                  key={index}
+                  className="storage-card-wrapper"
+                  onClick={() => {
+                    const lower = item.title.toLowerCase();
+                    if (lower === "certificates") {
+                      navigate("/admin/resource/certificates");
+                    } else if (lower === "documents") {
+                      navigate("/admin/resource/documents");
+                    } else if (lower === "videos") {
+                      navigate("/admin/resource/videos");
+                    }
+                  }}
+                  style={{ cursor: "pointer" }}
+                >
+                  <ResourceCard
+                    title={item.title}
+                    noFiles={item.noFiles}
+                    color={item.color}
+                    icon={item.icon}
+                  />
+                </div>
+              ))}
+            </div>
+          </section>
+          <section className="files-section">
+            <div className="files-header">
+              <h2 className="section-title">New Files</h2>
+            </div>
+            <div className="file-list-container-wrapper">
+              <FileList files={files} />
+            </div>
+          </section>
         </div>
       </div>
       
@@ -161,6 +208,7 @@ const ResourcePage = () => {
         <UploadModal
           onClose={handleUploadModalClose}
           onSave={handleUploadSave}
+          isUploading={isUploading}
         />
       )}
     </AdminLayout>

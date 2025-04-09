@@ -1,26 +1,24 @@
-.user-profile-page {
+.adminLayout {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 20px;
-  margin-left: 20px; 
+  margin-left: 20px;
 }
 
-
-.profile-section {
+.profileSection {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  
 }
 
-.profile-icon-container {
+.profileIconContainer {
   position: relative;
   display: inline-block;
 }
 
-.edit-btn {
+.editBtn {
   position: absolute;
   bottom: 10px;
   right: 10px;
@@ -32,34 +30,35 @@
   cursor: pointer;
 }
 
-.edit-btn:hover {
+.editBtn:hover {
   background-color: #3b41a5;
 }
 
-.profile-details {
+.profileDetails {
   display: flex;
   flex-direction: column;
   gap: 10px;
   width: 300px;
 }
 
-.form-group {
+.formGroup {
   display: flex;
   flex-direction: column;
 }
 
-.form-group label {
+.formGroup label {
   font-weight: bold;
   margin-bottom: 5px;
 }
 
-.form-group input {
+.formGroup input {
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 5px;
 }
 
-.change-password-btn, .save-btn {
+.changePasswordBtn,
+.saveBtn {
   margin-top: 10px;
   padding: 10px;
   border: none;
@@ -67,20 +66,20 @@
   cursor: pointer;
 }
 
-.change-password-btn {
+.changePasswordBtn {
   background-color: #f56565;
   color: white;
 }
 
-.change-password-btn:hover {
+.changePasswordBtn:hover {
   background-color: #c53030;
 }
 
-.save-btn {
+.saveBtn {
   background-color: #48bb78;
   color: white;
 }
 
-.save-btn:hover {
+.saveBtn:hover {
   background-color: #2f855a;
 }

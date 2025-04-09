@@ -63,9 +63,21 @@ export const updateUserStatus = async (userId, status) => {
 // Update user role
 export const updateUserRole = async (userId, role) => {
   try {
-    const response = await authAxios.put(
-      `/admin/users/${userId}/role?role=${role}`,
-      {}
+    const token = localStorage.getItem("token");
+    
+    if (!token) {
+      throw new Error("No authentication token found");
+    }
+    
+    const response = await axios.put(
+      `${API_BASE_URL}/users/${userId}/role?role=${role}`,
+      {}, 
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
     );
     return response.data.response;
   } catch (error) {
@@ -114,6 +126,52 @@ export const changeUserPassword = async (passwordData) => {
   } catch (error) {
     handleApiError(error);
     throw error; // Re-throw to allow handling in the component
+  }
+};
+
+
+export const softDeleteUser = async (userId) => {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) throw new Error("No authentication token found");
+
+    const response = await axios.delete(
+      `${API_BASE_URL}/users/${userId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        }
+      }
+    );
+    return response.data.response;
+  } catch (error) {
+    handleApiError(error);
+    throw error;
+  }
+};
+
+
+
+export const bulkDeleteUsers = async (userIds) => {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) throw new Error("No authentication token found");
+
+    const response = await axios.delete(
+      `${API_BASE_URL}/users/batchDelete`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        data: userIds  // This is how you send data in a DELETE request with axios
+      }
+    );
+    return response.data.response;
+  } catch (error) {
+    handleApiError(error);
+    throw error;
   }
 };
 

@@ -1,24 +1,32 @@
 import React, { useState, useEffect } from "react";
 import ResourceLayout from "../../layouts/ResourceLayout/ResourceLayout";
 import ListLayout from "../../layouts/ListLayout/ListLayout";
-import { FileText, Eye, Download, Trash2, Lock, Globe, X, ZoomIn, ZoomOut } from "lucide-react";
+import { FileText, Eye, Download, Trash2, Lock, Globe, X, ZoomIn, ZoomOut, Share2, ChevronDown, Printer } from "lucide-react";
 import styles from "./CertificatePage.module.css";
-import { getResources, deleteResource ,uploadResource } from "../../services/ResourceService"; 
+import { getResources, deleteResource, uploadResource, shareResource } from "../../services/ResourceService"; 
 import { getUsersByRole } from "../../services/AdminService";
+import Modal from "../../components/Modal/Modal"; // Assuming you have this Modal component
 import axios from "axios";
-
 
 const CertificatePage = () => {
   const [certificateData, setCertificateData] = useState([]);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [viewModalOpen, setViewModalOpen] = useState(false);
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedCertificate, setSelectedCertificate] = useState(null);
+  const [selectedUsers, setSelectedUsers] = useState([]);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
   const [zoom, setZoom] = useState(1);
   const [imageSrc, setImageSrc] = useState(null);
+  const [students, setStudents] = useState([]);
+  const [sharingInProgress, setSharingInProgress] = useState(false);
+
+  // Modal states
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [actionType, setActionType] = useState(null);
+  const [successMessage, setSuccessMessage] = useState("");
 
   // Function to construct URL based on resource object
   const getImageUrl = (certificate) => {
@@ -57,6 +65,15 @@ const CertificatePage = () => {
         setLoading(true);
         const usersData = await getUsersByRole();
         setUsers(usersData);
+        
+        // Filtering for students - if your API provides role information
+        const studentsList = usersData.filter(user => 
+          user.role === 'STUDENT' || user.role === 'student'
+        );
+        
+        // If there's no role information, use all users
+        setStudents(studentsList.length > 0 ? studentsList : usersData);
+        
         await fetchAndSetCertificates(usersData);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -155,9 +172,7 @@ const CertificatePage = () => {
         </div>
       ),
       width: "30%",
-    }
-    ,
-    
+    },
     {
       key: "uploadedBy",
       title: "Uploaded By",
@@ -178,8 +193,8 @@ const CertificatePage = () => {
 
   const certificateActions = [
     { type: "view", icon: <Eye size={18} />, variant: "default" },
-    { type: "download", icon: <Download size={18} />, variant: "primary" },
     { type: "delete", icon: <Trash2 size={18} />, variant: "danger" },
+    { type: "share", icon: <Share2 size={18} />, variant: "success" },
   ];
 
   const certificateBreadcrumbs = [
@@ -190,22 +205,24 @@ const CertificatePage = () => {
 
   const handleActionClick = async (actionType, item) => {
     console.log(`${actionType} clicked for`, item);
+    setSelectedCertificate(item);
     
-    // Implement action logic here based on the actionType
+    // Handle different actions
     switch(actionType) {
       case "view": 
-        // View logic - open the modal and set the selected certificate
-        setSelectedCertificate(item);
         setViewModalOpen(true);
         break;
       case "download":
-        // Download logic
         handleDownload(item);
         break;
       case "delete":
-        // Delete logic - open confirmation modal
-        setSelectedCertificate(item);
-        setDeleteModalOpen(true);
+        setActionType("delete");
+        setIsConfirmModalOpen(true);
+        break;
+      case "share":
+        setActionType("share");
+        setSelectedUsers([]);
+        setIsConfirmModalOpen(true);
         break;
       default:
         break;
@@ -239,12 +256,28 @@ const CertificatePage = () => {
       
       // Clean up
       window.URL.revokeObjectURL(url);
+      
+      // Show success message
+      setSuccessMessage(`Certificate "${item.filename || 'certificate'}" downloaded successfully`);
+      setIsSuccessModalOpen(true);
     } catch (error) {
       console.error('Download error:', error);
       alert('Error downloading file.');
     }
   };
   
+  const handleConfirmAction = async () => {
+    try {
+      if (actionType === "delete") {
+        await handleDeleteConfirm();
+      } else if (actionType === "share") {
+        await handleShareConfirm();
+      }
+    } catch (error) {
+      console.error(`Error during ${actionType} action:`, error);
+    }
+  };
+
   const handleDeleteConfirm = async () => {
     if (!selectedCertificate) return;
     
@@ -263,12 +296,11 @@ const CertificatePage = () => {
         prevData.filter(item => item.id !== selectedCertificate.id)
       );
       
-      // Close the confirmation modal
-      setDeleteModalOpen(false);
-      setSelectedCertificate(null);
-      
       // Show success message
-      alert(`Certificate "${selectedCertificate.filename || selectedCertificate.title}" has been deleted.`);
+      setSuccessMessage(`Certificate "${selectedCertificate.filename || selectedCertificate.title}" has been deleted.`);
+      setIsConfirmModalOpen(false);
+      setIsSuccessModalOpen(true);
+      setSelectedCertificate(null);
       
     } catch (error) {
       console.error('Delete error:', error);
@@ -276,24 +308,47 @@ const CertificatePage = () => {
     }
   };
 
+  const handleShareConfirm = async () => {
+    if (!selectedCertificate || selectedUsers.length === 0) {
+      alert('Please select at least one student to share with.');
+      return;
+    }
+    
+    try {
+      setSharingInProgress(true);
+      
+      // Share with all selected users at once by passing the array
+      await shareResource(selectedCertificate.id, selectedUsers);
+      
+      // Show success message
+      setSuccessMessage(`Certificate successfully shared with ${selectedUsers.length} selected student${selectedUsers.length > 1 ? 's' : ''}.`);
+      setIsConfirmModalOpen(false);
+      setIsSuccessModalOpen(true);
+      
+      // Reset state
+      setSelectedUsers([]);
+      setSelectedCertificate(null);
+      
+    } catch (error) {
+      console.error('Share error:', error);
+      alert('Error sharing certificate. Please try again.');
+    } finally {
+      setSharingInProgress(false);
+    }
+  };
+
   const handleUploadSave = async (data) => {
     console.log("Certificate uploaded:", data);
-    // Refresh the data after upload
-    const refreshedData = await getResources();
-    const imageResources = refreshedData.filter(item => 
-      item.contentType && item.contentType.startsWith('image/')
-    );
-    
-    // Re-enhance resources with user information
-    const enhancedResources = imageResources.map(resource => {
-      const user = users.find(user => user.id === resource.userId);
-      return {
-        ...resource,
-        uploadedByName: user ? `${user.firstName} ${user.lastName}` : 'Unknown User'
-      };
-    });
-    
-    setCertificateData(enhancedResources);
+    try {
+      // Refresh the data after upload
+      await fetchAndSetCertificates();
+      
+      // Show success message
+      setSuccessMessage(`Certificate "${data.filename || 'certificate'}" uploaded successfully.`);
+      setIsSuccessModalOpen(true);
+    } catch (error) {
+      console.error('Error refreshing certificates after upload:', error);
+    }
   };
 
   // Close modal handler
@@ -301,12 +356,6 @@ const CertificatePage = () => {
     setViewModalOpen(false);
   };
   
-  // Close delete modal handler
-  const handleCloseDeleteModal = () => {
-    setDeleteModalOpen(false);
-    setSelectedCertificate(null);
-  };
-
   // Handle image load complete
   const handleImageLoaded = () => {
     setImageLoaded(true);
@@ -327,6 +376,18 @@ const CertificatePage = () => {
   // Zoom out handler
   const zoomOut = () => {
     setZoom(prev => Math.max(prev - 0.25, 0.5));
+  };
+
+  // Handle user selection in share modal
+  const handleUserSelect = (userId) => {
+    setSelectedUsers(prevSelected => {
+      // If already selected, remove it; otherwise add it
+      if (prevSelected.includes(userId)) {
+        return prevSelected.filter(id => id !== userId);
+      } else {
+        return [...prevSelected, userId];
+      }
+    });
   };
 
   return (
@@ -351,7 +412,7 @@ const CertificatePage = () => {
         )}
       </div>
 
-      {/* Custom Certificate Viewer Modal */}
+      
       {viewModalOpen && selectedCertificate && (
         <div className={styles.modalOverlay} onClick={handleCloseModal}>
           <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
@@ -406,53 +467,111 @@ const CertificatePage = () => {
                 >
                   <Download size={16} /> Download
                 </button>
-                <button 
-                  className={styles.deleteButton}
-                  onClick={() => {
-                    handleCloseModal();
-                    setDeleteModalOpen(true);
-                  }}
-                >
-                  <Trash2 size={16} /> Delete
-                </button>
+                
               </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* Delete Confirmation Modal */}
-      {deleteModalOpen && selectedCertificate && (
-        <div className={styles.modalOverlay}>
-          <div className={styles.deleteModalContent} onClick={(e) => e.stopPropagation()}>
-            <div className={styles.deleteModalHeader}>
-              <h3>Confirm Delete</h3>
-              <button className={styles.closeButton} onClick={handleCloseDeleteModal}>
-                <X size={20} />
-              </button>
+     
+      <Modal
+        isOpen={isConfirmModalOpen}
+        onClose={() => setIsConfirmModalOpen(false)}
+        title={actionType === "delete" ? "Confirm Deletion" : "Share Certificate"}
+        type="confirm"
+        confirmAction={handleConfirmAction}
+        confirmText={actionType === "delete" ? "Delete" : "Share"}
+      >
+        {actionType === "delete" ? (
+          <>
+            <p>Are you sure you want to delete the certificate:</p>
+            <p className={styles.certificateName}>"{selectedCertificate?.filename || selectedCertificate?.title}"?</p>
+            <p>This action cannot be undone.</p>
+          </>
+        ) : actionType === "share" ? (
+          <div className={styles.shareModalBody}>
+            {/* Selected users section */}
+            <div className={styles.shareEmailSection}>
+              <h4 className={styles.shareEmailHeader}>Selected recipients</h4>
+              
+              <div className={styles.recipientsContainer}>
+                <div className={styles.recipientsList}>
+                  {selectedUsers.length > 0 ? (
+                    selectedUsers.map(userId => {
+                      const student = students.find(s => s.id === userId);
+                      if (!student) return null;
+                      
+                      return (
+                        <div key={userId} className={styles.recipientChip}>
+                          <div className={styles.recipientAvatar}>
+                            {student.firstName?.charAt(0) || ''}
+                            {student.lastName?.charAt(0) || ''}
+                          </div>
+                          {student.firstName || ''} {student.lastName || ''}
+                          <span 
+                            className={styles.removeRecipient} 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedUsers(prevSelected => 
+                                prevSelected.filter(id => id !== userId)
+                              );
+                            }}
+                          >
+                            <X size={16} />
+                          </span>
+                        </div>
+                      );
+                    })
+                  ) : (
+                    <div className={styles.noRecipients}>No recipients selected</div>
+                  )}
+                </div>
+              </div>
             </div>
-            <div className={styles.deleteModalBody}>
-              <p>Are you sure you want to delete the certificate:</p>
-              <p className={styles.certificateName}>"{selectedCertificate.filename || selectedCertificate.title}"?</p>
-              <p>This action cannot be undone.</p>
-            </div>
-            <div className={styles.deleteModalFooter}>
-              <button 
-                className={styles.cancelButton}
-                onClick={handleCloseDeleteModal}
-              >
-                Cancel
-              </button>
-              <button 
-                className={styles.confirmDeleteButton}
-                onClick={handleDeleteConfirm}
-              >
-                <Trash2 size={16} /> Delete
-              </button>
+            
+           
+            <div className={styles.studentsList}>
+              <h4 className={styles.shareEmailHeader}>Select recipients</h4>
+              {students.length === 0 ? (
+                <div className={styles.emptyState}>No students available to share with.</div>
+              ) : (
+                <div className={styles.studentsGrid}>
+                  {students.map(student => (
+                    <div 
+                      key={student.id}
+                      className={`${styles.studentItem} ${selectedUsers.includes(student.id) ? styles.selectedStudent : ''}`}
+                      onClick={() => handleUserSelect(student.id)}
+                    >
+                      <div className={styles.studentAvatar}>
+                        {student.firstName ? student.firstName.charAt(0) : ''}
+                        {student.lastName ? student.lastName.charAt(0) : ''}
+                      </div>
+                      <div className={styles.studentInfo}>
+                        <div className={styles.studentName}>
+                          {student.firstName || ''} {student.lastName || ''}
+                        </div>
+                        <div className={styles.studentEmail}>
+                          {student.email || 'No email available'}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
-        </div>
-      )}
+        ) : null}
+      </Modal>
+
+      <Modal
+        isOpen={isSuccessModalOpen}
+        onClose={() => setIsSuccessModalOpen(false)}
+        title="Success"
+        type="success"
+      >
+        <p>{successMessage}</p>
+      </Modal>
     </ResourceLayout>
   );
 };

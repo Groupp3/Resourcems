@@ -46,7 +46,7 @@ const ProfileLayout = () => {
       };
 
       const response = await axios.get(`${API_URL}/profile`, config);
-      const userData = response.data.response; // FIXED: directly accessing response, not response[0]
+      const userData = response.data.response; 
 
       if (userData) {
         setProfile({
@@ -129,10 +129,7 @@ const ProfileLayout = () => {
                   <UserProfileIcon avatar={profile.avatar} />
                   <h5 className="mb-2">{profile.firstName} {profile.lastName}</h5>
                   <p className="text-muted small mb-3">{profile.email}</p>
-                  <button className="btn btn-light profile-avatar-edit-btn">
-                    <FaEdit className="me-2" />
-                    Change Photo
-                  </button>
+                  
                 </div>
 
                 <div className="col-md-6">

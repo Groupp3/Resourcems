@@ -44,10 +44,11 @@ const Avatar = ({ name, size = 32 }) => {
   );
 };
 
-const ActionButton = ({ icon, onClick, variant = 'default', label = null }) => (
+const ActionButton = ({ icon, onClick, variant = 'default', label = null, disabled = false }) => (
   <button 
     className={`action-btn action-btn-${variant}`} 
     onClick={onClick}
+    disabled={disabled}
   >
     {icon}
     {label && <span className="action-btn-label">{label}</span>}
@@ -58,7 +59,8 @@ ActionButton.propTypes = {
   icon: PropTypes.node.isRequired,
   onClick: PropTypes.func,
   variant: PropTypes.oneOf(['default', 'primary', 'danger']),
-  label: PropTypes.string
+  label: PropTypes.string,
+  disabled: PropTypes.bool
 };
 
 const Pagination = ({ totalItems, itemsPerPage, currentPage, onPageChange, theme }) => {
@@ -155,23 +157,23 @@ const Pagination = ({ totalItems, itemsPerPage, currentPage, onPageChange, theme
 
 const List = ({
   data,
-  type = 'document', // 'document' or 'request'
+  type = 'document', 
   columns,
   actions,
   onActionClick,
   itemsPerPage = 10,
-  theme = 'default'
+  theme = 'default',
+  loading = false
 }) => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isProcessing, setIsProcessing] = useState(false);
 
-  // Calculate pagination
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
 
-  // Toggle select all
   const handleSelectAll = () => {
     if (selectAll) {
       setSelectedItems([]);
@@ -180,8 +182,7 @@ const List = ({
     }
     setSelectAll(!selectAll);
   };
-
-  // Toggle select individual item
+  
   const handleSelectItem = (id) => {
     if (selectedItems.includes(id)) {
       setSelectedItems(selectedItems.filter(itemId => itemId !== id));
@@ -190,16 +191,28 @@ const List = ({
     }
   };
 
-  // Handle bulk delete
-  const handleBulkDelete = () => {
-    if (typeof onActionClick === 'function') {
-      onActionClick('bulkDelete', selectedItems);
+  const handleBulkDelete = async () => {
+    if (selectedItems.length === 0) return;
+    
+    setIsProcessing(true);
+    
+    try {
+      if (typeof onActionClick === 'function') {
+        // Use the appropriate bulk action based on the list type
+        const bulkActionType = type === 'document' ? 'bulkDeleteResources' : 'bulkDeleteUsers';
+        await onActionClick(bulkActionType, selectedItems);
+      }
+      
+      // Clear selection after successful deletion
+      setSelectedItems([]);
+      setSelectAll(false);
+    } catch (error) {
+      console.error(`Failed to perform bulk deletion:`, error);
+    } finally {
+      setIsProcessing(false);
     }
-    setSelectedItems([]);
-    setSelectAll(false);
   };
 
-  // Render different list types based on configuration
   const renderTableView = () => {
     return currentItems.map((item, index) => (
       <div key={item.id || index} className="list-row">
@@ -271,7 +284,7 @@ const List = ({
           )}
           
           <div className="card-title">
-            {/* Display primary info based on type */}
+            
             {type === 'request' ? (
               <h3>{item.username}</h3>
             ) : (
@@ -353,16 +366,15 @@ const List = ({
           <button 
             className="bulk-delete-btn"
             onClick={handleBulkDelete}
+            disabled={isProcessing}
           >
             <Trash2 size={16} />
-            Delete Selected
+            {isProcessing ? 'Deleting...' : 'Delete Selected'}
           </button>
         </div>
       )}
       
-      
       <div className="list-table">
-        {/* List Header */}
         <div className="list-header">
           <div className="list-header-cell select-all">
             <label className="checkbox-container">
@@ -388,9 +400,10 @@ const List = ({
           {actions && <div className="list-header-cell">Actions</div>}
         </div>
 
-        {/* List Content */}
         <div className="list-body">
-          {data.length > 0 ? (
+          {loading ? (
+            <div className="list-loading">Loading...</div>
+          ) : data.length > 0 ? (
             renderTableView()
           ) : (
             <div className="list-empty">No items to display</div>
@@ -398,16 +411,17 @@ const List = ({
         </div>
       </div>
       
-      {/* Card View (for mobile) */}
+      {/* Mobile view */}
       <div className="list-cards">
-        {data.length > 0 ? (
+        {loading ? (
+          <div className="list-loading">Loading...</div>
+        ) : data.length > 0 ? (
           renderCardView()
         ) : (
           <div className="list-empty">No items to display</div>
         )}
       </div>
       
-      {/* Pagination */}
       {data.length > itemsPerPage && (
         <Pagination 
           totalItems={data.length} 
@@ -442,7 +456,8 @@ List.propTypes = {
   ),
   onActionClick: PropTypes.func,
   itemsPerPage: PropTypes.number,
-  theme: PropTypes.string
+  theme: PropTypes.string,
+  loading: PropTypes.bool
 };
 
 export default List;

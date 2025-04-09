@@ -1,0 +1,206 @@
+/* UsersPage.module.css */
+.verlofPage {
+  padding: 20px;
+  max-width: 1200px;
+  margin-left: 10px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.verlofTabs {
+  display: flex;
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 20px;
+}
+
+.verlofTabButton {
+  background: transparent;
+  border: none;
+  padding: 12px 40px;
+  font-size: 14px;
+  color: #6b7280;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.2s ease;
+  font-size: larger;
+}
+
+.verlofTabButton.active {
+  color: #6366f1;
+  font-weight: 500;
+}
+
+.verlofTabButton.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #6366f1;
+}
+
+.verlofSearchContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.verlofSearch {
+  display: flex;
+  align-items: center;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 0 12px;
+  background-color: #fff;
+  width: 300px;
+  transition: box-shadow 0.2s ease;
+}
+
+.verlofSearch:focus-within {
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+  border-color: #6366f1;
+}
+
+.searchInput {
+  border: none;
+  padding: 10px;
+  flex: 1;
+  outline: none;
+  font-size: 14px;
+}
+
+.searchIcon {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #9ca3af;
+  display: flex;
+  align-items: center;
+}
+
+.verlofViewToggle {
+  display: flex;
+  gap: 8px;
+}
+
+.listViewBtn, .gridViewBtn {
+  background-color: #f3f4f6;
+  border: none;
+  border-radius: 4px;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.listViewBtn.active, .gridViewBtn.active {
+  background-color: #e5e7eb;
+  color: #4f46e5;
+}
+
+/* User Grid and List Views */
+.usersView.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 50px;
+}
+
+.usersView.list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.usersView.list .userCard {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  text-align: left;
+  align-items: center;
+  padding: 15px;
+  height: auto;
+}
+
+.usersView.list .userCard .imageContainer {
+  margin-right: 20px;
+}
+
+.usersView.list .userCard .name,
+.usersView.list .userCard .email,
+.usersView.list .userCard .role {
+  margin: 0 15px 0 0;
+}
+
+.usersView.list .userCard .actionButtons {
+  margin-left: auto;
+}
+
+.errorMessage {
+  background-color: #fef2f2;
+  color: #b91c1c;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+  border-left: 4px solid #ef4444;
+}
+
+.loadingIndicator {
+  text-align: center;
+  padding: 40px;
+  color: #6b7280;
+  font-size: 16px;
+}
+
+.noUsersFound {
+  text-align: center;
+  padding: 40px;
+  color: #6b7280;
+  font-style: italic;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .usersView.grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+  
+  .verlofSearch {
+    width: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .usersView.grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .verlofSearch {
+    width: 100%;
+  }
+  
+  .verlofSearchContainer {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .verlofViewToggle {
+    justify-content: flex-end;
+  }
+  
+  .usersView.list .userCard {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .usersView.list .userCard .imageContainer {
+    margin-right: 0;
+    margin-bottom: 15px;
+  }
+  
+  .usersView.list .userCard .actionButtons {
+    margin-left: 0;
+    margin-top: 15px;
+  }
+}

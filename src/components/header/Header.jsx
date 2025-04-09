@@ -1,12 +1,21 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import ProfileIcon from "../ProfileIcon/ProfileIcon";
-import { getUserProfile } from "../../services/AdminService"; // Fixed import
+import { getUserProfile } from "../../services/AdminService"; 
 import "./Header.css";
 
-const Header = ({ backgroundColor, textColor, borderColor, profileSrc, onLogout, children }) => {
+const Header = ({
+  backgroundColor,
+  textColor,
+  borderColor,
+  profileSrc,
+  onLogout,
+  onToggleProfileDropdown, // 👈 New prop
+  children
+}) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [profileName, setProfileName] = useState("Loading...");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // 👈 Local toggle state
 
   useEffect(() => {
     const handleResize = () => {
@@ -37,15 +46,32 @@ const Header = ({ backgroundColor, textColor, borderColor, profileSrc, onLogout,
     };
   }, []);
 
+  const handleProfileClick = () => {
+    const newState = !isDropdownOpen;
+    setIsDropdownOpen(newState);
+    if (onToggleProfileDropdown) {
+      onToggleProfileDropdown(newState); // 👈 Notify parent
+    }
+  };
+
   return (
-    <header className="header" style={{ backgroundColor, color: textColor, borderBottom: `2px solid ${borderColor}` }}>
+    <header
+      className="header"
+      style={{
+        backgroundColor,
+        color: textColor,
+        borderBottom: `2px solid ${borderColor}`,
+      }}
+    >
       <div className="header-content container-fluid d-flex justify-content-between align-items-center">
         <div className="profile-container">
-          <ProfileIcon 
-            src={profileSrc} 
-            name={profileName} 
+          <ProfileIcon
+            src={profileSrc}
+            name={profileName}
             size="sm"
             onLogout={onLogout}
+            onClick={handleProfileClick} // 👈 handle click to toggle dropdown
+            isDropdownOpen={isDropdownOpen} // (optional to pass to ProfileIcon)
           />
         </div>
       </div>
@@ -59,7 +85,8 @@ Header.propTypes = {
   borderColor: PropTypes.string,
   profileSrc: PropTypes.string,
   onLogout: PropTypes.func,
-  children: PropTypes.node
+  children: PropTypes.node,
+  onToggleProfileDropdown: PropTypes.func, // 👈 declare new prop
 };
 
 Header.defaultProps = {
@@ -67,7 +94,8 @@ Header.defaultProps = {
   textColor: "#2D3748",
   borderColor: "#E2E8F0",
   profileSrc: "https://via.placeholder.com/100",
-  onLogout: () => {}
+  onLogout: () => {},
+  onToggleProfileDropdown: () => {}, // 👈 default no-op
 };
 
 export default Header;

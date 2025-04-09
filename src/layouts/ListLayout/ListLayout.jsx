@@ -54,6 +54,7 @@ const ListLayout = ({
           </div>
           
           {totalPages > 1 && (
+            
             <Pagination
               totalItems={totalItems}
               itemsPerPage={itemsPerPage}
@@ -78,6 +79,7 @@ ListLayout.propTypes = {
       key: PropTypes.string.isRequired,
       title: PropTypes.string.isRequired,
       render: PropTypes.func,
+      
       width: PropTypes.string,
       className: PropTypes.string
     })

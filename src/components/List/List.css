@@ -398,6 +398,46 @@
   border-color: #c7e8dc;
 }
 
+.pagination-container {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.list-content {
+  margin-bottom: 1rem;
+}
+
+.bulk-actions {
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f0f0f0;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+}
+
+.bulk-delete-btn {
+  background-color: #ff5a5f;
+  color: white;
+  border: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bulk-delete-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+
 
 /* Responsive adjustments */
 @media (max-width: 768px) {

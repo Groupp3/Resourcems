@@ -1,35 +1,100 @@
+// Updated UsersPage.jsx with modal implementation
 import React, { useState, useEffect } from "react";
-import AdminLayout from "../../layouts/AdminLayout/AdminLayout"; 
-import UserLayout from "../../layouts/AdminLayout/AdminLayout"; 
-import { getUsersByRole } from "../../services/AdminService"; 
+import AdminLayout from "../../layouts/AdminLayout/AdminLayout";
+import { getUsersByRole, updateUserRole, softDeleteUser } from "../../services/AdminService";
 import UserCard from "../../components/UserCard/UserCard";
+import Modal from "../../components/Modal/Modal";
 import { FaList, FaTh } from "react-icons/fa";
-import "./UsersPage.css";
+import styles from "./UsersPage.module.css";
 
 const UsersPage = () => {
   const [activeTab, setActiveTab] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [usersData, setUsersData] = useState([]);
   const [viewMode, setViewMode] = useState("grid");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  
+  // Modal states
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [actionType, setActionType] = useState(null);
+  const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const allUsers = await getUsersByRole(); 
-        setUsersData(allUsers);
-      } catch (error) {
-        console.error("Error fetching users: ", error);
-      }
-    };
-
     fetchUsers();
   }, []);
 
+  const fetchUsers = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const allUsers = await getUsersByRole();
+      setUsersData(allUsers);
+    } catch (error) {
+      console.error("Error fetching users: ", error);
+      setError("Failed to load users. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const tabs = ["All", "Admin", "Mentor", "Student"];
 
-  const getAccentColor = () => {
-    const colors = ["#6366f1", "#8b5cf6", "#d946ef", "#ec4899", "#f43f5e", "#f97316", "#eab308"];
-    return colors[Math.floor(Math.random() * colors.length)];
+  const handleRoleChange = async (userId, newRole) => {
+    try {
+      // Enhanced validation with detailed logging
+      if (!newRole || newRole.trim() === "") {
+        console.error("Role name is required and cannot be empty");
+        return;
+      }
+      
+      const normalizedRole = newRole.trim();
+      
+      // Call the API to update the user's role
+      await updateUserRole(userId, normalizedRole);
+      
+      // Update user role in the local state
+      setUsersData(prevUsers => 
+        prevUsers.map(user => 
+          user.id === userId ? { ...user, role: normalizedRole } : user
+        )
+      );
+      
+      // Show success modal
+      setSuccessMessage(`User role updated successfully to ${normalizedRole}`);
+      setIsSuccessModalOpen(true);
+    } catch (error) {
+      console.error(`Failed to update role for user ${userId}:`, error);
+      // You could add error modal here
+    }
+  };
+
+  const handleDeleteClick = (user) => {
+    setCurrentUser(user);
+    setActionType("delete");
+    setIsConfirmModalOpen(true);
+  };
+
+  const handleConfirmAction = async () => {
+    try {
+      if (actionType === "delete") {
+        // Call the API to soft delete the user
+        await softDeleteUser(currentUser.id);
+        
+        // Remove the deleted user from the local state
+        setUsersData(prevUsers => prevUsers.filter(user => user.id !== currentUser.id));
+        
+        // Show success modal
+        setSuccessMessage("User deleted successfully");
+        setIsConfirmModalOpen(false);
+        setIsSuccessModalOpen(true);
+      }
+    } catch (error) {
+      console.error(`Failed to ${actionType} user:`, error);
+      // You could add error modal here
+    }
   };
 
   const filteredUsers = usersData.filter(user => {
@@ -42,14 +107,12 @@ const UsersPage = () => {
 
   return (
     <AdminLayout>
-      <div className="verlof-page">
-        
-
-        <div className="verlof-tabs">
+      <div className={styles.verlofPage}>
+        <div className={styles.verlofTabs}>
           {tabs.map((tab) => (
             <button
               key={tab}
-              className={`verlof-tab-button ${activeTab === tab ? "active" : ""}`}
+              className={`${styles.verlofTabButton} ${activeTab === tab ? styles.active : ""}`}
               onClick={() => setActiveTab(tab)}
             >
               {tab}
@@ -57,24 +120,26 @@ const UsersPage = () => {
           ))}
         </div>
 
-        <div className="verlof-search-container">
-          <input
-            type="text"
-            placeholder="Search users..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="search-input"
-          />
+        <div className={styles.verlofSearchContainer}>
+          <div className={styles.verlofSearch}>
+            <input
+              type="text"
+              placeholder="Search users..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className={styles.searchInput}
+            />
+          </div>
 
-          <div className="verlof-view-toggle">
+          <div className={styles.verlofViewToggle}>
             <button 
-              className={`list-view-btn ${viewMode === "list" ? "active" : ""}`}
+              className={`${styles.listViewBtn} ${viewMode === "list" ? styles.active : ""}`}
               onClick={() => setViewMode("list")}
             >
               <FaList />
             </button>
             <button 
-              className={`grid-view-btn ${viewMode === "grid" ? "active" : ""}`}
+              className={`${styles.gridViewBtn} ${viewMode === "grid" ? styles.active : ""}`}
               onClick={() => setViewMode("grid")}
             >
               <FaTh />
@@ -82,18 +147,59 @@ const UsersPage = () => {
           </div>
         </div>
 
-        <div className={`users-${viewMode}-view`}>
-          {filteredUsers.map((user) => (
-            <UserCard
-              key={user.id}
-              name={`${user.firstName} ${user.lastName || ""}`}
-              email={user.email || "example@email.com"}
-              avatar={user.profileImageUrl || "https://via.placeholder.com/150"}
-              accentColor={getAccentColor()}
-              role={user.role}
-            />
-          ))}
-        </div>
+        {error && (
+          <div className={styles.errorMessage}>{error}</div>
+        )}
+
+        {loading ? (
+          <div className={styles.loadingIndicator}>Loading users...</div>
+        ) : (
+          <div className={`${styles.usersView} ${styles[viewMode]}`}>
+            {filteredUsers.length > 0 ? (
+              filteredUsers.map((user) => (
+                <UserCard
+                  key={user.id}
+                  name={`${user.firstName} ${user.lastName || ""}`}
+                  email={user.email || "example@email.com"}
+                  avatar={user.profileImageUrl || "https://via.placeholder.com/150"}
+                  role={user.role}
+                  onRoleChange={(newRole) => handleRoleChange(user.id, newRole)}
+                  onDelete={() => handleDeleteClick(user)}
+                />
+              ))
+            ) : (
+              <div className={styles.noUsersFound}>
+                No users found matching your criteria.
+              </div>
+            )}
+          </div>
+        )}
+        
+        {/* Confirmation Modal */}
+        <Modal
+          isOpen={isConfirmModalOpen}
+          onClose={() => setIsConfirmModalOpen(false)}
+          title="Confirm Deletion"
+          type="confirm"
+          confirmAction={handleConfirmAction}
+          confirmText="Delete"
+        >
+          <p>
+            Are you sure you want to delete user 
+            {currentUser ? ` ${currentUser.firstName} ${currentUser.lastName}` : ''}?
+          </p>
+          <p>This action cannot be undone.</p>
+        </Modal>
+        
+        {/* Success Modal */}
+        <Modal
+          isOpen={isSuccessModalOpen}
+          onClose={() => setIsSuccessModalOpen(false)}
+          title="Success"
+          type="success"
+        >
+          <p>{successMessage}</p>
+        </Modal>
       </div>
     </AdminLayout>
   );

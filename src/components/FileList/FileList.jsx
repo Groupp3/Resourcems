@@ -4,6 +4,8 @@ import {
   Folder,
   FileText,
   FileSpreadsheet,
+  VideoIcon,
+  BadgeCheckIcon,
 } from 'lucide-react';
 
 const FileList = ({ files }) => {
@@ -20,6 +22,10 @@ const FileList = ({ files }) => {
     if (file.type === "Folder") return <Folder size={20} />;
     if (file.name.endsWith('.pdf')) return <FileText size={20} />;
     if (file.name.endsWith('.xlsx')) return <FileSpreadsheet size={20} />;
+    if (file.name.endsWith('.mp4')) return <VideoIcon size={20} />;
+    if (file.name.endsWith('.png')) return <BadgeCheckIcon size={20} />;
+    if (file.name.endsWith('.jpeg')) return <BadgeCheckIcon size={20} />;
+    if (file.name.endsWith('.svg')) return <BadgeCheckIcon size={20} />;
     return <FileText size={20} />;
   };
 

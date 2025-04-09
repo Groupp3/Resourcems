@@ -119,7 +119,9 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   padding: 0;
   line-height: 1;
-  z-index: 1002; /* Higher than other elements */
+  z-index: 1002; 
+  width: 28px;
+  height: 28px;
 }
 
 .add-profile-button:hover {

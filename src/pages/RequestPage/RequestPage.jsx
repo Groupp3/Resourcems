@@ -3,7 +3,8 @@ import AdminLayout from "../../layouts/AdminLayout/AdminLayout";
 import ListLayout from "../../layouts/ListLayout/ListLayout";
 import { UserPlus, Trash2, ChevronDown, Check } from "lucide-react";
 import styles from "./RequestPage.module.css";
-import { getPendingUsers, updateUserStatus, updateUserRole } from "../../services/AdminService";
+import Modal from "../../components/Modal/Modal";
+import { getPendingUsers, updateUserStatus, updateUserRole, bulkDeleteUsers } from "../../services/AdminService";
 
 const UserAvatar = ({ firstName, lastName }) => {
   const getInitials = () => {
@@ -193,6 +194,13 @@ const RoleBadge = ({ role }) => {
 const RequestPage = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  
+  // Modal states
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [actionType, setActionType] = useState(null);
+  const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
     const fetchRequests = async () => {
@@ -218,26 +226,51 @@ const RequestPage = () => {
     fetchRequests();
   }, []);
 
-  const handleActionClick = async (actionType, item) => {
-    try {
-      if (actionType === "delete") {
-        await updateUserStatus(item.id, "REJECTED");
-        setData((prevData) => prevData.filter((req) => req.id !== item.id));
-      } else if (actionType === "add") {
-        await updateUserStatus(item.id, "APPROVED");
-        setData((prevData) => prevData.filter((req) => req.id !== item.id));
-      }
-    } catch (error) {
-      console.error(`Failed to ${actionType === 'delete' ? 'reject' : 'approve'} user:`, error);
-    }
+  const handleActionClick = (actionType, item) => {
+    setCurrentUser(item);
+    setActionType(actionType);
+    setIsConfirmModalOpen(true);
   };
   
+  const handleConfirmAction = async () => {
+    try {
+      if (actionType === "delete") {
+        await updateUserStatus(currentUser.id, "REJECTED");
+        setData((prevData) => prevData.filter((req) => req.id !== currentUser.id));
+        setSuccessMessage(`User request from ${currentUser.firstName || currentUser.email} has been rejected.`);
+      } else if (actionType === "add") {
+        await updateUserStatus(currentUser.id, "APPROVED");
+        setData((prevData) => prevData.filter((req) => req.id !== currentUser.id));
+        setSuccessMessage(`User ${currentUser.firstName || currentUser.email} has been approved successfully.`);
+      } else if (actionType === "bulkDeleteUsers") {
+        const userIds = Array.isArray(currentUser) ? currentUser : [currentUser.id];
+        await bulkDeleteUsers(userIds);
+        setData((prevData) => prevData.filter((req) => !userIds.includes(req.id)));
+        setSuccessMessage("Selected users have been deleted successfully.");
+      }
+      
+      setIsConfirmModalOpen(false);
+      setIsSuccessModalOpen(true);
+    } catch (error) {
+      console.error(`Failed to process action:`, error);
+      setIsConfirmModalOpen(false);
+      // You could add error modal here
+    }
+  };
+
   const handleRoleChange = (userId, newRole) => {
     setData(prevData => 
       prevData.map(user => 
         user.id === userId ? { ...user, role: newRole } : user
       )
     );
+    
+    // Show success message for role change
+    const user = data.find(u => u.id === userId);
+    if (user) {
+      setSuccessMessage(`Role for ${user.firstName || user.email} updated to ${newRole} successfully.`);
+      setIsSuccessModalOpen(true);
+    }
   };
   
   const columns = [
@@ -306,6 +339,58 @@ const RequestPage = () => {
     },
   ];
 
+  const getModalTitle = () => {
+    if (actionType === "delete") return "Confirm Rejection";
+    if (actionType === "add") return "Confirm Approval";
+    if (actionType === "bulkDeleteUsers") return "Confirm Bulk Delete";
+    return "Confirm Action";
+  };
+
+  const getModalContent = () => {
+    if (!currentUser) return "Are you sure you want to perform this action?";
+    
+    const userName = currentUser.firstName ? 
+      `${currentUser.firstName} ${currentUser.lastName || ''}` : 
+      currentUser.email;
+    
+    if (actionType === "delete") {
+      return (
+        <>
+          <p>Are you sure you want to reject the access request from <strong>{userName}</strong>?</p>
+          <p>This user will not be able to access the system.</p>
+        </>
+      );
+    }
+    
+    if (actionType === "add") {
+      return (
+        <>
+          <p>Are you sure you want to approve <strong>{userName}</strong> as a <strong>{currentUser.role}</strong>?</p>
+          <p>This user will be granted access to the system.</p>
+        </>
+      );
+    }
+    
+    if (actionType === "bulkDeleteUsers") {
+      const count = Array.isArray(currentUser) ? currentUser.length : 1;
+      return (
+        <>
+          <p>Are you sure you want to delete {count} selected user{count !== 1 ? 's' : ''}?</p>
+          <p>This action cannot be undone.</p>
+        </>
+      );
+    }
+    
+    return "Are you sure you want to perform this action?";
+  };
+
+  const getConfirmButtonText = () => {
+    if (actionType === "delete") return "Reject";
+    if (actionType === "add") return "Approve";
+    if (actionType === "bulkDeleteUsers") return "Delete";
+    return "Confirm";
+  };
+
   return (
     <AdminLayout>
       <div className={styles.adminlayout}>
@@ -322,6 +407,28 @@ const RequestPage = () => {
           renderActionButton={renderActionButton}
           renderRow={renderRow}
         />
+        
+      
+        <Modal
+          isOpen={isConfirmModalOpen}
+          onClose={() => setIsConfirmModalOpen(false)}
+          title={getModalTitle()}
+          type="confirm"
+          confirmAction={handleConfirmAction}
+          confirmText={getConfirmButtonText()}
+        >
+          {getModalContent()}
+        </Modal>
+        
+      
+        <Modal
+          isOpen={isSuccessModalOpen}
+          onClose={() => setIsSuccessModalOpen(false)}
+          title="Success"
+          type="success"
+        >
+          <p>{successMessage}</p>
+        </Modal>
       </div>
     </AdminLayout>
   );

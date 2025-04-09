@@ -2,12 +2,22 @@ import axios from "axios";
 
 const API_BASE_URL = "http://localhost:8080/api/resources";
 
-export const getResources = async (contentType = "") => {
+const handleApiError = (error) => {
+  if (error.response) {
+    console.error(`Error ${error.response.status}: ${error.response.statusText}`);
+    console.error("Error details:", error.response.data);
+  } else {
+    console.error("Request error:", error.message);
+  }
+};
+
+
+export const getResources = async () => {
   try {
     const token = localStorage.getItem("token");
-
     if (!token) {
-      throw new Error("Authentication token missing");
+      console.error("No token found. User might not be authenticated.");
+      return [];
     }
 
     const config = {
@@ -17,15 +27,12 @@ export const getResources = async (contentType = "") => {
       },
     };
 
-    const url = contentType
-      ? `${API_BASE_URL}/list?contentType=${contentType}`
-      : `${API_BASE_URL}/list`;
-
-    const response = await axios.get(url, config);
-
-    return response.data.response || [];
+    const response = await axios.get(`${API_BASE_URL}/list`, config);
+    return Array.isArray(response.data.response) ? response.data.response : [];
   } catch (error) {
-    console.error("Error fetching resources:", error);
+    handleApiError(error);
     return [];
   }
 };
+
+

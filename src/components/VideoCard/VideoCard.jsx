@@ -50,30 +50,33 @@ const VideoCard = ({ video, onClick, onDelete }) => {
 
   return (
     <div className="video-card" onClick={handleCardClick}>
-      <div className="video-thumbnail">
-        <img
-          src={thumbnailUrl}
-          alt={`${video.title} thumbnail`}
-          className="thumbnail-image"
-        />
-        <div className="duration-badge">{duration}</div>
-        <div className="play-button">
-          <Play className="play-icon" />
-        </div>
-      </div>
+      <div className="video-thumbnail-container">
+            <div className="video-thumbnail">
+                <img
+                src={thumbnailUrl}
+                alt={`${video.title} thumbnail`}
+                className="thumbnail-image"
+                />
+                <div className="duration-badge">{duration}</div>
+                <div className="play-button">
+                <Play className="play-icon" />
+                </div>
+            </div>
+            </div>
+
 
       <div className="video-info">
       <h3 className="video-title">{video.title}</h3>
       <p className="video-uploaded-time">{formatTimeAgo(video.createdAt)}</p>
       <div className="video-tags">
-        {video.tags?.length
-            ? video.tags.map((tag, idx) => (
-                <span key={idx} className="video-tag-pill">
-                {tag}
-                </span>
-            ))
-            : <span className="video-tag-pill">No Tags</span>}
-        </div>
+    {video.tags?.length
+        ? video.tags.map((tag, idx) => (
+            <span key={idx} className="video-tag-pill">
+            {tag}
+            </span>
+        ))
+        : <span className="video-tag-pill">No Tags</span>}
+    </div>
 
 
         <div className="video-user-details">

@@ -16,21 +16,31 @@
   box-shadow: 0 4px 16px rgba(15, 23, 42, 0.1);
 }
 
-.video-thumbnail {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16/9;
-  border-radius: 8px 8px 0 0;
-  overflow: hidden;
-  background-color: #e2e8f0;
-}
-
-.thumbnail-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
+.video-thumbnail-container {
+    width: 100%;
+    height: auto;
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    background-color: #f4f4f4; /* fallback background */
+  }
+  
+  .video-thumbnail {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  }
+  
+  .thumbnail-image {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0;
+  }
+  
 .duration-badge {
   position: absolute;
   bottom: 8px;

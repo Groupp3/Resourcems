@@ -1,14 +1,37 @@
 import React, { useState, useEffect } from "react";
 import ResourceLayout from "../../layouts/ResourceLayout/ResourceLayout";
 import ListLayout from "../../layouts/ListLayout/ListLayout";
-import { FileText, Eye, Download, Trash2, Lock, Globe } from "lucide-react";
+import { FileText, Eye, Download, Trash2, Lock, Globe, X, ZoomIn, ZoomOut } from "lucide-react";
 import styles from "./CertificatePage.module.css";
-import { getResources} from "../../services/ResourceService"; // Import both API functions
-import {  getUsersByRole } from "../../services/AdminService";
+import { getResources, deleteResource } from "../../services/ResourceService"; 
+import { getUsersByRole } from "../../services/AdminService";
+import axios from "axios";
+
 const CertificatePage = () => {
   const [certificateData, setCertificateData] = useState([]);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [viewModalOpen, setViewModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [selectedCertificate, setSelectedCertificate] = useState(null);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
+  const [zoom, setZoom] = useState(1);
+  const [imageSrc, setImageSrc] = useState(null);
+
+  // Function to construct URL based on resource object
+  const getImageUrl = (certificate) => {
+    if (!certificate) return null;
+    
+    // Check if url or downloadUrl already exists
+    if (certificate.url || certificate.downloadUrl) {
+      return certificate.url || certificate.downloadUrl;
+    }
+    
+    // Construct URL based on your API structure - using the correct endpoint
+    const apiBaseUrl = "http://localhost:8080/api/resources";
+    return `${apiBaseUrl}/${certificate.id}`;
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,6 +67,64 @@ const CertificatePage = () => {
 
     fetchData();
   }, []);
+
+  // Fetch image data with authorization when the certificate is selected
+  useEffect(() => {
+    const fetchImage = async () => {
+      if (!selectedCertificate) return;
+      
+      try {
+        setImageLoaded(false);
+        setImageError(false);
+        setImageSrc(null);
+        
+        const imageUrl = getImageUrl(selectedCertificate);
+        console.log("Fetching image from:", imageUrl);
+        
+        const token = localStorage.getItem("token");
+        if (!token) {
+          throw new Error("Authentication token missing");
+        }
+        
+        // Fetch image with authentication
+        const response = await axios.get(imageUrl, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          },
+          responseType: 'blob'
+        });
+        
+        // Create object URL from blob
+        const objectUrl = URL.createObjectURL(response.data);
+        setImageSrc(objectUrl);
+        
+      } catch (error) {
+        console.error("Error fetching image:", error);
+        setImageError(true);
+      } finally {
+        setImageLoaded(true);
+      }
+    };
+    
+    if (viewModalOpen && selectedCertificate) {
+      fetchImage();
+    }
+    
+    // Cleanup function to revoke object URL when component unmounts or certificate changes
+    return () => {
+      if (imageSrc) {
+        URL.revokeObjectURL(imageSrc);
+      }
+    };
+  }, [selectedCertificate, viewModalOpen]);
+
+  // Reset zoom when opening or closing modal
+  useEffect(() => {
+    setZoom(1);
+    if (!viewModalOpen) {
+      setSelectedCertificate(null);
+    }
+  }, [viewModalOpen]);
 
   const certificateColumns = [
     {
@@ -94,17 +175,86 @@ const CertificatePage = () => {
     
     // Implement action logic here based on the actionType
     switch(actionType) {
-      case "view":
-        // View logic
+      case "view": 
+        // View logic - open the modal and set the selected certificate
+        setSelectedCertificate(item);
+        setViewModalOpen(true);
         break;
       case "download":
         // Download logic
+        handleDownload(item);
         break;
       case "delete":
-        // Delete logic and refresh data
+        // Delete logic - open confirmation modal
+        setSelectedCertificate(item);
+        setDeleteModalOpen(true);
         break;
       default:
         break;
+    }
+  };
+
+  const handleDownload = async (item) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert('Authentication token missing. Please log in again.');
+      return;
+    }
+    
+    try {
+      const downloadUrl = getImageUrl(item);
+      const response = await axios.get(downloadUrl, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        responseType: 'blob'
+      });
+      
+      // Create download link
+      const url = window.URL.createObjectURL(response.data);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', item.filename || 'certificate');
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      
+      // Clean up
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Download error:', error);
+      alert('Error downloading file.');
+    }
+  };
+  
+  const handleDeleteConfirm = async () => {
+    if (!selectedCertificate) return;
+    
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert('Authentication token missing. Please log in again.');
+        return;
+      }
+      
+      // Call the delete resource service
+      await deleteResource(selectedCertificate.id);
+      
+      // Remove the deleted item from the local state
+      setCertificateData(prevData => 
+        prevData.filter(item => item.id !== selectedCertificate.id)
+      );
+      
+      // Close the confirmation modal
+      setDeleteModalOpen(false);
+      setSelectedCertificate(null);
+      
+      // Show success message
+      alert(`Certificate "${selectedCertificate.filename || selectedCertificate.title}" has been deleted.`);
+      
+    } catch (error) {
+      console.error('Delete error:', error);
+      alert('Error deleting certificate. Please try again.');
     }
   };
 
@@ -128,6 +278,39 @@ const CertificatePage = () => {
     setCertificateData(enhancedResources);
   };
 
+  // Close modal handler
+  const handleCloseModal = () => {
+    setViewModalOpen(false);
+  };
+  
+  // Close delete modal handler
+  const handleCloseDeleteModal = () => {
+    setDeleteModalOpen(false);
+    setSelectedCertificate(null);
+  };
+
+  // Handle image load complete
+  const handleImageLoaded = () => {
+    setImageLoaded(true);
+  };
+
+  // Handle image load error
+  const handleImageError = () => {
+    console.error("Error displaying image");
+    setImageError(true);
+    setImageLoaded(true);
+  };
+
+  // Zoom in handler
+  const zoomIn = () => {
+    setZoom(prev => Math.min(prev + 0.25, 3));
+  };
+
+  // Zoom out handler
+  const zoomOut = () => {
+    setZoom(prev => Math.max(prev - 0.25, 0.5));
+  };
+
   return (
     <ResourceLayout
       onUploadSave={handleUploadSave}
@@ -149,6 +332,109 @@ const CertificatePage = () => {
           />
         )}
       </div>
+
+      {/* Custom Certificate Viewer Modal */}
+      {viewModalOpen && selectedCertificate && (
+        <div className={styles.modalOverlay} onClick={handleCloseModal}>
+          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.modalHeader}>
+              <h3>{selectedCertificate.filename || selectedCertificate.title}</h3>
+              <div className={styles.modalControls}>
+                <button className={styles.zoomButton} onClick={zoomOut} title="Zoom Out">
+                  <ZoomOut size={18} />
+                </button>
+                <span className={styles.zoomLevel}>{Math.round(zoom * 100)}%</span>
+                <button className={styles.zoomButton} onClick={zoomIn} title="Zoom In">
+                  <ZoomIn size={18} />
+                </button>
+                <button className={styles.closeButton} onClick={handleCloseModal} title="Close">
+                  <X size={20} />
+                </button>
+              </div>
+            </div>
+            <div 
+              className={styles.modalBody}
+              style={{ cursor: zoom > 1 ? 'move' : 'default' }}
+            >
+              {!imageLoaded && !imageError && (
+                <div className={styles.loadingSpinner}>Loading certificate...</div>
+              )}
+              
+              {imageError && (
+                <div className={styles.errorMessage}>
+                  Failed to load image. The file might be unavailable or you may not have permission to view it.
+                </div>
+              )}
+              
+              {imageLoaded && !imageError && imageSrc && (
+                <div className={styles.imageContainer}>
+                  <img 
+                    src={imageSrc}
+                    alt={selectedCertificate.filename || selectedCertificate.title}
+                    className={styles.certificateImage}
+                    onLoad={handleImageLoaded}
+                    onError={handleImageError}
+                    style={{ transform: `scale(${zoom})` }}
+                  />
+                </div>
+              )}
+            </div>
+            <div className={styles.modalFooter}>
+              <p>Uploaded by: {selectedCertificate.uploadedByName}</p>
+              <div className={styles.actionButtons}>
+                <button 
+                  className={styles.downloadButton}
+                  onClick={() => handleDownload(selectedCertificate)}
+                >
+                  <Download size={16} /> Download
+                </button>
+                <button 
+                  className={styles.deleteButton}
+                  onClick={() => {
+                    handleCloseModal();
+                    setDeleteModalOpen(true);
+                  }}
+                >
+                  <Trash2 size={16} /> Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {deleteModalOpen && selectedCertificate && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.deleteModalContent} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.deleteModalHeader}>
+              <h3>Confirm Delete</h3>
+              <button className={styles.closeButton} onClick={handleCloseDeleteModal}>
+                <X size={20} />
+              </button>
+            </div>
+            <div className={styles.deleteModalBody}>
+              <p>Are you sure you want to delete the certificate:</p>
+              <p className={styles.certificateName}>"{selectedCertificate.filename || selectedCertificate.title}"?</p>
+              <p>This action cannot be undone.</p>
+            </div>
+            <div className={styles.deleteModalFooter}>
+              <button 
+                className={styles.cancelButton}
+                onClick={handleCloseDeleteModal}
+              >
+                Cancel
+              </button>
+              <button 
+                className={styles.confirmDeleteButton}
+                onClick={handleDeleteConfirm}
+              >
+                <Trash2 size={16} /> Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </ResourceLayout>
   );
 };

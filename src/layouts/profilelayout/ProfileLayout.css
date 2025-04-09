@@ -91,6 +91,39 @@
   margin-bottom: 0.5rem;
 }
 
+/* Permanent field styling */
+.permanent-field {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.permanent-icon {
+  color: #7e64ff;
+  margin-right: 0.75rem;
+  font-size: 1rem;
+}
+
+/* Locked field styling */
+.locked-field {
+  background-color: #f8f9fc !important;
+  color: #666 !important;
+  cursor: not-allowed;
+  border-color: #e0e0e0;
+}
+
+.locked-field-icon {
+  background-color: #f0ebff;
+  color: #7e64ff;
+  border-color: #e0e0e0;
+}
+
+.lock-icon {
+  color: #7e64ff;
+  font-size: 0.8rem;
+}
+
+/* Role badge styling */
 .role-badge {
   display: inline-block;
   padding: 0.35rem 1rem;
@@ -99,7 +132,7 @@
   font-weight: 600;
   border-radius: 12px;
   font-size: 0.9rem;
-  margin: 0.5rem 0 1rem;
+  margin: 0 0 0.5rem;
   border: 1px solid rgba(126, 100, 255, 0.2);
 }
 
@@ -153,6 +186,7 @@
   margin-bottom: 2rem;
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: left;
 }
 
 .profile-details-card:hover {
@@ -401,6 +435,10 @@ p, span, a, label, input, button {
   .user-profile-info h3::after {
     left: 50%;
     transform: translateX(-50%);
+  }
+  
+  .permanent-field {
+    justify-content: center;
   }
 }
 

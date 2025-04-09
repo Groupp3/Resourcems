@@ -4,7 +4,7 @@ import VideoCard from "../../components/VideoCard/VideoCard";
 import { getUsersByRole } from "../../services/AdminService";
 import { getResources } from "../../services/ResourceService";
 import ReactPlayer from "react-player";
-import { IoCloseOutline } from "react-icons/io5"; // Updated to IoCloseOutline
+import { AiOutlineClose } from "react-icons/ai"; // ✅ Imported close icon
 import "./VideoCardPage.css";
 
 const BASE_VIDEO_URL = "https://resourcebucket-1111.s3.amazonaws.com/";
@@ -163,7 +163,7 @@ const VideoCardPage = () => {
                 height="100%"
               />
               <button className="video-close-btn" onClick={handleClosePlayer}>
-                <IoCloseOutline size={24} /> {/* Updated close icon */}
+                <AiOutlineClose size={24} /> {/* ✅ Updated Close Icon */}
               </button>
               <h3 className="video-title">{selectedVideo.title}</h3>
             </div>

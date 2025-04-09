@@ -9,27 +9,26 @@ import {
   FaPencilAlt,
   FaCamera
 } from "react-icons/fa";
+import { updateUserRole } from "../../services/AdminService"; // Adjust path as needed
 
-const UserCard = ({ name, email, avatar, role, onRoleChange, onDelete }) => {
+const UserCard = ({ userId, name, email, avatar, role, onRoleChange, onDelete }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showAvatarOverlay, setShowAvatarOverlay] = useState(false);
   const menuRef = useRef(null);
-  
-  // Close menu when clicking outside
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setMenuOpen(false);
       }
     };
-    
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
-  // Gradient + border style
   const getAccentStyle = (role) => {
     const normalizedRole = role?.toLowerCase();
     switch (normalizedRole) {
@@ -58,11 +57,16 @@ const UserCard = ({ name, email, avatar, role, onRoleChange, onDelete }) => {
 
   const { background, borderColor } = getAccentStyle(role);
 
-  const handleRoleChange = (newRole) => {
-    if (onRoleChange) {
-      onRoleChange(newRole);
+  const handleRoleChange = async (newRole) => {
+    try {
+      await updateUserRole(userId, newRole);
+      if (onRoleChange) {
+        onRoleChange(newRole);
+      }
+      setMenuOpen(false);
+    } catch (error) {
+      console.error("Failed to update role", error);
     }
-    setMenuOpen(false);
   };
 
   const getRoleIcon = () => {
@@ -87,54 +91,49 @@ const UserCard = ({ name, email, avatar, role, onRoleChange, onDelete }) => {
         borderBottom: `4px solid ${borderColor}`,
       }}
     >
-      {/* Gradient header */}
-      <div
-        className="card-header-bg"
-        style={{ background: background }}
-      >
+      <div className="card-header-bg" style={{ background: background }}>
         <div className="pattern-overlay"></div>
       </div>
 
-      {/* Top right buttons - VISIBLE ON HOVER */}
       <div className="top-actions">
         <div className="menu-container" ref={menuRef}>
-          <button 
-            className="menu-button" 
+          <button
+            className="menu-button"
             title="Change role"
             onClick={() => setMenuOpen(!menuOpen)}
           >
             <FaEllipsisH />
           </button>
-          
+
           {menuOpen && (
             <div className="role-menu">
               <div className="role-menu-title">Change Role</div>
-              <button 
+              <button
                 className="role-option"
-                onClick={() => handleRoleChange("admin")}
-                style={role.toLowerCase() === "admin" ? {backgroundColor: "rgba(78, 202, 255, 0.1)"} : {}}
+                onClick={() => handleRoleChange("ADMIN")}
+                style={role.toLowerCase() === "ADMIN" ? { backgroundColor: "rgba(78, 202, 255, 0.1)" } : {}}
               >
                 <FaUserShield /> Admin
               </button>
-              <button 
+              <button
                 className="role-option"
-                onClick={() => handleRoleChange("mentor")}
-                style={role.toLowerCase() === "mentor" ? {backgroundColor: "rgba(126, 100, 255, 0.1)"} : {}}
+                onClick={() => handleRoleChange("MENTOR")}
+                style={role.toLowerCase() === "MENTOR" ? { backgroundColor: "rgba(126, 100, 255, 0.1)" } : {}}
               >
                 <FaUserTie /> Mentor
               </button>
-              <button 
+              <button
                 className="role-option"
-                onClick={() => handleRoleChange("student")}
-                style={role.toLowerCase() === "student" ? {backgroundColor: "rgba(255, 141, 78, 0.1)"} : {}}
+                onClick={() => handleRoleChange("STUDENT")}
+                style={role.toLowerCase() === "STUDENT" ? { backgroundColor: "rgba(255, 141, 78, 0.1)" } : {}}
               >
                 <FaUserGraduate /> Student
               </button>
             </div>
           )}
         </div>
-        <button 
-          className="top-delete-button" 
+        <button
+          className="top-delete-button"
           title="Delete user"
           onClick={() => onDelete && onDelete()}
         >
@@ -144,7 +143,7 @@ const UserCard = ({ name, email, avatar, role, onRoleChange, onDelete }) => {
 
       <div className="card-content">
         <div className="card-header">
-          <div 
+          <div
             className="imageContainer"
             onMouseEnter={() => setShowAvatarOverlay(true)}
             onMouseLeave={() => setShowAvatarOverlay(false)}

@@ -2,9 +2,10 @@
 .user-layout {
     display: flex;
     height: 100vh;
-    width: 82vw;
+    width: 83vw;
     background-color: #ffffff; 
     overflow: auto;
+    font-family: 'Poppins', sans-serif;
 }
 
 .main-content {

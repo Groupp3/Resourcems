@@ -1,0 +1,54 @@
+.mentor-layout {
+    display: flex;
+    height: 100vh;
+    width: 83vw;
+    background-color: #ffffff; 
+    overflow: auto;
+    font-family: 'Poppins', sans-serif;
+}
+
+.mentor-main-content {
+    flex-grow: 1;
+    padding: 10px 20px;
+    position: relative;
+    padding-top: 90px; /* extra space for header */
+    transition: all 0.3s ease;
+}
+
+.profile-container {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.content {
+    padding-top: 60px; 
+}
+
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    color: #000;
+    padding: 20px 20px 10px 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+    z-index: 5; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px; 
+    height: 100%;
+    background-color: #2b3d51;
+    color: white;
+    padding: 20px;
+    z-index: 1001;
+}

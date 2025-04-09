@@ -1,45 +1,59 @@
+// src/routes/AppRoutes.jsx
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import AuthPage from "../pages/AuthPage";
-import AdminPanel from "../pages/AdminPanel/AdminPanel";
-import UsersPage from "../pages/UsersPage/UsersPage";
-import UserProfilePage from "../pages/UserProfilePage/UserProfilePage";
-import DocumentPage from "../pages/DocumentPage/DocumentPage";
-import RequestPage from "../pages/RequestPage/RequestPage";
-import VideoCardPage from "../pages/VideoCardPage/VideoCardPage";
-import CertificatePage from "../pages/CertificatePage/CertificatePage";
-import ResourcePage from "../pages/ResourcePage/ResourcePage";
-
-
-
+import adminRoutes from "./AdminRoutes";
+import studentRoutes from "./StudentRoute";
+import mentorRoutes from "./MentorRoute";
+import { useAuth } from "../states/AuthContext";
+import ProtectedRoute from "../routes/ProtectedRoute"; // import it
 
 const AppRoutes = () => {
+  const { user } = useAuth();
+
+  const getDefaultRoute = () => {
+    if (user?.role === "ADMIN") return "/admin";
+    if (user?.role === "STUDENT") return "/student";
+    if (user?.role === "MENTOR") return "/mentor";
+    return "/auth";
+  };
+
   return (
     <Routes>
-      {/* Auth Page */}
       <Route path="/auth" element={<AuthPage />} />
 
-      {/* Admin Pages (Each page already wraps itself in AdminLayout) */}
-      <Route path="/admin" element={<AdminPanel />} />
-      <Route path="/admin/users" element={<UsersPage />} />
-      <Route path="/admin/profile" element={<UserProfilePage />} />
-      <Route path="/admin/document" element={<DocumentPage />} />
-      <Route path="/admin/request" element={<RequestPage />} />
-      <Route path="/admin/resource" element={<ResourcePage />} />
+      {/* Admin Routes */}
+      {adminRoutes.map(({ path, element }) => (
+        <Route
+          key={path}
+          path={path}
+          element={<ProtectedRoute>{element}</ProtectedRoute>}
+        />
+      ))}
 
+      {/* Student Routes */}
+      {studentRoutes.map(({ path, element }) => (
+        <Route
+          key={path}
+          path={path}
+          element={<ProtectedRoute>{element}</ProtectedRoute>}
+        />
+      ))}
 
-    
-      <Route path="resource/videos" element={<VideoCardPage />} />
-      <Route path="/resource/certificates" element={<CertificatePage />} />  
-      <Route path="/resource/documents" element={<DocumentPage />} />
+      {/* Mentor Routes */}
+      {mentorRoutes.map(({ path, element }) => (
+        <Route
+          key={path}
+          path={path}
+          element={<ProtectedRoute>{element}</ProtectedRoute>}
+        />
+      ))}
 
+      {/* Default redirect based on role */}
+      <Route path="/" element={<Navigate to={getDefaultRoute()} replace />} />
 
-
-
-
-      {/* Default Redirects */}
-      <Route path="/" element={<Navigate to="/admin" replace />} />
-      <Route path="*" element={<Navigate to="/admin" replace />} />
+      {/* Catch-all redirect */}
+      <Route path="*" element={<Navigate to={getDefaultRoute()} replace />} />
     </Routes>
   );
 };

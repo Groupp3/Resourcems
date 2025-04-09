@@ -65,20 +65,20 @@ const Pagination = ({
   const pageNumbers = getPageNumbers();
 
   return (
-    <div className={`pagination-container pagination-theme-${theme}`}>
+    <div className={`pagination-container ${theme}`}>
       <button 
+        className="pagination-button prev" 
         onClick={handlePrevClick} 
         disabled={currentPage === 1}
-        className="pagination-arrow"
         aria-label="Previous page"
       >
-        <ChevronLeft size={16} />
+        <ChevronLeft size={18} />
       </button>
       
-      <div className="pagination-numbers">
+      <div className="pagination-list">
         {pageNumbers.map((number, index) => (
           number === '...' ? 
-          <span key={`ellipsis-${index}`} className="pagination-ellipsis">...</span> :
+          <li key={`ellipsis-${index}`} className="pagination-ellipsis">...</li> :
           <button
             key={number}
             onClick={() => handlePageClick(number)}
@@ -90,14 +90,14 @@ const Pagination = ({
           </button>
         ))}
       </div>
-      
+
       <button 
-        onClick={handleNextClick} 
+        className="pagination-button next" 
+        onClick={handleNextClick}
         disabled={currentPage === totalPages}
-        className="pagination-arrow"
         aria-label="Next page"
       >
-        <ChevronRight size={16} />
+        <ChevronRight size={18} />
       </button>
       
       <div className="pagination-info">

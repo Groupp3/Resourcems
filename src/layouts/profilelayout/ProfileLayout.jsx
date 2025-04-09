@@ -2,21 +2,47 @@ import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Header from "../../components/header/Header";
 import UserProfileIcon from "../../components/UserProfileIcon/UserProfileIcon";
-import Modal from "../../components/Modal/Modal";
 import { FaUser, FaKey, FaSave, FaEdit, FaLock, FaEnvelope, FaUserTag } from "react-icons/fa";
+import { getUserProfile, updateUserProfile, changeUserPassword } from "../../services/AdminService"; // Adjust the import path as needed
 import "./ProfileLayout.css";
-import profileService from "../../services/ProfileService";
-// import { toast } from "react-toastify"; // Assuming you're using react-toastify for notifications
+
+// Improved Modal Component
+const Modal = ({ isOpen, onClose, title, primaryButtonText, onPrimaryClick, children }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="modal-overlay">
+      <div className="modal-wrapper">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h5 className="modal-title">{title}</h5>
+            <button type="button" className="btn-close" onClick={onClose}></button>
+          </div>
+          <div className="modal-body">
+            {children}
+          </div>
+          <div className="modal-footer">
+            <button type="button" className="btn btn-secondary" onClick={onClose}>
+              Cancel
+            </button>
+            <button 
+              type="button" 
+              className="btn btn-primary" 
+              onClick={onPrimaryClick}
+            >
+              {primaryButtonText}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const ProfileLayout = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [passwordData, setPasswordData] = useState({
-    currentPassword: "",
-    newPassword: "",
-    confirmPassword: ""
-  });
+  const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState({
     firstName: "",
     lastName: "",
@@ -24,31 +50,38 @@ const ProfileLayout = () => {
     email: "",
     avatar: "",
   });
-  const [errors, setErrors] = useState({});
 
-  // Fetch user profile on component mount
+  const [passwords, setPasswords] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
+
   useEffect(() => {
     fetchUserProfile();
   }, []);
 
   const fetchUserProfile = async () => {
     try {
-      setIsLoading(true);
-      const response = await profileService.getCurrentUser();
-      if (response && response.data) {
+      setLoading(true);
+      const response = await getUserProfile();
+      
+      // Extract data from the response structure
+      const userData = response;
+
+      if (userData) {
         setProfile({
-          firstName: response.data.firstName || "",
-          lastName: response.data.lastName || "",
-          role: response.data.role || "",
-          email: response.data.email || "",
-          avatar: response.data.profileImageUrl || "",
+          firstName: userData.firstName || "",
+          lastName: userData.lastName || "",
+          role: userData.role || "",
+          email: userData.email || "",
+          avatar: userData.profileImageUrl || "",
         });
       }
     } catch (error) {
-      toast.error("Failed to load profile information");
-      console.error("Error fetching profile:", error);
+      console.error("Error fetching user data:", error);
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
@@ -59,120 +92,81 @@ const ProfileLayout = () => {
 
   const handlePasswordChange = (e) => {
     const { name, value } = e.target;
-    setPasswordData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  const validateForm = () => {
-    const newErrors = {};
-    
-    if (!profile.firstName.trim()) {
-      newErrors.firstName = "First name is required";
-    }
-    
-    if (!profile.lastName.trim()) {
-      newErrors.lastName = "Last name is required";
-    }
-    
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const validatePasswordForm = () => {
-    const newErrors = {};
-    
-    if (!passwordData.currentPassword) {
-      newErrors.currentPassword = "Current password is required";
-    }
-    
-    if (!passwordData.newPassword) {
-      newErrors.newPassword = "New password is required";
-    } else if (passwordData.newPassword.length < 8) {
-      newErrors.newPassword = "Password must be at least 8 characters";
-    }
-    
-    if (!passwordData.confirmPassword) {
-      newErrors.confirmPassword = "Please confirm your new password";
-    } else if (passwordData.newPassword !== passwordData.confirmPassword) {
-      newErrors.confirmPassword = "Passwords do not match";
-    }
-    
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSaveChanges = async () => {
-    if (!validateForm()) return;
-    
-    try {
-      setIsLoading(true);
-      const userData = {
-        firstName: profile.firstName,
-        lastName: profile.lastName
-      };
-      
-      const response = await profileService.updateProfile(userData);
-      toast.success("Profile updated successfully!");
-      setShowEditForm(false);
-    } catch (error) {
-      let errorMessage = "Failed to update profile";
-      if (error.response && error.response.data && error.response.data.message) {
-        errorMessage = error.response.data.message;
-      }
-      toast.error(errorMessage);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleChangePassword = async () => {
-    if (!validatePasswordForm()) return;
-    
-    try {
-      setIsLoading(true);
-      const passwordUpdateData = {
-        currentPassword: passwordData.currentPassword,
-        newPassword: passwordData.newPassword
-      };
-      
-      const response = await profileService.changePassword(passwordUpdateData);
-      toast.success("Password changed successfully!");
-      setIsModalOpen(false);
-      // Clear the password form
-      setPasswordData({
-        currentPassword: "",
-        newPassword: "",
-        confirmPassword: ""
-      });
-    } catch (error) {
-      let errorMessage = "Failed to change password";
-      if (error.response && error.response.data && error.response.data.message) {
-        errorMessage = error.response.data.message;
-      }
-      toast.error(errorMessage);
-    } finally {
-      setIsLoading(false);
-    }
+    setPasswords((prev) => ({ ...prev, [name]: value }));
   };
 
   const toggleEditForm = () => {
     setShowEditForm(!showEditForm);
-    // Reset errors when toggling form
-    setErrors({});
   };
 
-  // Reset password data when closing modal
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setErrors({});
-    setPasswordData({
-      currentPassword: "",
-      newPassword: "",
-      confirmPassword: ""
-    });
+  const saveProfileChanges = async () => {
+    try {
+      const updateDTO = {
+        firstName: profile.firstName,
+        lastName: profile.lastName,
+      };
+
+      await updateUserProfile(updateDTO);
+      alert("Profile updated successfully");
+      setShowEditForm(false);
+      fetchUserProfile();
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      
+      if (error.response && error.response.data && error.response.data.message) {
+        alert(`Error: ${error.response.data.message}`);
+      } else {
+        alert("Failed to update profile. Please try again.");
+      }
+    }
   };
+
+  const savePasswordChanges = async () => {
+    try {
+      // Validate passwords
+      if (passwords.newPassword !== passwords.confirmPassword) {
+        alert("New password and confirmation do not match");
+        return;
+      }
+
+      if (!passwords.currentPassword || !passwords.newPassword) {
+        alert("Please fill in all password fields");
+        return;
+      }
+
+      // Implementation for the password change API call - matches ProfileService approach
+      const passwordData = {
+        currentPassword: passwords.currentPassword,
+        newPassword: passwords.newPassword,
+      };
+
+      // Call the service function
+      await changeUserPassword(passwordData);
+      
+      // Success handling
+      alert("Password changed successfully");
+      setIsModalOpen(false);
+      
+      // Reset password fields
+      setPasswords({
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      });
+    } catch (error) {
+      console.error("Error changing password:", error);
+      // Show more specific error messages based on the error response
+      if (error.response && error.response.data && error.response.data.message) {
+        alert(`Error: ${error.response.data.message}`);
+      } else {
+        alert("Failed to change password. Please try again.");
+      }
+    }
+  };
+
+  if (loading) {
+    return <div className="text-center mt-5">Loading profile...</div>;
+  }
 
   return (
     <div className="container-fluid">
@@ -191,7 +185,10 @@ const ProfileLayout = () => {
               <div className="row align-items-center">
                 {/* Left Side - Profile Avatar */}
                 <div className="col-md-3 text-center">
-                  <UserProfileIcon imageUrl={profile.avatar} />
+                  <UserProfileIcon avatar={profile.avatar} />
+                  <h5 className="mb-2">{profile.firstName} {profile.lastName}</h5>
+                  <p className="text-muted small mb-3">{profile.email}</p>
+              
                 </div>
                 
                 {/* Middle - User Information */}
@@ -210,7 +207,6 @@ const ProfileLayout = () => {
                     <button 
                       className="btn btn-outline-primary edit-profile-btn"
                       onClick={toggleEditForm}
-                      disabled={isLoading}
                     >
                       <FaEdit className="me-2" />
                       {showEditForm ? "Cancel Editing" : "Edit Profile"}
@@ -218,6 +214,7 @@ const ProfileLayout = () => {
                   </div>
                 </div>
 
+                {/* Right Side - Edit Button */}
                 <div className="col-md-3 d-flex justify-content-center justify-content-md-end">
                   
                 </div>
@@ -236,30 +233,29 @@ const ProfileLayout = () => {
                 <h4 className="card-title mb-4">Edit Personal Details</h4>
                 
                 <form>
+                  
                   <div className="row mb-3">
                     <div className="col-md-6 mb-3 mb-md-0">
                       <label htmlFor="firstName" className="form-label">First Name</label>
                       <input
                         type="text"
-                        className={`form-control ${errors.firstName ? 'is-invalid' : ''}`}
+                        className="form-control"
                         id="firstName"
                         name="firstName"
                         value={profile.firstName}
                         onChange={handleInputChange}
                       />
-                      {errors.firstName && <div className="invalid-feedback">{errors.firstName}</div>}
                     </div>
                     <div className="col-md-6">
                       <label htmlFor="lastName" className="form-label">Last Name</label>
                       <input
                         type="text"
-                        className={`form-control ${errors.lastName ? 'is-invalid' : ''}`}
+                        className="form-control"
                         id="lastName"
                         name="lastName"
                         value={profile.lastName}
                         onChange={handleInputChange}
                       />
-                      {errors.lastName && <div className="invalid-feedback">{errors.lastName}</div>}
                     </div>
                   </div>
 
@@ -309,7 +305,6 @@ const ProfileLayout = () => {
                       type="button" 
                       className="btn btn-outline-primary password-btn"
                       onClick={() => setIsModalOpen(true)}
-                      disabled={isLoading}
                     >
                       <FaKey className="me-2" />
                       Change Password
@@ -318,11 +313,10 @@ const ProfileLayout = () => {
                     <button 
                       type="button" 
                       className="btn btn-primary save-btn"
-                      onClick={handleSaveChanges}
-                      disabled={isLoading}
+                      onClick={saveProfileChanges}
                     >
                       <FaSave className="me-2" />
-                      {isLoading ? 'Saving...' : 'Save Changes'}
+                      Save Changes
                     </button>
                   </div>
                 </form>
@@ -332,53 +326,50 @@ const ProfileLayout = () => {
         </div>
       )}
 
+      {/* Custom Modal Implementation */}
       {isModalOpen && (
         <Modal
           isOpen={isModalOpen}
-          onClose={handleCloseModal}
+          onClose={() => setIsModalOpen(false)}
           title="Change Password"
-          primaryButtonText={isLoading ? "Saving..." : "Save Password"}
-          onPrimaryClick={handleChangePassword}
-          disabled={isLoading}
+          primaryButtonText="Save Password"
+          onPrimaryClick={savePasswordChanges}
         >
           <div className="mb-3">
             <label htmlFor="currentPassword" className="form-label">Current Password</label>
             <input 
               type="password" 
-              className={`form-control ${errors.currentPassword ? 'is-invalid' : ''}`}
+              className="form-control" 
               id="currentPassword"
               name="currentPassword"
-              value={passwordData.currentPassword}
+              value={passwords.currentPassword}
               onChange={handlePasswordChange}
               autoComplete="current-password"
             />
-            {errors.currentPassword && <div className="invalid-feedback">{errors.currentPassword}</div>}
           </div>
           <div className="mb-3">
             <label htmlFor="newPassword" className="form-label">New Password</label>
             <input 
               type="password" 
-              className={`form-control ${errors.newPassword ? 'is-invalid' : ''}`}
+              className="form-control" 
               id="newPassword"
               name="newPassword"
-              value={passwordData.newPassword}
+              value={passwords.newPassword}
               onChange={handlePasswordChange}
               autoComplete="new-password"
             />
-            {errors.newPassword && <div className="invalid-feedback">{errors.newPassword}</div>}
           </div>
           <div className="mb-3">
             <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
             <input 
               type="password" 
-              className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`}
+              className="form-control" 
               id="confirmPassword"
               name="confirmPassword"
-              value={passwordData.confirmPassword}
+              value={passwords.confirmPassword}
               onChange={handlePasswordChange}
               autoComplete="new-password"
             />
-            {errors.confirmPassword && <div className="invalid-feedback">{errors.confirmPassword}</div>}
           </div>
         </Modal>
       )}

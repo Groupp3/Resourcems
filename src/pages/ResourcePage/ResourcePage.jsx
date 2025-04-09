@@ -3,9 +3,10 @@ import "./ResourcePage.css";
 import AdminLayout from "../../layouts/AdminLayout/AdminLayout";
 import ResourceCard from "../../components/ResourceCard/ResourceCard";
 import FileList from "../../components/FileList/FileList";
-import { getResources } from "../../services/ResourceService";
+import { getResources, uploadResource } from "../../services/ResourceService";
 import { useNavigate } from "react-router-dom";
-import { VideoIcon, FileTextIcon, BadgeCheckIcon } from "lucide-react";
+import { VideoIcon, FileTextIcon, BadgeCheckIcon, Upload } from "lucide-react";
+import UploadModal from "../../components/UploadModal/UploadModal";
 
 const iconMap = {
   video: <VideoIcon size={24} />,
@@ -29,13 +30,19 @@ const getType = (contentType) => {
 const ResourcePage = () => {
   const navigate = useNavigate();
   const [resources, setResources] = useState([]);
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
+  const fetchAndSetResources = async () => {
+    try {
       const data = await getResources();
       setResources(data);
-    };
-    fetchData();
+    } catch (error) {
+      console.error("Error fetching resources:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAndSetResources();
   }, []);
 
   const groupedResources = resources.reduce((acc, res) => {
@@ -72,7 +79,28 @@ const ResourcePage = () => {
       navigate("/admin");
     }
   };
-  
+
+  // Handle upload button click
+  const handleUploadClick = () => {
+    setIsUploadModalOpen(true);
+  };
+
+  // Handle upload modal close
+  const handleUploadModalClose = () => {
+    setIsUploadModalOpen(false);
+  };
+
+  // Handle upload save
+  const handleUploadSave = async ({ file, isPublic, tags }) => {
+    try {
+      console.log("Uploading resource with:", { file, isPublic, tags });
+      await uploadResource(file, isPublic, tags);
+      await fetchAndSetResources();
+      setIsUploadModalOpen(false);
+    } catch (error) {
+      console.error("Upload failed:", error);
+    }
+  };
 
   return (
     <AdminLayout onBreadcrumbClick={handleBreadcrumbClick}>
@@ -80,6 +108,16 @@ const ResourcePage = () => {
         <div className="resource-page">
           <div className="content-container">
             <section className="storage-section">
+              <div className="storage-header">
+                <h2 className="section-title">Storage</h2>
+                <button 
+                  className="upload-button" 
+                  onClick={handleUploadClick}
+                >
+                  <Upload size={16} />
+                  <span>Upload</span>
+                </button>
+              </div>
               <div className="storage-cards">
                 {storageItems.map((item, index) => (
                   <div
@@ -88,11 +126,11 @@ const ResourcePage = () => {
                     onClick={() => {
                       const lower = item.title.toLowerCase();
                       if (lower === "certificates") {
-                        navigate("/resource/certificates");
+                        navigate("/admin/resource/certificates");
                       } else if (lower === "documents") {
-                        navigate("/resource/documents");
+                        navigate("/admin/resource/documents");
                       } else if (lower === "videos") {
-                        navigate("/resource/videos");
+                        navigate("/admin/resource/videos");
                       }
                     }}
                     style={{ cursor: "pointer" }}
@@ -118,6 +156,13 @@ const ResourcePage = () => {
           </div>
         </div>
       </div>
+      
+      {isUploadModalOpen && (
+        <UploadModal
+          onClose={handleUploadModalClose}
+          onSave={handleUploadSave}
+        />
+      )}
     </AdminLayout>
   );
 };

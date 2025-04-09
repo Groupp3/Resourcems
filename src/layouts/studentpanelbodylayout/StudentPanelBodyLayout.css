@@ -1,0 +1,63 @@
+.student-welcome-panel {
+  background: linear-gradient(135deg, #fff8e1 0%, #ffe2ae 100%);
+  border-radius: 20px;
+  border: none;
+  box-shadow: 0 10px 20px rgba(255, 141, 78, 0.1);
+  overflow: auto;
+  position: relative;
+  margin-bottom: 1.5rem;
+  }
+  .card-mentors {
+    background: linear-gradient(135deg, #f7f1ff 0%, #e8e0ff 100%) !important;
+    border-left: 4px solid #7e64ff;
+}
+
+.card-students {
+    background: linear-gradient(135deg, #fff3ec 0%, #ffe8d9 100%) !important;
+    border-left: 4px solid #ff8d4e;
+}
+
+
+  .pattern-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 120px;
+    height: 100%;
+    background: repeating-linear-gradient(
+      45deg,
+      rgba(92, 124, 250, 0.05),
+      rgba(92, 124, 250, 0.05) 10px,
+      transparent 10px,
+      transparent 20px
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+  
+  .card-icon {
+    background: #e7f0ff;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+  
+  .card-description {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #2b2f3a;
+  }
+  .student-welcome-panel h2 {
+    font-weight: 700;
+    color: #333;
+    font-size: 1.8rem;
+}
+
+.student-welcome-panel p {
+    color: #666;
+    font-weight: 500;
+}

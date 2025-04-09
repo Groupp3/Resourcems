@@ -1,8 +1,7 @@
-// src/services/AuthService.js
-
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8080/api/auth'; // Base URL for authentication API
+const API_URL = 'http://localhost:8080/api/auth';
+const BASE_URL = 'http://localhost:8080';
 
 const AuthService = {
   register: async (userData) => {
@@ -23,53 +22,75 @@ const AuthService = {
         headers: { 'Content-Type': 'application/json' },
       });
 
-      // Extract the token and role from the response structure
       const { response: responseData } = response.data;
 
       if (responseData.token) {
         localStorage.setItem('token', responseData.token);
+        axios.defaults.headers.common['Authorization'] = `Bearer ${responseData.token}`;
       }
 
-      if (responseData.user && responseData.user.role) {
-        // Store the role exactly as provided by the backend (without "ROLE_" prefix)
+      if (responseData.user?.role) {
         localStorage.setItem('role', responseData.user.role.toUpperCase());
       }
 
-      // Store user object
-      localStorage.setItem('user', JSON.stringify(responseData.user));
+      if (responseData.user?.profileImageUrl) {
+        let imageUrl = responseData.user.profileImageUrl;
+        if (!imageUrl.startsWith('http')) {
+          imageUrl = `${BASE_URL}${imageUrl.startsWith('/') ? '' : '/'}${imageUrl}`;
+        }
+        localStorage.setItem('profileImageUrl', imageUrl);
+      }
 
-      return responseData; // Returning the structured response data
+      localStorage.setItem('user', JSON.stringify(responseData.user));
+      return responseData;
     } catch (error) {
       console.error('Login failed:', error.response?.data || error.message);
       throw error.response?.data || { message: 'Login failed' };
     }
   },
 
-  logout: () => {
-    // Clear all authentication data from localStorage
+  logout: async (navigate) => {
+    try {
+      await axios.post(`${API_URL}/logout`, {}, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+    } catch (error) {
+      console.error("Server logout failed:", error.response?.data || error.message);
+      // still continue to clear local storage
+    }
+  
     localStorage.removeItem('token');
     localStorage.removeItem('role');
     localStorage.removeItem('user');
+    localStorage.removeItem('profileImageUrl');
+    delete axios.defaults.headers.common['Authorization'];
+  
+    if (navigate) {
+      navigate('/auth');
+    }
   },
+  
 
   getCurrentUser: () => {
-    // Retrieve user data from localStorage
     const userStr = localStorage.getItem('user');
     return userStr ? JSON.parse(userStr) : null;
   },
 
-  getToken: () => {
-    return localStorage.getItem('token');
-  },
+  getToken: () => localStorage.getItem('token'),
+  getRole: () => localStorage.getItem('role'),
+  getProfileImageUrl: () => localStorage.getItem('profileImageUrl'),
+  isAuthenticated: () => !!localStorage.getItem('token'),
 
-  getRole: () => {
-    return localStorage.getItem('role');
-  },
-
-  // Helper method to check if user is authenticated
-  isAuthenticated: () => {
-    return !!localStorage.getItem('token');
-  },
+  setupAxiosInterceptors: () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    }
+  }
 };
+
+AuthService.setupAxiosInterceptors();
 
 export default AuthService;

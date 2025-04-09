@@ -3,9 +3,10 @@ import ResourceLayout from "../../layouts/ResourceLayout/ResourceLayout";
 import ListLayout from "../../layouts/ListLayout/ListLayout";
 import { FileText, Eye, Download, Trash2, Lock, Globe, X, ZoomIn, ZoomOut } from "lucide-react";
 import styles from "./CertificatePage.module.css";
-import { getResources, deleteResource } from "../../services/ResourceService"; 
+import { getResources, deleteResource ,uploadResource } from "../../services/ResourceService"; 
 import { getUsersByRole } from "../../services/AdminService";
 import axios from "axios";
+
 
 const CertificatePage = () => {
   const [certificateData, setCertificateData] = useState([]);
@@ -33,31 +34,30 @@ const CertificatePage = () => {
     return `${apiBaseUrl}/${certificate.id}`;
   };
 
+  const fetchAndSetCertificates = async (usersList = users) => {
+    const refreshedData = await getResources();
+    const imageResources = refreshedData.filter(item =>
+      item.contentType && item.contentType.startsWith("image/")
+    );
+
+    const enhancedResources = imageResources.map(resource => {
+      const user = usersList.find(user => user.id === resource.userId);
+      return {
+        ...resource,
+        uploadedByName: user ? `${user.firstName} ${user.lastName}` : "Unknown User",
+      };
+    });
+
+    setCertificateData(enhancedResources);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        
-        // First fetch all users
         const usersData = await getUsersByRole();
         setUsers(usersData);
-        
-        // Then fetch all resources and filter for image types
-        const resourcesData = await getResources();
-        const imageResources = resourcesData.filter(item => 
-          item.contentType && item.contentType.startsWith('image/')
-        );
-        
-        // Enhance resources with user information
-        const enhancedResources = imageResources.map(resource => {
-          const user = usersData.find(user => user.id === resource.userId);
-          return {
-            ...resource,
-            uploadedByName: user ? `${user.firstName} ${user.lastName}` : 'Unknown User'
-          };
-        });
-        
-        setCertificateData(enhancedResources);
+        await fetchAndSetCertificates(usersData);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -139,11 +139,29 @@ const CertificatePage = () => {
       width: "40%",
     },
     {
+      key: "tags",
+      title: "Tags",
+      render: (item) => (
+        <div className={styles.tagList}>
+          {Array.isArray(item.tags) && item.tags.length > 0 ? (
+            item.tags.map((tag, idx) => (
+              <span key={idx} className={styles.tag}>
+                {tag}
+              </span>
+            ))
+          ) : (
+            <span>No tags</span>
+          )}
+        </div>
+      ),
+      width: "30%",
+    }
+    ,
+    
+    {
       key: "uploadedBy",
       title: "Uploaded By",
-      render: (item) => (
-        <span>{item.uploadedByName}</span>
-      ),
+      render: (item) => <span>{item.uploadedByName}</span>,
       width: "30%",
     },
     {
@@ -167,7 +185,7 @@ const CertificatePage = () => {
   const certificateBreadcrumbs = [
     { label: "Dashboard", url: "/dashboard" },
     { label: "Resources", url: "/resources" },
-    { label: "Certificates" }
+    { label: "Certificates" },
   ];
 
   const handleActionClick = async (actionType, item) => {

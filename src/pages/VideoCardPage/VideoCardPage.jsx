@@ -108,7 +108,7 @@ const VideoCardPage = () => {
           thumbnailUrl:
             video.thumbnailUrl ||
             "https://via.placeholder.com/320x180.png?text=Video",
-          tags: video.tags || [],
+          tags: resource.tags || [],
           originalData: video,
         };
       });
@@ -123,7 +123,7 @@ const VideoCardPage = () => {
     <ResourceLayout
       breadcrumbItems={videoBreadcrumbs}
       pageTitle="Videos"
-      onUploadSave={handleUploadSave}
+      // Removed onUploadSave prop to hide Upload button
     >
       <div className="video-page-content">
         {loading ? (
@@ -144,12 +144,12 @@ const VideoCardPage = () => {
               </div>
             ) : (
               <p className="no-videos-message">
-                No videos available. Click "Upload +" to add videos.
+                No videos available.
               </p>
             )}
           </div>
         )}
-
+  
         {selectedVideo && (
           <div className="video-modal-overlay" onClick={handleClosePlayer}>
             <div
@@ -172,6 +172,7 @@ const VideoCardPage = () => {
       </div>
     </ResourceLayout>
   );
+  
 };
 
 export default VideoCardPage;

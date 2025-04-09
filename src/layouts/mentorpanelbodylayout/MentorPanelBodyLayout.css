@@ -1,0 +1,186 @@
+.container-fluid {
+    padding: 1.5rem;
+    background-color: #f8f9fc;
+}
+
+.mentor-welcome-panel {
+    background: linear-gradient(135deg, #e9f9ff 0%, #d6f2ff 100%);
+    border-radius: 20px;
+    border: none;
+    box-shadow: 0 10px 20px rgba(78, 202, 255, 0.1);
+    overflow: auto;
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.mentor-welcome-panel::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: rgba(78, 202, 255, 0.1);
+    z-index: 0;
+}
+
+.mentor-welcome-panel::after {
+    content: '';
+    position: absolute;
+    bottom: -80px;
+    left: 20%;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: rgba(78, 202, 255, 0.08);
+    z-index: 0;
+}
+
+.mentor-welcome-panel .card-body {
+    position: relative;
+    z-index: 1;
+    padding: 2rem;
+}
+
+.mentor-welcome-panel h2 {
+    font-weight: 700;
+    color: #333;
+    font-size: 1.8rem;
+}
+
+.mentor-welcome-panel p {
+    color: #666;
+    font-weight: 500;
+}
+
+/* Calendar wrapper styling */
+.calendar-wrapper {
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    height: 100%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.calendar-wrapper:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Card styling - with glass morphism effect */
+.card {
+    border-radius: 20px;
+    border: none;
+    background: white;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Card variants based on the Eduhouse design */
+.card-mentors {
+    background: linear-gradient(135deg, #f7f1ff 0%, #e8e0ff 100%) !important;
+    border-left: 4px solid #7e64ff;
+}
+
+.card-students {
+    background: linear-gradient(135deg, #fff3ec 0%, #ffe8d9 100%) !important;
+    border-left: 4px solid #ff8d4e;
+}
+
+/* Card icon styling */
+.card-icon {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    margin-bottom: 1.5rem;
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.card:hover .card-icon {
+    transform: scale(1.1);
+}
+
+.card-mentors .card-icon {
+    color: #7e64ff;
+    background: rgba(126, 100, 255, 0.1);
+}
+
+.card-students .card-icon {
+    color: #ff8d4e;
+    background: rgba(255, 141, 78, 0.1);
+}
+
+/* Card content styling */
+.card h6 {
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+}
+
+.card-description {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0;
+    color: #333;
+    line-height: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .card-description {
+        font-size: 2rem;
+    }
+    
+    .card-icon {
+        width: 50px;
+        height: 50px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container-fluid {
+        padding: 1rem;
+    }
+    
+    .card-body {
+        padding: 1.5rem;
+    }
+    
+    .mentor-welcome-panel h2 {
+        font-size: 1.5rem;
+    }
+}
+
+/* Animation for loading state */
+@keyframes cardPulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
+}
+
+.is-loading {
+    animation: cardPulse 1.5s infinite;
+}

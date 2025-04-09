@@ -86,7 +86,7 @@ const UsersPage = () => {
         <div className={`users-${viewMode}-view`}>
           {filteredUsers.map((user) => (
             <UserCard
-              key={user.id}
+              userId={user.id}
               name={`${user.firstName} ${user.lastName || ""}`}
               email={user.email || "example@email.com"}
               avatar={user.profileImageUrl || "https://via.placeholder.com/150"}

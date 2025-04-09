@@ -5,10 +5,16 @@
   padding: 16px;
   border-radius: 12px;
   background-color: rgb(255, 255, 255);
-  height: auto;  
-  width: 100%;   
+  flex: 1;  /* Take up all available space */
+  width: 100%; 
+  height: 100%;  
   overflow: hidden; 
   margin: 0 auto;
+}
+
+.data-layout-content {
+  flex: 1; 
+  
 }
 
 .layout-theme-purple {
@@ -43,10 +49,8 @@
   --layout-border: #e2e8f0;
 }
 
-
 .data-layout-header {
   margin-bottom: 8px;
-  
 }
 
 .data-layout-title {
@@ -63,13 +67,23 @@
   margin-bottom: 16px;
 }
 
+.data-layout-empty {
+  padding: 48px 16px;
+  text-align: center;
+  color: #718096;
+  font-size: 16px;
+  background-color: #f7fafc;
+  border-radius: 8px;
+  border: 1px dashed #e2e8f0;
+}
+
 @media (max-width: 768px) {
   .data-layout {
-      padding: 12px;
-      gap: 12px;
+    padding: 12px;
+    gap: 12px;
   }
   
   .data-layout-title {
-      font-size: 20px;
+    font-size: 20px;
   }
 }

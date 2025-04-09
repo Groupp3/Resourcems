@@ -13,21 +13,21 @@ const MENU_ITEMS = {
     { icon: <i className="bi bi-clipboard-check" />, text: 'Request', path: '/admin/request' },
   ],
   MENTOR: [
-    { icon: <i className="bi bi-house-door" />, text: 'Home', path: '/' },
-    { icon: <i className="bi bi-person" />, text: 'Profile', path: '/profile' },
-    { icon: <i className="bi bi-people" />, text: 'Students', path: '/users' },
-    { icon: <i className="bi bi-box-seam" />, text: 'Resource', path: '/resource' },
+    { icon: <i className="bi bi-house-door" />, text: 'Home', path: '/mentor' },
+    { icon: <i className="bi bi-person" />, text: 'Profile', path: '/mentor/profile' },
+    { icon: <i className="bi bi-people" />, text: 'Students', path: '/mentor/users' },
+    { icon: <i className="bi bi-box-seam" />, text: 'Resource', path: '/mentor/resource' },
   ],
   STUDENT: [
-    { icon: <i className="bi bi-house-door" />, text: 'Home', path: '/' },
-    { icon: <i className="bi bi-person" />, text: 'Profile', path: '/profile' },
-    { icon: <i className="bi bi-people" />, text: 'Mentors', path: '/users' },
-    { icon: <i className="bi bi-box-seam" />, text: 'Resource', path: '/resource' },
+    { icon: <i className="bi bi-house-door" />, text: 'Home', path: '/student' },
+    { icon: <i className="bi bi-person" />, text: 'Profile', path: '/student/profile' },
+    { icon: <i className="bi bi-people" />, text: 'Mentors', path: '/student/user' },
+    { icon: <i className="bi bi-box-seam" />, text: 'Resource', path: '/student/resource' },
   ]
 };
  
 const Sidebar = ({
-  userRole = 'STUDENT',
+  userRole = '',
   defaultOpen = true,
   logoText = 'EduVault',
   toggleIcons,
@@ -48,7 +48,7 @@ const Sidebar = ({
     setIsOpen(!isOpen);
     if (onToggle) onToggle(!isOpen);
     
-    // Toggle body class for coordinating with header
+   
     if (isMobile) {
       document.body.classList.toggle('sidebar-open', !isOpen);
     }
@@ -58,7 +58,7 @@ const Sidebar = ({
     const mobile = window.innerWidth <= 768;
     setIsMobile(mobile);
     
-    // Default closed state for mobile
+    
     if (mobile && !isMobile) {
       setIsOpen(false);
       document.body.classList.remove('sidebar-open');
@@ -66,7 +66,7 @@ const Sidebar = ({
       setIsOpen(true);
     }
     
-    // Set mobile-view class on body
+   
     document.body.classList.toggle('mobile-view', mobile);
   };
  
@@ -79,7 +79,7 @@ const Sidebar = ({
     document.documentElement.style.setProperty('--linkHoverColor', linkHoverColor);
     
     window.addEventListener('resize', handleResize);
-    handleResize(); // Initial check
+    handleResize();
     
     return () => {
       window.removeEventListener('resize', handleResize);
@@ -87,7 +87,7 @@ const Sidebar = ({
     };
   }, [backgroundColor, textColor, borderColor, hoverColor, activeColor, linkHoverColor]);
  
-  // Close sidebar when clicking outside on mobile
+ 
   useEffect(() => {
     const handleClickOutside = (event) => {
       const sidebar = document.querySelector('.sidebar');
@@ -112,7 +112,7 @@ const Sidebar = ({
  
   return (
     <>
-      {/* Mobile Header Logo - only appears in mobile view */}
+     
       {isMobile && (
         <div className="mobile-logo-wrapper">
           <div className="mobile-logo-container" onClick={handleToggle}>
@@ -122,7 +122,7 @@ const Sidebar = ({
         </div>
       )}
       
-      {/* Sidebar */}
+    
       <div className={`sidebar ${isOpen ? 'open' : 'closed'} ${isMobile ? 'mobile' : ''}`}>
         <div className="sidebar-header" onClick={handleToggle}>
           <img src={Logo} alt="Brand Logo" className="brand-logo" />

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import AuthService from '../../service/AuthService';
 import styles from './LoginForm.module.css';
-import AuthService from '../../services/AuthService'; // Adjust path as needed
+import { useAuth } from '../../states/AuthContext'; // ✅ added
 
 const LoginForm = ({ onToggleForm }) => {
   const [formData, setFormData] = useState({
@@ -11,7 +12,9 @@ const LoginForm = ({ onToggleForm }) => {
   const [error, setError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
   const navigate = useNavigate();
+  const { login } = useAuth(); // ✅ use login from context
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,22 +26,37 @@ const LoginForm = ({ onToggleForm }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null); // Reset error before new request
+    setError(null);
     setIsLoading(true);
 
     try {
+      // Clear old session data first
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
+      localStorage.removeItem('role');
+      localStorage.removeItem('profileImageUrl');
+
       const response = await AuthService.login(formData.email, formData.password);
       console.log('Login Response:', response);
 
-      // Retrieve token after login
       const token = AuthService.getToken();
-      console.log('Token after login:', token ? "Token exists" : "No token found"); 
-
       if (token) {
-        if (response.role === 'ADMIN') {
-          navigate('/admin'); // Redirect to admin panel
+        localStorage.setItem('user', JSON.stringify(response.user));
+        localStorage.setItem('token', token);
+        localStorage.setItem('role', response.user.role);
+        localStorage.setItem('profileImageUrl', response.user.profileImageUrl);
+
+        login(response.user); // ✅ update context with user
+
+        // ✅ role-based navigation
+        if (response.user.role === 'ADMIN') {
+          navigate('/admin');
+        } else if (response.user.role === 'STUDENT') {
+          navigate('/student');
+        } else if (response.user.role === 'MENTOR') {
+          navigate('/mentor');
         } else {
-          navigate('/user-dashboard'); // Adjust as needed for other roles
+          navigate('/auth');
         }
       } else {
         console.error('Token is missing even after login!');
@@ -47,7 +65,7 @@ const LoginForm = ({ onToggleForm }) => {
 
     } catch (error) {
       console.error('Login error:', error);
-      setError(error.message || 'Login failed. Please check your credentials.'); // Display error message
+      setError(error.message || 'Login failed. Please check your credentials.');
     } finally {
       setIsLoading(false);
     }
@@ -56,7 +74,7 @@ const LoginForm = ({ onToggleForm }) => {
   return (
     <div className={styles.formContainer}>
       <h2 className={styles.formTitle}>Login</h2>
-      {error && <p className={styles.errorMessage}>{error}</p>} {/* Error message display */}
+      {error && <p className={styles.errorMessage}>{error}</p>}
 
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.inputGroup}>

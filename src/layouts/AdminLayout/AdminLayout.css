@@ -5,21 +5,21 @@
     width: 83vw;
     background-color: #ffffff; 
     overflow: auto;
+    font-family: 'Poppins', sans-serif;
 }
 
 .admin-main-content {
     flex-grow: 1;
-    margin-left: 10px; 
-    padding: 20px;
+    padding: 10px 20px;
     position: relative;
-    padding-top: 80px; 
-    padding-left: 20px;
+    padding-top: 90px; /* extra space for header */
+    transition: all 0.3s ease;
 }
 
 .profile-container {
     position: absolute;
     top: 10px;
-    right: 100px;
+    right: 20px;
     z-index: 1000;
 }
 
@@ -40,7 +40,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
+}
 
   .sidebar {
   position: fixed;

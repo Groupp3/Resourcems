@@ -20,7 +20,7 @@ const AdminPanelBodyLayout = () => {
       
       if (!token) {
         console.error("No token found! Redirecting to login.");
-        navigate("/auth");
+        navigate("/auth/login");
         return;
       }
 

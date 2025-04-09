@@ -34,15 +34,16 @@ const UploadModal = ({ onClose, onSave }) => {
     const trimmedTag = newTag.trim();
     if (!trimmedTag) return;
 
-    const alreadyExists = availableTags.some((tag) => tag.name.toLowerCase() === trimmedTag.toLowerCase());
+    const alreadyExists = availableTags.some(
+      (tag) => tag.name.toLowerCase() === trimmedTag.toLowerCase()
+    );
     if (alreadyExists) {
       alert("Tag already exists.");
       return;
     }
 
-    // Add to local available and selected tags
     const newTagObj = {
-      tagId: `temp-${Date.now()}`, // Temporary ID for rendering
+      tagId: `temp-${Date.now()}`,
       name: trimmedTag,
     };
 
@@ -53,7 +54,6 @@ const UploadModal = ({ onClose, onSave }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!file) {
       alert("Please select a file to upload.");
       return;
@@ -61,11 +61,8 @@ const UploadModal = ({ onClose, onSave }) => {
 
     setIsUploading(true);
     try {
-      console.log("Uploading with tags:", selectedTags);
       const uploaded = await uploadResource(file, isPublic, selectedTags);
       onSave(uploaded);
-      const updatedTags = await getAllTags(); // Optional refresh
-      setAvailableTags(updatedTags);
       onClose();
     } catch (err) {
       console.error("Upload failed:", err.response?.data || err.message);

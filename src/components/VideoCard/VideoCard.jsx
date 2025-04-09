@@ -66,14 +66,17 @@ const VideoCard = ({ video, onClick, onDelete }) => {
       <h3 className="video-title">{video.title}</h3>
       <p className="video-uploaded-time">{formatTimeAgo(video.createdAt)}</p>
       <div className="video-tags">
-        {video.tags?.length
-            ? video.tags.map((tag, idx) => (
-                <span key={idx} className="video-tag-pill">
-                {tag}
-                </span>
-            ))
-            : <span className="video-tag-pill">No Tags</span>}
-        </div>
+  {Array.isArray(video.tagNames) && video.tagNames.length > 0 ? (
+    video.tagNames.map((tag, idx) => (
+      <span key={idx} className="video-tag-pill">
+        {tag}
+      </span>
+    ))
+  ) : (
+    <span className="video-tag-pill">No Tags</span>
+  )}
+</div>
+
 
 
         <div className="video-user-details">

@@ -1,0 +1,22 @@
+.resource-layout-container {
+    display: flex;
+    min-height: 100vh;
+  }
+  
+  .content-area {
+    flex-grow: 1;
+    padding: 24px;
+    background-color: #f9f9f9;
+  }
+  
+  .breadcrumb-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  
+  .breadcrumb-wrapper {
+    flex-grow: 1;
+  }
+  

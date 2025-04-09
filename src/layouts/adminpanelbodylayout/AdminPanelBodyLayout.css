@@ -1,9 +1,10 @@
 
 .container-fluid {
-    padding: 1.5rem;
+    padding: 5rem;
     background-color: #f8f9fc;
-   
-}
+    padding-left: 0px;
+    width: 100%;
+ }
 
 .admin-welcome-panel {
     background: linear-gradient(135deg, #fff8e1 0%, #ffe2ae 100%);
@@ -13,6 +14,7 @@
     overflow: auto;
     position: relative;
     margin-bottom: 1.5rem;
+    position: relative;
 }
 
 .admin-welcome-panel::before {

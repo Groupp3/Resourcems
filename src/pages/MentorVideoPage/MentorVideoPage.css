@@ -1,0 +1,117 @@
+/* Container for entire page content */
+.video-page-content {
+    padding: 1.5rem;
+  }
+  
+  /* Loading message styling */
+  .loading-message {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #555;
+    margin-top: 2rem;
+  }
+  
+  /* No videos available message */
+  .no-videos-message {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #999;
+    margin-top: 2rem;
+  }
+  
+  /* Grid container for video cards */
+  .video-cards-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  /* Row of video cards */
+  .video-cards-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  /* Individual card item container */
+  .video-card-item {
+    display: flex;
+    justify-content: center;
+  }
+  
+  /* Modal Overlay */
+  .video-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.65);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  /* Modal Content */
+  .video-modal-content {
+    position: relative;
+    background: #fff;
+    width: 80%;
+    max-width: 800px;
+    height: 600px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  /* Video Title */
+  .video-title {
+    text-align: center;
+    margin-top: 0.5rem;
+    font-size: 1.2rem;
+    color: #333;
+  }
+  
+  /* Close Button */
+  .video-close-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(0, 0, 0, 0.5);
+    border: none;
+    color: white;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    z-index: 1001;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    opacity: 0.8;
+  }
+  
+  .video-close-btn:hover {
+    background: #c0392b;
+  }
+  
+  .video-close-btn svg {
+    stroke-width: 2.5;
+  }
+  
+  .video-close-btn:hover {
+    background: #c0392b;
+  }
+  
+  /* Responsive video player inside modal */
+  .video-modal-content .react-player {
+    flex: 1;
+  }
+  

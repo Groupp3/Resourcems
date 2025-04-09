@@ -48,7 +48,6 @@ export const getResources = async (contentType = "", tags = []) => {
   }
 };
 
-
 // UPLOAD a new resource
 export const uploadResource = async (file, isPublic = false, tags = []) => {
   const token = localStorage.getItem("token");
@@ -57,7 +56,10 @@ export const uploadResource = async (file, isPublic = false, tags = []) => {
   const formData = new FormData();
   formData.append("file", file);
   formData.append("isPublic", isPublic ? "true" : "false");
-  tags.forEach((tag) => formData.append("tags", tag));
+
+  tags.forEach(tag => {
+    formData.append("tags", tag);
+  });
 
   const config = {
     headers: {
@@ -81,9 +83,11 @@ export const getAllTags = async () => {
     },
   };
 
-  const response = await axios.get("http://localhost:8080/api/resources/tags", config);
+  const response = await axios.get(`${API_BASE_URL}/tags`, config);
   return response.data.response || [];
 };
+
+// GET resources for public users
 export const getAccessibleResources = async (contentType = "") => {
   try {
     const token = localStorage.getItem("token");

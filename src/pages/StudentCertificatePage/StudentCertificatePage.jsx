@@ -1,25 +1,14 @@
 import React, { useState, useEffect } from "react";
-import MentorResourceLayout from "../../layouts/MentorResourceLayout/MentorResourceLayout";
+import StudentResourceLayout from "../../layouts/StudentResourceLayout/StudentResourceLayout";
 import ListLayout from "../../layouts/ListLayout/ListLayout";
 import { FileText, Eye, Download, Trash2, Lock, Globe } from "lucide-react";
-import {
-  getAccessibleResources,
-  uploadResource,
-} from "../../services/ResourceService";
-import styles from "./MentorCertificatePage.module.css";
 
-const MentorCertificatePage = () => {
+import { getAccessibleResources, uploadResource } from "../../services/ResourceService";
+import styles from "./StudentCertificatePage.module.css";
+
+const StudentCertificatePage = () => {
   const [certificateData, setCertificateData] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const normalizeTags = (resources) =>
-    resources.map((res) => ({
-      ...res,
-      tags:
-        res.tags?.map((tag) =>
-          typeof tag === "string" ? { name: tag } : tag
-        ) || [],
-    }));
 
   const fetchAndSetCertificates = async () => {
     try {
@@ -35,8 +24,7 @@ const MentorCertificatePage = () => {
         ),
       ];
 
-      const normalized = normalizeTags(mergedResources);
-      setCertificateData(normalized);
+      setCertificateData(mergedResources);
     } catch (error) {
       console.error("Error fetching certificates:", error);
     }
@@ -64,25 +52,25 @@ const MentorCertificatePage = () => {
       ),
       width: "40%",
     },
-    {
-        key: "tags",
-        title: "Tags",
-        render: (item) => (
-          <div className={styles.tagList}>
-            {Array.isArray(item.tagNames) && item.tagNames.length > 0 ? (
-              item.tagNames.map((tag, id) => (
-                <span key={id} className={styles.tag}>
-                  {tag}
-                </span>
-              ))
-            ) : (
-              <span>No tags</span>
-            )}
-          </div>
-        ),
-        width: "30%",
-      },
-      
+ {
+         key: "tags",
+         title: "Tags",
+         render: (item) => (
+           <div className={styles.tagList}>
+             {Array.isArray(item.tagNames) && item.tagNames.length > 0 ? (
+               item.tagNames.map((tag, id) => (
+                 <span key={id} className={styles.tag}>
+                   {tag}
+                 </span>
+               ))
+             ) : (
+               <span>No tags</span>
+             )}
+           </div>
+         ),
+         width: "30%",
+       },
+       
     {
       key: "access",
       title: "Access",
@@ -123,7 +111,7 @@ const MentorCertificatePage = () => {
   };
 
   return (
-    <MentorResourceLayout
+    <StudentResourceLayout
       onUploadSave={handleUploadSave}
       breadcrumbItems={certificateBreadcrumbs}
       pageTitle="Certificates"
@@ -143,8 +131,8 @@ const MentorCertificatePage = () => {
           />
         )}
       </div>
-    </MentorResourceLayout>
+    </StudentResourceLayout>
   );
 };
 
-export default MentorCertificatePage;
+export default StudentCertificatePage;

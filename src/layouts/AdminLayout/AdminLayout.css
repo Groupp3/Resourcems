@@ -14,6 +14,7 @@
     position: relative;
     padding-top: 90px; /* extra space for header */
     transition: all 0.3s ease;
+    
 }
 
 .profile-container {
@@ -25,6 +26,7 @@
 
 .content {
     padding-top: 60px; 
+
 }
 
 .header {

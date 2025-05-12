@@ -23,7 +23,8 @@ body {
 
 .logo {
   height: 6em;
-  padding: 1.5em;
+  padding-top: 45px;
+  padding-left: 25px;
   will-change: filter;
   transition: filter 300ms;
 }

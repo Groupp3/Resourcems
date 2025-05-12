@@ -1,6 +1,6 @@
 .resourceContent {
     padding: 1rem;
-    width: 80%;
+    
     max-width: 100%;;
    
     border-radius: 12px;
@@ -62,7 +62,7 @@
 .modalContent {
   background-color: white;
   border-radius: 8px;
-  width: 95%;
+  width: 70%;
   max-width: 1400px;
   height: 90vh;
   max-height: 90vh;

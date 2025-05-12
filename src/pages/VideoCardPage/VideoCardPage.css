@@ -1,9 +1,8 @@
 /* Container for entire page content */
 .video-page-content {
-  padding: 1.5rem;
+  width:100%;
 }
 
-/* Loading message styling */
 .loading-message {
   text-align: center;
   font-size: 1.2rem;
@@ -11,7 +10,10 @@
   margin-top: 2rem;
 }
 
-/* No videos available message */
+::-webkit-scrollbar{
+  width:0px;
+}
+
 .no-videos-message {
   text-align: center;
   font-size: 1.1rem;
@@ -19,10 +21,10 @@
   margin-top: 2rem;
 }
 
-/* Grid container for video cards */
+
 .video-cards-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 1.5rem;
 }
 
@@ -37,6 +39,7 @@
 .video-card-item {
   display: flex;
   justify-content: center;
+  position: relative;
 }
 
 /* Modal Overlay */
@@ -113,4 +116,194 @@
 /* Responsive video player inside modal */
 .video-modal-content .react-player {
   flex: 1;
+}
+
+
+/* Add these styles to VideoCardPage.css */
+
+.video-player-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 15px;
+}
+
+.video-share-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background-color: #4c6ef5;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.video-share-btn:hover {
+  background-color: #3b5bdb;
+}
+
+/* Share modal styles */
+.share-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.share-email-section {
+  margin-bottom: 15px;
+}
+
+.share-email-header {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.recipients-container {
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 10px;
+  min-height: 60px;
+  background-color: #f8f9fa;
+}
+
+.recipients-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.recipient-chip {
+  display: flex;
+  align-items: center;
+  background-color: #e9ecef;
+  border-radius: 16px;
+  padding: 4px 10px;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.recipient-avatar {
+  width: 24px;
+  height: 24px;
+  background-color: #6c757d;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.remove-recipient {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.no-recipients {
+  color: #868e96;
+  font-style: italic;
+}
+
+.students-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.students-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 10px;
+}
+
+.student-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1px solid #dee2e6;
+  transition: all 0.2s ease;
+}
+
+.student-item:hover {
+  background-color: #f1f3f5;
+}
+
+.selected-student {
+  background-color: #e7f5ff;
+  border-color: #74c0fc;
+}
+
+.student-avatar {
+  width: 32px;
+  height: 32px;
+  background-color: #4c6ef5;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+}
+
+.student-info {
+  flex: 1;
+}
+
+.student-name {
+  font-weight: 500;
+}
+
+.student-email {
+  font-size: 12px;
+  color: #6c757d;
+}
+
+.empty-state {
+  padding: 20px;
+  text-align: center;
+  color: #6c757d;
+  font-style: italic;
+}
+
+.info-modal-content {
+  padding: 10px 0;
+  text-align: center;
+}
+
+/* Add these styles to VideoCard.css */
+.menu-dropdown {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 9999;
+  min-width: 120px;
+}
+
+.menu-dropdown button.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 14px;
+
+}
+
+.menu-dropdown button.menu-item:hover {
+  background-color: #f1f3f5;
 }

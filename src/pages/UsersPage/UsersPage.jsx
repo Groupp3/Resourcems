@@ -116,21 +116,6 @@ const UsersPage = () => {
               className={styles.searchInput}
             />
           </div>
-
-          <div className={styles.userViewToggle}>
-            <button
-              className={`${styles.listViewBtn} ${viewMode === "list" ? styles.active : ""}`}
-              onClick={() => setViewMode("list")}
-            >
-              <FaList />
-            </button>
-            <button
-              className={`${styles.gridViewBtn} ${viewMode === "grid" ? styles.active : ""}`}
-              onClick={() => setViewMode("grid")}
-            >
-              <FaTh />
-            </button>
-          </div>
         </div>
 
         {error && (

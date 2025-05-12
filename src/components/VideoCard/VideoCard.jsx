@@ -6,10 +6,11 @@ import {
   Lock,
   MoreHorizontal,
   Trash2,
+  Share2,
 } from 'lucide-react';
 import './VideoCard.css';
 
-const VideoCard = ({ video, onClick, onDelete }) => {
+const VideoCard = ({ video, onClick, onDelete, onShare }) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const formatTimeAgo = (dateString) => {
@@ -38,7 +39,14 @@ const VideoCard = ({ video, onClick, onDelete }) => {
 
   const handleDelete = (e) => {
     e.stopPropagation();
+    setMenuOpen(false);
     if (onDelete) onDelete(video);
+  };
+
+  const handleShare = (e) => {
+    e.stopPropagation();
+    setMenuOpen(false);
+    if (onShare) onShare(video);
   };
 
   const toggleMenu = (e) => {
@@ -51,33 +59,31 @@ const VideoCard = ({ video, onClick, onDelete }) => {
   return (
     <div className="video-card" onClick={handleCardClick}>
       <div className="video-thumbnail-container">
-            <div className="video-thumbnail">
-                <img
-                src={thumbnailUrl}
-                alt={`${video.title} thumbnail`}
-                className="thumbnail-image"
-                />
-                <div className="duration-badge">{duration}</div>
-                <div className="play-button">
-                <Play className="play-icon" />
-                </div>
-            </div>
-            </div>
-
+        <div className="video-thumbnail">
+          <img
+            src={thumbnailUrl}
+            alt={`${video.title} thumbnail`}
+            className="thumbnail-image"
+          />
+          <div className="duration-badge">{duration}</div>
+          <div className="play-button">
+            <Play className="play-icon" />
+          </div>
+        </div>
+      </div>
 
       <div className="video-info">
-      <h3 className="video-title">{video.title}</h3>
-      <p className="video-uploaded-time">{formatTimeAgo(video.createdAt)}</p>
-      <div className="video-tags">
-    {video.tags?.length
-        ? video.tags.map((tag, idx) => (
-            <span key={idx} className="video-tag-pill">
-            {tag}
-            </span>
-        ))
-        : <span className="video-tag-pill">No Tags</span>}
-    </div>
-
+        <h3 className="video-title">{video.title}</h3>
+        <p className="video-uploaded-time">{formatTimeAgo(video.createdAt)}</p>
+        <div className="video-tags">
+          {video.tags?.length
+            ? video.tags.map((tag, idx) => (
+                <span key={idx} className="video-tag-pill">
+                  {tag}
+                </span>
+              ))
+            : <span className="video-tag-pill">No Tags</span>}
+        </div>
 
         <div className="video-user-details">
           <div className="user-info-left">
@@ -94,12 +100,19 @@ const VideoCard = ({ video, onClick, onDelete }) => {
         </div>
       </div>
 
-      {/* Moved here: 3-dot menu at bottom right */}
+      {/* 3-dot menu at bottom right */}
       <div className="menu-wrapper" onClick={toggleMenu}>
         <MoreHorizontal className="menu-icon" />
         {menuOpen && (
           <div className="menu-dropdown">
-            <button onClick={handleDelete}>
+            {/* Only show share option for private videos */}
+            {!video.isPublic && (
+              <button onClick={handleShare} className="menu-item">
+                <Share2 size={16} />
+                Share
+              </button>
+            )}
+            <button onClick={handleDelete} className="menu-item">
               <Trash2 size={16} />
               Delete
             </button>

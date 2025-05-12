@@ -37,6 +37,14 @@
     align-items: center;
     margin-bottom: 1rem;
   }
+
+  .upload-button-container {
+    display: flex;
+    justify-content: flex-end;
+    width: 100px;
+    margin-bottom: 1rem; /* optional spacing */
+  }
+  
   
   .upload-button {
     display: flex;
@@ -68,7 +76,7 @@
   
   .storage-card-wrapper:hover {
     transform: translateY(-4px);
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+    /* box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1); */
   }
   
   .file-list-container-wrapper {

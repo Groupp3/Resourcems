@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8080/api/auth'; // Base URL for authentication API
+const API_URL = 'http://localhost:8085/api/auth'; // Base URL for authentication API
 
 const AuthService = {
   register: async (userData) => {

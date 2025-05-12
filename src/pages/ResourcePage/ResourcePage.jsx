@@ -3,7 +3,7 @@ import "./ResourcePage.css";
 import AdminLayout from "../../layouts/AdminLayout/AdminLayout";
 import ResourceCard from "../../components/ResourceCard/ResourceCard";
 import FileList from "../../components/FileList/FileList";
-import { getResources, uploadResource } from "../../services/ResourceService";
+import { getAccessibleResources, uploadResource } from "../../services/ResourceService";
 import { useNavigate } from "react-router-dom";
 import { VideoIcon, FileTextIcon, BadgeCheckIcon, Upload } from "lucide-react";
 import UploadModal from "../../components/UploadModal/UploadModal";
@@ -36,7 +36,7 @@ const ResourcePage = () => {
 
   const fetchAndSetResources = async () => {
     try {
-      const data = await getResources();
+      const data = await getAccessibleResources();
       setResources(data);
     } catch (error) {
       console.error("Error fetching resources:", error);
@@ -179,7 +179,11 @@ const ResourcePage = () => {
                       navigate("/admin/resource/documents");
                     } else if (lower === "videos") {
                       navigate("/admin/resource/videos");
+                    } else if (lower === "others"){
+                        navigate("/admin/resource/others");
+
                     }
+
                   }}
                   style={{ cursor: "pointer" }}
                 >

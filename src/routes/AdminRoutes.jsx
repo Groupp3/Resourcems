@@ -11,7 +11,7 @@ const adminRoutes = [
   { path: "/admin/users", element: <UsersPage />,title: "User Management"},
   { path: "/admin/profile", element: <UserProfilePage />,title: "Profile" },
   { path: "/admin/resource", element: <ResourcePage /> ,title: "Resources"},
-  { path: "/admin/request", element: <RequestPage />, title: "New Requests" },
+  { path: "/admin/request", element: <RequestPage />, title: "New Request" },
   { path: "/admin/resource/certificates", element: <CertificatePage />},
   { path: "/admin/resource/videos", element: <VideoCardPage />},
   { path: "/admin/resource/documents", element: <DocumentPage />},

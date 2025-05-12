@@ -127,7 +127,10 @@ const MentorResourcePage = () => {
                         navigate("/mentor/resource/documents");
                       } else if (lower === "videos") {
                         navigate("/mentor/resource/videos");
-                      }
+                      }else if (lower === "others"){
+                        navigate("/admin/resource/others");
+
+                    }
                     }}
                     style={{ cursor: "pointer" }}
                   >

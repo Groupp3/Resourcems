@@ -1,44 +1,673 @@
 .resourceContent {
-    padding: 1rem;
-    width: 80%;
-    max-width: 100%;;
-   
-    border-radius: 12px;
-   
-  }
-  /* .resourceContent {
-    display: flex;
-    width: 80%;
-    max-width: 100%;;
-    background-color: #ffffff;
-    overflow: auto;
-    align-items: stretch;
-    padding: 20px;
-    margin-left: 20px;
-    margin-right: 20px;
-  }
-   */
-  .document-info {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  
-  .document-icon {
-    color: #6c63ff; /* lavender-purple tone */
-  }
-  
-  .document-name {
-    font-weight: 500;
-    color: #333;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  
-  .access-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
+  padding: 1rem;
+  max-width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.document-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.document-icon {
+  color: #6c63ff; /* lavender-purple tone */
+}
+
+.document-name {
+  font-weight: 500;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.access-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Download button styling */
+.lightboxDownloadBtn {
+  background-color: #6b46c1;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.lightboxDownloadBtn:hover {
+  background-color: #553c9a;
+}
+
+/* Modal styles */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: white;
+  border-radius: 8px;
+  width: 70%;
+  max-width: 1400px;
+  height: 90vh;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  border-bottom: 1px solid #e0e0e0;
+  background-color: #f5f5f5;
+}
+
+.modalHeader h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 70%;
+}
+
+.modalControls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.closeButton, .zoomButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.closeButton:hover, .zoomButton:hover {
+  color: #333;
+  background-color: #e0e0e0;
+}
+
+.zoomLevel {
+  font-size: 14px;
+  color: #666;
+  min-width: 50px;
+  text-align: center;
+}
+
+.modalBody {
+  flex: 1;
+  position: relative;
+  min-height: 60vh;
+  overflow: auto;
+  background-color: #f0f0f0;
+}
+
+.documentContainer,
+.imageContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  overflow: auto;
+}
+
+.documentFrame {
+  width: 100%;
+  height: 100%;
+  border: none;
+  min-height: 60vh;
+}
+
+.certificateImage {
+  max-width: 100%;
+  max-height: 100%;
+  transition: transform 0.2s ease;
+  transform-origin: center center;
+}
+
+.loadingSpinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 16px;
+  color: #666;
+}
+
+.errorMessage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 2rem;
+  color: #dc3545;
+  text-align: center;
+}
+
+.modalFooter {
+  padding: 12px 20px;
+  border-top: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f5f5f5;
+}
+
+.modalFooter p {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.actionButtons {
+  display: flex;
+  gap: 10px;
+}
+
+.downloadButton {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background-color: #6b46c1;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.downloadButton:hover {
+  background-color: #553c9a;
+}
+
+.deleteButton {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+}
+
+.deleteButton:hover {
+  background-color: #c82333;
+}
+
+/* Delete Modal Styles */
+.deleteModalContent {
+  background-color: white;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+.deleteModalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.deleteModalHeader h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #333;
+}
+
+.deleteModalBody {
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.documentName {
+  font-weight: bold;
+  margin: 1rem 0;
+  word-break: break-word;
+}
+
+.deleteModalFooter {
+  display: flex;
+  justify-content: center;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #e9ecef;
+  gap: 10px;
+}
+
+.cancelButton {
+  padding: 8px 16px;
+  background-color: #f5f5f5;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.cancelButton:hover {
+  background-color: #e0e0e0;
+}
+
+.confirmDeleteButton {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+}
+
+.confirmDeleteButton:hover {
+  background-color: #c82333;
+}
+
+/* Share Modal Styles */
+.shareModalContent {
+  background-color: white;
+  border-radius: 16px;
+  width: 95%;
+  max-width: 550px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.shareModalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.shareModalHeader h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+.shareModalBody {
+  padding: 24px;
+  max-height: 70vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.certificateName {
+  font-weight: 600;
+  margin: 8px 0 24px;
+  color: #444;
+  font-size: 15px;
+}
+
+/* Link sharing section */
+.shareLinkSection {
+  margin-bottom: 24px;
+}
+
+.shareLinkHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.shareLinkHeader h4 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.permissionSelector {
+  position: relative;
+}
+
+.permissionButton {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background-color: #f7f7f7;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.linkInputContainer {
+  display: flex;
+  margin-top: 8px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.linkInput {
+  flex: 1;
+  padding: 10px 16px;
+  border: none;
+  font-size: 14px;
+  color: #555;
+  background-color: #f9f9f9;
+}
+
+.copyLinkButton {
+  padding: 0 16px;
+  background-color: #f6f3fe;
+  color: #6b46c1;
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.copyLinkButton:hover {
+  background-color: #efe8fd;
+}
+
+/* Email sharing section */
+.shareEmailSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 24px;
+}
+
+.shareEmailHeader {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 12px 0;
+}
+
+.recipientsContainer {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 8px 12px;
+  min-height: 42px;
+  background-color: #f8f9fa;
+}
+
+.recipientsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.recipientChip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px 4px 4px;
+  background-color: #e9ecef;
+  border-radius: 16px;
+  font-size: 13px;
+}
+
+.recipientAvatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #6c757d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 500;
+  color: white;
+  text-transform: uppercase;
+}
+
+.removeRecipient {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #777;
+}
+
+.removeRecipient:hover {
+  color: #dc3545;
+}
+
+.permissionDropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 180px;
+  background-color: white;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  margin-top: 4px;
+  overflow: hidden;
+}
+
+.permissionOption {
+  padding: 10px 14px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.permissionOption:hover {
+  background-color: #f5f5f5;
+}
+
+/* Student list */
+.studentsList {
+  max-height: 250px;
+  overflow-y: auto;
+  margin-top: 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+}
+
+.studentsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 10px;
+  padding: 8px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.studentItem {
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 4px;
+  transition: background-color 0.2s;
+  background-color: #f8f9fa;
+}
+
+.studentItem:hover {
+  background-color: #f6f3fe;
+}
+
+.selectedStudent {
+  background-color: #cfe2ff;
+  border: 1px solid #9ec5fe;
+}
+
+.selectedStudent:hover {
+  background-color: #bddbff;
+}
+
+.studentAvatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #6610f2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  color: white;
+  margin-right: 12px;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+}
+
+.studentInfo {
+  flex: 1;
+  overflow: hidden;
+}
+
+.studentName {
+  font-weight: 500;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.studentEmail {
+  font-size: 13px;
+  color: #666;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Other options section */
+.otherOptionsSection {
+  display: flex;
+  gap: 16px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.optionButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #555;
+}
+
+.optionIcon {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f7f7f7;
+  border-radius: 50%;
+}
+
+.optionLabel {
+  font-size: 12px;
+}
+
+/* Footer */
+.shareModalFooter {
+  padding: 16px 24px;
+  border-top: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.confirmShareButton {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 20px;
+  background-color: #8b5cf6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.confirmShareButton:hover {
+  background-color: #7c3aed;
+}
+
+.confirmShareButton:disabled {
+  background-color: #c4b5fd;
+  cursor: not-allowed;
+}
+
+.noRecipients {
+  color: #888;
+  font-size: 14px;
+  padding: 4px;
+}
+
+.emptyState {
+  padding: 2rem;
+  text-align: center;
+  color: #6c757d;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.tagList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.tag {
+  background-color: #e2e3ff;
+  color: #6610f2;
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 12px;
+  white-space: nowrap;
+}

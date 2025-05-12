@@ -59,12 +59,7 @@ const StudentsPage = () => {
           />
 
           <div className="verlof-view-toggle">
-            <button 
-              className={`list-view-btn ${viewMode === "list" ? "active" : ""}`}
-              onClick={() => setViewMode("list")}
-            >
-              <FaList />
-            </button>
+           
             <button 
               className={`grid-view-btn ${viewMode === "grid" ? "active" : ""}`}
               onClick={() => setViewMode("grid")}

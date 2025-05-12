@@ -1,23 +1,10 @@
 .resourceContent {
     padding: 1rem;
-    width: 80%;
-    max-width: 100%;;
-   
+    
+    max-width: 100%;
     border-radius: 12px;
-   
   }
-  /* .resourceContent {
-    display: flex;
-    width: 80%;
-    max-width: 100%;;
-    background-color: #ffffff;
-    overflow: auto;
-    align-items: stretch;
-    padding: 20px;
-    margin-left: 20px;
-    margin-right: 20px;
-  }
-   */
+  
   .document-info {
     display: flex;
     align-items: center;
@@ -42,3 +29,203 @@
     justify-content: center;
   }
   
+  /* Modal Styles */
+  .modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modalContent {
+    background-color: white;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 1000px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+  }
+  
+  .modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e9ecef;
+  }
+  
+  .modalHeader h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #333;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 70%;
+  }
+  
+  .modalControls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .zoomButton {
+    background: none;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #555;
+  }
+  
+  .zoomButton:hover {
+    background-color: #f8f9fa;
+    color: #333;
+  }
+  
+  .zoomLevel {
+    font-size: 0.875rem;
+    color: #555;
+    min-width: 50px;
+    text-align: center;
+  }
+  
+  .closeButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #555;
+    padding: 4px;
+    border-radius: 4px;
+  }
+  
+  .closeButton:hover {
+    background-color: #f8f9fa;
+    color: #333;
+  }
+  
+  .modalBody {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+    min-height: 60vh;
+    overflow: auto;
+  }
+  
+  .loadingSpinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: #6c757d;
+  }
+  
+  .errorMessage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 2rem;
+    color: #dc3545;
+    text-align: center;
+  }
+  
+  .imageContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+  }
+  
+  .certificateImage {
+    max-width: 100%;
+    transform-origin: center;
+    transition: transform 0.2s ease;
+  }
+  
+  .modalFooter {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-top: 1px solid #e9ecef;
+    background-color: #f8f9fa;
+  }
+  
+  .actionButtons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .downloadButton {
+    background-color: #4a6cf7;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.875rem;
+  }
+  
+  .downloadButton:hover {
+    background-color: #2951f2;
+  }
+  
+  .printButton {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.875rem;
+  }
+  
+  .printButton:hover {
+    background-color: #5a6268;
+  }
+  
+  .certificateName {
+    font-weight: bold;
+    margin: 1rem 0;
+    word-break: break-word;
+  }
+  
+  .tagList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+  
+  .tag {
+    background-color: #e2e3ff;
+    color: #6610f2;
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: 12px;
+    white-space: nowrap;
+  }

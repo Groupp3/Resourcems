@@ -3,10 +3,13 @@ import ResourceLayout from "../../layouts/ResourceLayout/ResourceLayout";
 import ListLayout from "../../layouts/ListLayout/ListLayout";
 import { FileText, Eye, Download, Trash2, Lock, Globe, X, ZoomIn, ZoomOut, Share2, ChevronDown, Printer } from "lucide-react";
 import styles from "./CertificatePage.module.css";
-import { getResources, deleteResource, uploadResource, shareResource } from "../../services/ResourceService"; 
+import { getAccessibleResources, deleteResource, uploadResource, shareResource } from "../../services/ResourceService"; 
 import { getUsersByRole } from "../../services/AdminService";
-import Modal from "../../components/Modal/Modal"; // Assuming you have this Modal component
+import Modal from "../../components/Modal/Modal";
 import axios from "axios";
+
+// Define the base URL for certificates similar to video implementation
+const BASE_CERTIFICATE_URL = "https://resourcebucket-1111.s3.amazonaws.com/";
 
 const CertificatePage = () => {
   const [certificateData, setCertificateData] = useState([]);
@@ -22,28 +25,35 @@ const CertificatePage = () => {
   const [students, setStudents] = useState([]);
   const [sharingInProgress, setSharingInProgress] = useState(false);
 
-  // Modal states
+  
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [actionType, setActionType] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+  const [infoMessage, setInfoMessage] = useState("");
 
-  // Function to construct URL based on resource object
+  // Modified to use the same approach as videos
   const getImageUrl = (certificate) => {
     if (!certificate) return null;
     
-    // Check if url or downloadUrl already exists
+    // If direct S3 URL is available in the object
     if (certificate.url || certificate.downloadUrl) {
       return certificate.url || certificate.downloadUrl;
     }
     
-    // Construct URL based on your API structure - using the correct endpoint
+    // Use S3 bucket with object key (same pattern as videos)
+    if (certificate.objectKey) {
+      return `${BASE_CERTIFICATE_URL}${certificate.objectKey}`;
+    }
+    
+    // Fallback to API URL (but this probably won't work for direct viewing)
     const apiBaseUrl = "http://localhost:8080/api/resources";
     return `${apiBaseUrl}/${certificate.id}`;
   };
 
   const fetchAndSetCertificates = async (usersList = users) => {
-    const refreshedData = await getResources();
+    const refreshedData = await getAccessibleResources();
     const imageResources = refreshedData.filter(item =>
       item.contentType && item.contentType.startsWith("image/")
     );
@@ -66,12 +76,10 @@ const CertificatePage = () => {
         const usersData = await getUsersByRole();
         setUsers(usersData);
         
-        // Filtering for students - if your API provides role information
         const studentsList = usersData.filter(user => 
           user.role === 'STUDENT' || user.role === 'student'
         );
         
-        // If there's no role information, use all users
         setStudents(studentsList.length > 0 ? studentsList : usersData);
         
         await fetchAndSetCertificates(usersData);
@@ -85,54 +93,25 @@ const CertificatePage = () => {
     fetchData();
   }, []);
 
-  // Fetch image data with authorization when the certificate is selected
+  // Modified to directly set image URL without additional fetch
   useEffect(() => {
-    const fetchImage = async () => {
-      if (!selectedCertificate) return;
+    if (!selectedCertificate || !viewModalOpen) return;
+    
+    try {
+      setImageLoaded(false);
+      setImageError(false);
       
-      try {
-        setImageLoaded(false);
-        setImageError(false);
-        setImageSrc(null);
-        
-        const imageUrl = getImageUrl(selectedCertificate);
-        console.log("Fetching image from:", imageUrl);
-        
-        const token = localStorage.getItem("token");
-        if (!token) {
-          throw new Error("Authentication token missing");
-        }
-        
-        // Fetch image with authentication
-        const response = await axios.get(imageUrl, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          },
-          responseType: 'blob'
-        });
-        
-        // Create object URL from blob
-        const objectUrl = URL.createObjectURL(response.data);
-        setImageSrc(objectUrl);
-        
-      } catch (error) {
-        console.error("Error fetching image:", error);
-        setImageError(true);
-      } finally {
-        setImageLoaded(true);
-      }
-    };
-    
-    if (viewModalOpen && selectedCertificate) {
-      fetchImage();
+      // Get direct image URL like we do for videos
+      const imageUrl = getImageUrl(selectedCertificate);
+      console.log("Setting image source:", imageUrl);
+      
+      // Set the URL directly (no fetch needed if using S3 URLs)
+      setImageSrc(imageUrl);
+      
+    } catch (error) {
+      console.error("Error setting image source:", error);
+      setImageError(true);
     }
-    
-    // Cleanup function to revoke object URL when component unmounts or certificate changes
-    return () => {
-      if (imageSrc) {
-        URL.revokeObjectURL(imageSrc);
-      }
-    };
   }, [selectedCertificate, viewModalOpen]);
 
   // Reset zoom when opening or closing modal
@@ -194,7 +173,9 @@ const CertificatePage = () => {
   const certificateActions = [
     { type: "view", icon: <Eye size={18} />, variant: "default" },
     { type: "delete", icon: <Trash2 size={18} />, variant: "danger" },
-    { type: "share", icon: <Share2 size={18} />, variant: "success" },
+    { type: "share", icon: <Share2 size={18} />, variant: "success" ,
+      getDisabled: (item) => item.isPublic === true
+    },
   ];
 
   const certificateBreadcrumbs = [
@@ -220,6 +201,11 @@ const CertificatePage = () => {
         setIsConfirmModalOpen(true);
         break;
       case "share":
+        if (item.isPublic === true) {
+          setInfoMessage("Public files cannot be shared individually. Anyone with access to the system can already view them.");
+          setIsInfoModalOpen(true);
+          return;
+        }
         setActionType("share");
         setSelectedUsers([]);
         setIsConfirmModalOpen(true);
@@ -238,27 +224,18 @@ const CertificatePage = () => {
     
     try {
       const downloadUrl = getImageUrl(item);
-      const response = await axios.get(downloadUrl, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        },
-        responseType: 'blob'
-      });
       
-      // Create download link
-      const url = window.URL.createObjectURL(response.data);
+      // Create an anchor element and trigger download
       const link = document.createElement('a');
-      link.href = url;
+      link.href = downloadUrl;
       link.setAttribute('download', item.filename || 'certificate');
+      link.setAttribute('target', '_blank');
       document.body.appendChild(link);
       link.click();
       link.remove();
       
-      // Clean up
-      window.URL.revokeObjectURL(url);
-      
       // Show success message
-      setSuccessMessage(`Certificate "${item.filename || 'certificate'}" downloaded successfully`);
+      setSuccessMessage(`Certificate "${item.filename || 'certificate'}" download initiated`);
       setIsSuccessModalOpen(true);
     } catch (error) {
       console.error('Download error:', error);
@@ -412,7 +389,6 @@ const CertificatePage = () => {
         )}
       </div>
 
-      
       {viewModalOpen && selectedCertificate && (
         <div className={styles.modalOverlay} onClick={handleCloseModal}>
           <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
@@ -435,7 +411,7 @@ const CertificatePage = () => {
               className={styles.modalBody}
               style={{ cursor: zoom > 1 ? 'move' : 'default' }}
             >
-              {!imageLoaded && !imageError && (
+              {!imageSrc && !imageError && (
                 <div className={styles.loadingSpinner}>Loading certificate...</div>
               )}
               
@@ -445,7 +421,7 @@ const CertificatePage = () => {
                 </div>
               )}
               
-              {imageLoaded && !imageError && imageSrc && (
+              {imageSrc && !imageError && (
                 <div className={styles.imageContainer}>
                   <img 
                     src={imageSrc}
@@ -467,14 +443,24 @@ const CertificatePage = () => {
                 >
                   <Download size={16} /> Download
                 </button>
-                
+                {selectedCertificate.isPublic !== true && (
+                  <button 
+                    className={styles.shareButton}
+                    onClick={() => {
+                      handleCloseModal();
+                      setActionType("share");
+                      setIsConfirmModalOpen(true);
+                    }}
+                  >
+                    <Share2 size={16} /> Share
+                  </button>
+                )}
               </div>
             </div>
           </div>
         </div>
       )}
 
-     
       <Modal
         isOpen={isConfirmModalOpen}
         onClose={() => setIsConfirmModalOpen(false)}
@@ -530,7 +516,6 @@ const CertificatePage = () => {
               </div>
             </div>
             
-           
             <div className={styles.studentsList}>
               <h4 className={styles.shareEmailHeader}>Select recipients</h4>
               {students.length === 0 ? (
@@ -571,6 +556,18 @@ const CertificatePage = () => {
         type="success"
       >
         <p>{successMessage}</p>
+      </Modal>
+
+      {/* Info Modal for public file sharing attempt */}
+      <Modal
+        isOpen={isInfoModalOpen}
+        onClose={() => setIsInfoModalOpen(false)}
+        title="Information"
+        type="info"
+      >
+        <div className={styles.infoModalContent}>
+          <p>{infoMessage}</p>
+        </div>
       </Modal>
     </ResourceLayout>
   );

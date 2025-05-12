@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:8080/api/admin"; // Base API URL
-const USER_API_URL = "http://localhost:8080/api/users"; // For user profile
-const API_USER_URL = "http://localhost:8080/api";
+const API_BASE_URL = "http://localhost:8085/api/admin"; 
+const USER_API_URL = "http://localhost:8085/api/users"; 
+const API_USER_URL = "http://localhost:8085/api";
 
 // Create an axios instance with auth interceptor
 const authAxios = axios.create({
@@ -165,7 +165,7 @@ export const bulkDeleteUsers = async (userIds) => {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-        data: userIds  // This is how you send data in a DELETE request with axios
+        data: userIds
       }
     );
     return response.data.response;
@@ -175,7 +175,8 @@ export const bulkDeleteUsers = async (userIds) => {
   }
 };
 
-// Handle API errors
+
+
 const handleApiError = (error) => {
   if (error.response) {
     console.error(`Error ${error.response.status}: ${error.response.statusText}`);
@@ -184,3 +185,51 @@ const handleApiError = (error) => {
     console.error("Request error:", error.message);
   }
 };
+    
+
+export const uploadProfilePicture = async (file) => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    throw new Error("No authentication token found");
+  }
+
+  const formData = new FormData();
+  formData.append("file", file);
+
+  try {
+    console.log("Uploading file:", file.name, "Size:", file.size, "Type:", file.type);
+    
+    const response = await axios.post(
+      `${USER_API_URL}/users/profile-picture`, 
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+         
+        },
+      }
+    );
+    
+    console.log("Upload response:", response.data);
+    
+    if (response.data && response.data.response && response.data.response.profileImageUrl) {
+      return response.data.response.profileImageUrl;
+    } else {
+      console.warn("Profile picture uploaded but no URL returned in the response");
+      return null;
+    }
+  } catch (error) {
+    console.error("Profile picture upload failed:", error);
+    
+    if (error.response) {
+      console.error("Server response:", error.response.status, error.response.data);
+    } else if (error.request) {
+      console.error("No response received from server");
+    } else {
+      console.error("Error setting up request:", error.message);
+    }
+    
+    throw error;
+  }
+};
+

@@ -1,7 +1,11 @@
 /* Container for entire page content */
 .video-page-content {
     padding: 1.5rem;
+    overflow-y: auto;
+    height: calc(100vh - 60px); /* adjust based on your actual header/nav height */
   }
+  
+  
   
   /* Loading message styling */
   .loading-message {
@@ -19,18 +23,22 @@
     margin-top: 2rem;
   }
   
-  /* Grid container for video cards */
+
   .video-cards-container {
     display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+    flex-direction: row;
+    flex-wrap: wrap; 
+   
+    padding: 1rem 0;
   }
+
   
   /* Row of video cards */
   .video-cards-row {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
+    display: flex;
+    flex-direction: row;
+    gap: 50px;
+    width: 100%;
   }
   
   /* Individual card item container */

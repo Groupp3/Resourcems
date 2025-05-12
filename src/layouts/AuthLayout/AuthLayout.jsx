@@ -15,11 +15,7 @@ const AuthLayout = ({ children }) => {
           </div>
         </div>
 
-       
         <div className={styles.authRight}>
-          {/* <div className={styles.authHeader}>
-            <button className={styles.loginButton}>Log in</button>
-          </div> */}
           <div className={styles.authContent}>
             {children}
           </div>

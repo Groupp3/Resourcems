@@ -16,7 +16,7 @@ const ProfileIcon = ({
   const [imageError, setImageError] = useState(false);
   const [profileImageUrl, setProfileImageUrl] = useState('');
   const [token, setToken] = useState('');
-  const navigate = useNavigate(); // ✅ Hook for navigation
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedImageUrl = localStorage.getItem('profileImageUrl');
@@ -31,7 +31,7 @@ const ProfileIcon = ({
   const handleLogout = async () => {
     setIsOpen(false);
     try {
-      await AuthService.logout(); // API + cleanup
+      await AuthService.logout();
       if (onLogout) onLogout();
     } catch (error) {
       console.error('Logout API failed:', error);
@@ -39,22 +39,23 @@ const ProfileIcon = ({
       navigate('/auth');
     }
   };
-  
-  
+
   const handleImageError = () => setImageError(true);
-  
+
   return (
     <div className={`profile-icon-container ${className}`}>
       <div className="profile-wrapper" onClick={toggleDropdown}>
         <div className={`profile-icon ${size}`}>
-          {!imageError && profileImageUrl ? (
+          {profileImageUrl && !imageError ? (
             <img 
               src={profileImageUrl}
               alt={alt} 
               onError={handleImageError}
             />
           ) : (
-            <div className="fallback-icon"><FaUser /></div>
+            <div className="fallback-icon" role="img" aria-label="Default profile icon">
+              <FaUser />
+            </div>
           )}
         </div>
         {name && <span className="profile-name">{name}</span>}

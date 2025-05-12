@@ -7,6 +7,7 @@
     flex-grow: 1;
     padding: 24px;
     background-color: #f9f9f9;
+    max-width: 1400px;
   }
   
   .breadcrumb-header {

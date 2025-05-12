@@ -3,9 +3,10 @@ import "./StudentResourcePage.css";
 import StudentLayout from "../../layouts/Studentlayout/StudentLayout";
 import ResourceCard from "../../components/ResourceCard/ResourceCard";
 import FileList from "../../components/FileList/FileList";
-import { getAccessibleResources } from "../../services/ResourceService";
+import { getAccessibleResources, uploadResource } from "../../services/ResourceService";
 import { useNavigate } from "react-router-dom";
-import { VideoIcon, FileTextIcon, BadgeCheckIcon } from "lucide-react";
+import { VideoIcon, FileTextIcon, BadgeCheckIcon, Upload } from "lucide-react";
+import UploadModal from "../../components/UploadModal/UploadModal";
 
 const iconMap = {
   video: <VideoIcon size={24} />,
@@ -29,6 +30,7 @@ const getType = (contentType) => {
 const StudentResourcePage = () => {
   const navigate = useNavigate();
   const [resources, setResources] = useState([]);
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
 
   const fetchAndSetResources = async () => {
     try {
@@ -77,6 +79,25 @@ const StudentResourcePage = () => {
     }
   };
 
+  const handleUploadClick = () => {
+    setIsUploadModalOpen(true);
+  };
+
+  const handleUploadModalClose = () => {
+    setIsUploadModalOpen(false);
+  };
+
+  const handleUploadSave = async ({ file, isPublic, tags }) => {
+    try {
+      console.log("Uploading resource with:", { file, isPublic, tags });
+      await uploadResource(file, isPublic, tags);
+      await fetchAndSetResources();
+      setIsUploadModalOpen(false);
+    } catch (error) {
+      console.error("Upload failed:", error);
+    }
+  };
+
   return (
     <StudentLayout onBreadcrumbClick={handleBreadcrumbClick}>
       <div className="adminlayout">
@@ -85,6 +106,7 @@ const StudentResourcePage = () => {
             <section className="storage-section">
               <div className="storage-header">
                 <h2 className="section-title">Storage</h2>
+               
               </div>
               <div className="storage-cards">
                 {storageItems.map((item, index) => (
@@ -99,7 +121,10 @@ const StudentResourcePage = () => {
                         navigate("/student/resource/documents");
                       } else if (lower === "videos") {
                         navigate("/student/resource/videos");
-                      }
+                      }else if (lower === "others"){
+                        navigate("/student/resource/others");
+
+                    }
                     }}
                     style={{ cursor: "pointer" }}
                   >
@@ -124,6 +149,10 @@ const StudentResourcePage = () => {
           </div>
         </div>
       </div>
+
+      {isUploadModalOpen && (
+        <UploadModal onClose={handleUploadModalClose} onSave={handleUploadSave} />
+      )}
     </StudentLayout>
   );
 };

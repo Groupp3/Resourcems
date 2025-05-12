@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8080/api/users"; // Replace with actual API URL
+const API_URL = "http://localhost:8085/api/users"; // Replace with actual API URL
 
 const AdminService = {
   getUserCountByRole: async (role) => {
